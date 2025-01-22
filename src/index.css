@@ -6,17 +6,21 @@
     @apply font-monda;
   }
 
+  :root {
+    color-scheme: dark;
+    --primary: #222831;
+    --secondary: #eeeeee;
+    --accent: #f6b17a;
+    --neutral: #31363f;
+  }
+
   input:autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-text-fill-color: #d1d5db;
+    -webkit-text-fill-color: var(--secondary);
     transition: background-color 86400s ease-in-out 0s;
     box-shadow: none;
-  }
-
-  :root {
-    color-scheme: dark;
   }
 }
 
