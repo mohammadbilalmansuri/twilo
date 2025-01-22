@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import formatClasses from "../utils/formatClasses";
 
 const Button = ({
@@ -29,15 +29,34 @@ const Button = ({
     `${baseClasses} ${styleClasses[style]} ${paddingClasses[padding]} ${className}`
   );
 
-  return as === "button" ? (
-    <button type={type} className={combinedClasses} {...props}>
-      {children}
-    </button>
-  ) : (
-    <Link to={to} className={combinedClasses} {...props}>
-      {children}
-    </Link>
-  );
+  switch (as) {
+    case "link":
+      return (
+        <Link to={to} className={combinedClasses} {...props}>
+          {children}
+        </Link>
+      );
+
+    case "navlink":
+      return (
+        <NavLink
+          to={to}
+          className={({ isActive }) =>
+            `${combinedClasses}${isActive ? " pointer-events-none" : ""}`
+          }
+          {...props}
+        >
+          {children}
+        </NavLink>
+      );
+
+    default:
+      return (
+        <button type={type} className={combinedClasses} {...props}>
+          {children}
+        </button>
+      );
+  }
 };
 
 export default memo(Button);
