@@ -42,7 +42,7 @@ function App() {
   return !loading ? (
     <>
       <Header />
-      <main className="w-full relative border-x border-x-secondary/25 border-dashed max-w-screen-lg min-h-[calc(100vh-126px)] flex flex-col items-center justify-center">
+      <main className="w-full relative flex flex-col items-center">
         <Outlet />
       </main>
       <Footer />

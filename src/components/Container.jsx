@@ -9,7 +9,7 @@ export default function Container({
   return (
     <ParentTag
       className={formatClasses(
-        `w-full relative flex flex-col items-center max-w-screen-xl px-4 ${parentClasses}`
+        `w-full relative flex flex-col items-center px-4 ${parentClasses}`
       )}
     >
       <div

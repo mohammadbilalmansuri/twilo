@@ -4,10 +4,9 @@ export default {
   theme: {
     screens: {
       xs: "480px",
-      sm: "680px",
-      md: "880px",
-      lg: "1080px",
-      xl: "1280px",
+      sm: "660px",
+      md: "840px",
+      lg: "1024px",
     },
     colors: {
       transparent: "transparent",

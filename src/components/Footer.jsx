@@ -4,8 +4,7 @@ export default function Footer() {
   return (
     <Container
       parentTag="footer"
-      parentClasses="border-t border-dashed border-secondary/25"
-      className="py-4 flex justify-between items-center border-x border-x-secondary/25 border-dashed"
+      className="py-4 flex justify-between items-center border-x border-t border-secondary/25 border-dashed rounded-t-xl"
     >
       <p>©2025 Twilo | All Rights Reserved.</p>
 
