@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Monda:wght@400..700&family=Zen+Dots&display=swap");
+
+@tailwind base;
+@layer base {
+  * {
+    @apply font-monda;
+  }
+
+  input:autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: #d1d5db;
+    transition: background-color 86400s ease-in-out 0s;
+    box-shadow: none;
+  }
+
+  :root {
+    color-scheme: dark;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
