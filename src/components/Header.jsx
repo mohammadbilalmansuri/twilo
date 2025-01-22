@@ -1,4 +1,3 @@
-import React, { useMemo } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Container } from "./index";
 import { Button } from "../components";
@@ -7,37 +6,10 @@ import useAuth from "../hooks/useAuth";
 function Header() {
   const { isLoggedIn, userData, logoutUser } = useAuth();
 
-  const navItems = useMemo(
-    () => ({
-      authenicated: [
-        {
-          name: "Create Post",
-          slug: "create-post",
-        },
-        {
-          name: userData?.name,
-          slug: `user/${userData?.$id}`,
-        },
-      ],
-      nonauthenticated: [
-        {
-          name: "Login",
-          slug: "login",
-        },
-        {
-          name: "Sign up",
-          slug: "signup",
-        },
-      ],
-    }),
-    [isLoggedIn, userData]
-  );
-
   return (
     <Container
       parentTag="header"
-      parentClasses="border-b border-dashed border-secondary/25"
-      className="py-4 flex justify-between items-center border-x border-x-secondary/25 border-dashed"
+      className="py-4 flex justify-between items-center border-x border-b border-secondary/25 border-dashed rounded-b-xl"
     >
       <Link
         to="/"
@@ -50,89 +22,63 @@ function Header() {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `text-md font-medium transition-all border-b ${
-              isActive
-                ? "text-c5 border-b-c5"
-                : "hover:textc5 border-b-transparent hover:border-b-c5"
+            `hover:animate-pulse active:scale-95 bg-neutral p-2.5 rounded-lg ${
+              isActive ? "fill-accent pointer-events-none" : "fill-secondary"
             }`
           }
         >
-          Home
+          <svg viewBox="0 0 576 512" className="size-4">
+            <path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" />
+          </svg>
         </NavLink>
 
-        {isLoggedIn
-          ? navItems.authenicated.map((item, index) => (
-              <li key={item.name}>
-                {index === navItems.authenicated.length - 1 ? (
-                  <div className="group relative bg-gray-700 rounded-md hover:rounded-b-none">
-                    <div className="w-full min-w-24 h-9 px-2 bg-gray-700 rounded-md fill-gray-300 flex gap-2 justify-between items-center group-hover:bg-gray-600 cursor-pointer transition-all duration-200">
-                      <img
-                        src={`https://cloud.appwrite.io/v1/avatars/initials?name=${userData?.name}`}
-                        alt={userData?.name}
-                        className="rounded-full w-6 h-6 aspect-square bg-gray-900 object-cover"
-                      />
-                      <span className="text-md font-medium">{item.name}</span>
-                      <svg
-                        className="transition-all duration-200 group-hover:rotate-180"
-                        width="14"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 448"
-                      >
-                        <path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
-                      </svg>
-                    </div>
-
-                    <div className="w-full flex flex-col gap-2 items-center justify-center transition-all duration-200 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto rounded-b-md bg-gray-700 absolute top-9 p-3">
-                      <NavLink
-                        to={item.slug}
-                        className={({ isActive }) =>
-                          `text-md font-medium transition-all border-b duration-200 text-nowrap ${
-                            isActive
-                              ? "text-teal-500 border-b-teal-500"
-                              : "hover:text-teal-500 border-b-transparent hover:border-b-teal-500"
-                          }`
-                        }
-                      >
-                        Your Profile
-                      </NavLink>
-                      <button
-                        onClick={logoutUser}
-                        className="text-md font-medium transition-all border-b border-b-transparent duration-200 hover:text-red-500 hover:border-b-red-500"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <NavLink
-                    to={item.slug}
-                    className={({ isActive }) =>
-                      `text-md font-medium transition-all border-b duration-200 ${
-                        isActive
-                          ? "text-teal-500 border-b-teal-500"
-                          : "hover:text-teal-500 border-b-transparent hover:border-b-teal-500"
-                      }`
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                )}
-              </li>
-            ))
-          : navItems.nonauthenticated.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.slug}
-                className={`h-9 px-3 rounded-md font-medium flex justify-center items-center transition-all duration-200
-                        ${
-                          item.name === "Sign up"
-                            ? "bg-teal-600 hover:bg-teal-700"
-                            : "bg-gray-700 hover:bg-gray-600"
-                        }`}
-              >
-                {item.name}
-              </NavLink>
-            ))}
+        {isLoggedIn ? (
+          <>
+            <NavLink
+              to="/create-post"
+              className={({ isActive }) =>
+                `hover:animate-pulse active:scale-95 bg-neutral p-2.5 rounded-lg ${
+                  isActive
+                    ? "fill-accent pointer-events-none"
+                    : "fill-secondary"
+                }`
+              }
+            >
+              <svg viewBox="0 0 448 512" className="size-4">
+                <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
+              </svg>
+            </NavLink>
+            <NavLink
+              to={`user/${userData.slug}`}
+              className={({ isActive }) =>
+                `hover:animate-pulse active:scale-95 bg-accent p-2.5 rounded-lg fill-primary${
+                  isActive ? " pointer-events-none" : ""
+                }`
+              }
+            >
+              <svg viewBox="0 0 448 512" className="size-4">
+                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
+              </svg>
+            </NavLink>
+            <button
+              className="hover:animate-pulse active:scale-95 bg-neutral p-2.5 rounded-lg fill-secondary"
+              onClick={logoutUser}
+            >
+              <svg viewBox="0 0 512 512" className="size-4">
+                <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+              </svg>
+            </button>
+          </>
+        ) : (
+          <>
+            <Button as="navlink" style={2} padding="sm" to="/login">
+              Login
+            </Button>
+            <Button as="navlink" style={1} padding="sm" to="/signup">
+              Sign Up
+            </Button>
+          </>
+        )}
       </nav>
     </Container>
   );
