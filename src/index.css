@@ -14,6 +14,14 @@
     --neutral: #31363f;
   }
 
+  ::selection {
+    @apply bg-accent text-primary;
+  }
+
+  .min-h {
+    @apply min-h-[calc(100dvh-116px)];
+  }
+
   input:autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,

@@ -21,6 +21,10 @@ export default {
         monda: ['"Monda"', '"sans-serif"', '"system-ui"'],
         "zen-dots": ['"Zen Dots"', '"Monda"', '"sans-serif"', '"system-ui"'],
       },
+      spacing: {
+        14: "3.5rem",
+        15: "3.75rem",
+      },
     },
   },
   plugins: [],

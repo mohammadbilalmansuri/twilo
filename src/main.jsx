@@ -10,7 +10,16 @@ import {
 import App from "./App.jsx";
 import "./index.css";
 import store from "./store/store.js";
-import { Home, CreatePost, Post, EditPost, User, Login, Signup } from "./pages";
+import {
+  Home,
+  CreatePost,
+  Post,
+  EditPost,
+  User,
+  Login,
+  Signup,
+  NotFound,
+} from "./pages";
 import AuthLayout from "./AuthLayout.jsx";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -66,6 +75,7 @@ const router = createBrowserRouter(
           </AuthLayout>
         }
       />
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );

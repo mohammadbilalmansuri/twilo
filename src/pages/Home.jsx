@@ -87,18 +87,22 @@ function Home() {
           </>
         )
       ) : (
-        <div className="text-center flex flex-col items-center gap-8">
-          <h2 className="text-xl font-medium">
+        <div className="w-full text-center flex flex-col items-center gap-8">
+          <h2 className="text-xl border-b border-dashed border-b-secondary/25 pb-0.5">
             Start your blogging journey today with Twilo
           </h2>
-          <h1 className="text-5xl font-bold -mt-4">Write. Share. Connect.</h1>
-          <p className="text-lg text-c4/75 max-w-lg">
+          <h1 className="text-5xl font-bold leading-tight -mt-4">
+            Write. Share. Explore. Connect.
+          </h1>
+          <p className="text-lg text-secondary/75 max-w-3xl">
             Twilo is your go-to platform for effortless blogging. Share your
             thoughts, ideas, and stories with a community of readers. Whether
             you're writing for fun or building an audience, Twilo makes it easy
             to get started and grow.
           </p>
-          <Button style={1}>Get Started</Button>
+          <Button style={1} padding="md" fontSize="lg" as="link" to="/signup">
+            Get Started
+          </Button>
         </div>
       )}
     </Container>
