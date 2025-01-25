@@ -32,7 +32,7 @@ function Header() {
               <>
                 <Link
                   to="/posts"
-                  className="icon-neutral"
+                  className="icon bg-neutral fill-secondary"
                   aria-label="Home Icon"
                 >
                   <svg viewBox="0 0 576 512" className="size-4">
@@ -43,7 +43,7 @@ function Header() {
                 <NavLink
                   to="/create-post"
                   className={({ isActive }) =>
-                    `icon-neutral ${
+                    `icon bg-neutral ${
                       isActive
                         ? "fill-accent pointer-events-none"
                         : "fill-secondary"
@@ -61,7 +61,10 @@ function Header() {
               </>
             )}
 
-            <button className="icon-neutral" onClick={logoutUser}>
+            <button
+              className="icon bg-neutral fill-secondary"
+              onClick={logoutUser}
+            >
               <svg
                 viewBox="0 0 512 512"
                 className="size-4"
@@ -75,7 +78,9 @@ function Header() {
               <NavLink
                 to={`/user/${userData?.$id}`}
                 className={({ isActive }) =>
-                  `icon-accent${isActive ? " pointer-events-none" : ""}`
+                  `icon bg-accent fill-primary${
+                    isActive ? " pointer-events-none" : ""
+                  }`
                 }
               >
                 <svg
