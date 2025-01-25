@@ -38,12 +38,8 @@
     @apply text-2xl font-zen-dots tracking-widest uppercase font-bold leading-none -mb-1 text-accent;
   }
 
-  .icon-neutral {
-    @apply hover:animate-pulse active:scale-95 bg-neutral fill-secondary p-2.5 rounded-lg;
-  }
-
-  .icon-accent {
-    @apply hover:animate-pulse active:scale-95 bg-accent p-2.5 rounded-lg fill-primary;
+  .icon {
+    @apply hover:animate-pulse active:scale-95 rounded-lg size-8 flex flex-col items-center justify-center;
   }
 }
 

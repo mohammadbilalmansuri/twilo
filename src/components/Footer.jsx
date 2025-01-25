@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="flex gap-4 items-center">
         <a
           href="https://www.linkedin.com/in/mohammadbilalmansuri"
-          className="hover:animate-pulse active:scale-95 bg-neutral p-2 rounded-lg fill-secondary"
+          className="icon bg-neutral fill-secondary"
           target="_blank"
         >
           <svg
@@ -24,7 +24,7 @@ export default function Footer() {
         </a>
         <a
           href="https://github.com/mohammadbilalmansuri"
-          className="hover:animate-pulse active:scale-95 bg-neutral p-2 rounded-lg fill-secondary"
+          className="icon bg-neutral fill-secondary"
           target="_blank"
         >
           <svg
@@ -37,7 +37,7 @@ export default function Footer() {
         </a>
         <a
           href="https://twitter.com/bilalmansuri04"
-          className="hover:animate-pulse active:scale-95 bg-neutral p-2 rounded-lg fill-secondary"
+          className="icon bg-neutral fill-secondary"
           target="_blank"
         >
           <svg
