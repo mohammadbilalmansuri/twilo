@@ -1,6 +1,3 @@
-// here we created this object for getting env. values easily with the help of object.
-// these variables comes from .env file in the root.
-
 const config = {
   appUrl: window.location.origin,
   verifyEmailUrl: `${window.location.origin}/verify-email`,
