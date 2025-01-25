@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: false,
-  users: null,
+  users: [],
 };
 
 const userSlice = createSlice({
@@ -14,14 +14,14 @@ const userSlice = createSlice({
       state.users = action.payload;
     },
     updateUser: (state, action) => {
-      const [userId, userData] = action.payload;
-      state.users = state.users.map((user) =>
-        user.$id === userId ? userData : user
+      const index = state.users.findIndex(
+        (user) => user.$id === action.payload.$id
       );
+      if (index !== -1) state.users[index] = action.payload;
     },
     cleanUsers: (state) => {
       state.status = false;
-      state.users = null;
+      state.users = [];
     },
   },
 });

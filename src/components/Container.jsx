@@ -1,16 +1,14 @@
-import formatClasses from "../utils/formatClasses";
-
-export default function Container({
+const Container = ({
   parentTag: ParentTag,
-  parentClasses = "",
+  parentClasses,
   children,
-  className = "",
-}) {
+  className,
+}) => {
   const content = (
     <div
-      className={formatClasses(
-        `w-full max-w-screen-lg px-4 relative ${className}`
-      )}
+      className={`w-full max-w-screen-lg px-4 relative${
+        className ? ` ${className}` : ""
+      }`}
     >
       {children}
     </div>
@@ -18,13 +16,15 @@ export default function Container({
 
   return ParentTag ? (
     <ParentTag
-      className={formatClasses(
-        `w-full relative flex flex-col items-center px-4 ${parentClasses}`
-      )}
+      className={`w-full relative flex flex-col items-center px-4${
+        parentClasses ? ` ${parentClasses}` : ""
+      }`}
     >
       {content}
     </ParentTag>
   ) : (
     content
   );
-}
+};
+
+export default Container;

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: false,
-  posts: null,
+  posts: [],
 };
 
 const postSlice = createSlice({
@@ -14,25 +14,22 @@ const postSlice = createSlice({
       state.posts = action.payload;
     },
     addPost: (state, action) => {
-      state.posts = [action.payload, ...state.posts];
+      state.posts.push(action.payload);
     },
     removePost: (state, action) => {
-      state.posts = state.posts.filter((post) => post.$id !== action.payload);
+      state.posts = state.posts.filter(
+        (post) => post.$id !== action.payload.$id
+      );
     },
     updatePost: (state, action) => {
-      state.posts = [action.payload, ...state.posts];
-
-      /* if we want to update post without changing post index.
-      const [postToUpdateId, updatedPost] = action.payload;
-      state.posts = state.posts.map((post) =>
-        post.$id === postToUpdateId ? updatedPost : post
+      const index = state.posts.findIndex(
+        (post) => post.$id === action.payload.$id
       );
-      then we have to dispatch that post like this from PostForm
-      dispatch(updatePosts([post.$id, updatedPost])); */
+      if (index !== -1) state.posts[index] = action.payload;
     },
     cleanPosts: (state) => {
       state.status = false;
-      state.posts = null;
+      state.posts = [];
     },
   },
 });

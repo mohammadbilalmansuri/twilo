@@ -25,6 +25,10 @@ export default {
         14: "3.5rem",
         15: "3.75rem",
       },
+      size: {
+        14: "3.5rem",
+        18: "4.5rem",
+      },
     },
   },
   plugins: [],
