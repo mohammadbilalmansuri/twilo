@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  status: false,
-  userData: null,
+  status: localStorage.getItem("isLoggedIn") === "true",
+  verified: localStorage.getItem("isVerified") === "true",
+  userData: {},
 };
 
 const authSlice = createSlice({
@@ -10,15 +11,33 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.status = true;
-      state.userData = action.payload;
+      const { emailVerification, ...rest } = action.payload;
+
+      if (!state.status) {
+        state.status = true;
+        localStorage.setItem("isLoggedIn", "true");
+      }
+
+      if (state.verified !== emailVerification) {
+        state.verified = emailVerification;
+        localStorage.setItem("isVerified", String(emailVerification));
+      }
+
+      state.userData = { ...state.userData, ...rest };
+    },
+    verify: (state) => {
+      state.verified = true;
+      localStorage.setItem("isVerified", "true");
     },
     logout: (state) => {
       state.status = false;
-      state.userData = null;
+      state.verified = false;
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("isVerified");
+      state.userData = {};
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, verify, logout } = authSlice.actions;
 export default authSlice.reducer;

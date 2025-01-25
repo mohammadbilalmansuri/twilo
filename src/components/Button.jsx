@@ -1,6 +1,4 @@
-import { memo } from "react";
 import { Link, NavLink } from "react-router-dom";
-import formatClasses from "../utils/formatClasses";
 
 const Button = ({
   children,
@@ -8,55 +6,52 @@ const Button = ({
   type = "button",
   to = "",
   style = 1,
-  padding = "md",
-  fontSize = "base",
-  className = "",
+  size = "md",
+  className,
   ...props
 }) => {
-  const baseClasses = `text-${fontSize} font-semibold transition-all rounded-lg hover:animate-pulse active:scale-95`;
-  const styleClasses = {
+  const styles = {
     1: "bg-accent text-primary",
     2: "bg-neutral text-secondary",
-    3: "bg-secondary text-primary",
-  };
-  const paddingClasses = {
-    sm: "py-1.5 px-3",
-    md: "py-2 px-4",
-    lg: "py-3 px-5",
   };
 
-  const combinedClasses = formatClasses(
-    `${baseClasses} ${styleClasses[style]} ${paddingClasses[padding]} ${className}`
-  );
+  const sizes = {
+    sm: "h-9 px-4 text-base",
+    md: "h-10 px-4 text-lg",
+    lg: "h-12 px-5 text-lg",
+  };
 
-  switch (as) {
-    case "link":
-      return (
-        <Link to={to} className={combinedClasses} {...props}>
-          {children}
-        </Link>
-      );
+  const classes = `leading-tight font-semibold transition-all rounded-lg hover:animate-pulse active:scale-95 flex items-center justify-center ${
+    styles[style] || styles[1]
+  } ${sizes[size] || sizes["md"]}${className ? ` ${className}` : ""}`;
 
-    case "navlink":
-      return (
-        <NavLink
-          to={to}
-          className={({ isActive }) =>
-            `${combinedClasses}${isActive ? " pointer-events-none" : ""}`
-          }
-          {...props}
-        >
-          {children}
-        </NavLink>
-      );
-
-    default:
-      return (
-        <button type={type} className={combinedClasses} {...props}>
-          {children}
-        </button>
-      );
+  if (as === "link") {
+    return (
+      <Link to={to} className={classes} {...props}>
+        {children}
+      </Link>
+    );
   }
+
+  if (as === "navlink") {
+    return (
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          `${classes}${isActive ? " pointer-events-none" : ""}`
+        }
+        {...props}
+      >
+        {children}
+      </NavLink>
+    );
+  }
+
+  return (
+    <button type={type} className={classes} {...props}>
+      {children}
+    </button>
+  );
 };
 
-export default memo(Button);
+export default Button;

@@ -1,83 +1,55 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../store/authSlice";
-import { setPosts } from "../store/postSlice";
-import { setUsers } from "../store/userSlice";
-import { Container, Button, Input } from "../components";
 import { useDispatch } from "react-redux";
-import authService from "../appwrite/auth";
-import databaseService from "../appwrite/database";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
+import { login } from "../store/authSlice";
+import { Container, Button, Input, Loader } from "../components";
+import { authService } from "../appwrite";
 
-function Login() {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
-  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [passwordInputType, setPasswordInputType] = useState("password");
-  const passwordVisibilityHandler = () => {
-    if (passwordInputType === "password") {
-      setPasswordInputType("text");
-    } else {
-      setPasswordInputType("password");
-    }
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const loginSubmit = async (data) => {
-    setError("");
+    setIsLoading(true);
+    setServerError("");
     try {
-      const session = await authService.loginUser(data);
-
-      if (session) {
-        const [userData, allPosts, allUsers] = await Promise.all([
-          authService.getCurrentUser(),
-          databaseService.getPosts(),
-          databaseService.getUsers(),
-        ]);
-
-        if (userData) {
-          allPosts && dispatch(setPosts(allPosts.documents));
-          dispatch(login(userData));
-          navigate("/");
-          localStorage.setItem("isLoggedIn", "true");
-          allUsers && dispatch(setUsers(allUsers.documents));
-        }
+      const userData = await authService.loginUser(data);
+      dispatch(login(userData));
+      if (userData.emailVerification) {
+        navigate("/posts");
+      } else {
+        navigate("/verify");
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setServerError(err?.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  /* // second approach
-  const signupSubmit = (data) => {
-    setError("");
-    authService
-      .loginUser(data)
-      .then((session) => {
-        if (session) {
-          Promise.all([
-            authService.getCurrentUser(),
-            databaseService.getPosts(),
-            databaseService.getUsers(),
-          ])
-            .then(([userData, allPosts, allUsers]) => {
-              if (userData) {
-                allPosts && dispatch(setPosts(allPosts.documents));
-                dispatch(login(userData));
-                allUsers && dispatch(setUsers(allUsers.documents));
-              }
-            })
-            .catch((error) => {
-              setError(error.message);
-            });
-        }
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }; */
+  const renderErrors = () => {
+    const errorMessages = [
+      errors?.email?.message,
+      errors?.password?.message,
+      serverError,
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+    return errorMessages.length ? (
+      <p className="text-accent text-center">{errorMessages}</p>
+    ) : null;
+  };
 
   return (
     <>
@@ -85,70 +57,65 @@ function Login() {
         <title>Login - Twilo</title>
       </Helmet>
 
-      <Container className="flex flex-col items-center">
-        <div className="flex flex-col items-center gap-4 bg-gray-800 p-10 rounded-xl">
-          <h1 className="text-4xl font-bold">Login to your account</h1>
-          <p className="text-lg pb-5 border-b border-gray-400 w-full flex justify-center gap-2">
-            <span>Don't have any account?</span>
-            <Link to="/signup" className="text-teal-500 hover:underline">
-              Sign up
-            </Link>
-          </p>
+      <Container className="min-h py-16 flex flex-col items-center justify-center gap-4">
+        <h1 className="text-4xl font-bold leading-tight">
+          Login to your account
+        </h1>
 
-          <form
-            onSubmit={handleSubmit(loginSubmit)}
-            className="pt-3 w-full max-w-[22.5rem] flex flex-col gap-5"
-          >
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              onInput={() => setError("")}
-              {...register("email", {
-                required: true,
-                validate: {
-                  matchPatern: (value) =>
-                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                    "Email address must be a valid address",
-                },
-              })}
-            />
+        <p className="text-lg text-secondary/75">
+          Don't have any accounts?{" "}
+          <Link to="/login" className="text-accent hover:underline">
+            Sign Up
+          </Link>
+        </p>
 
-            <div className="relative flex items-center">
-              <Input
-                type={passwordInputType}
-                placeholder="Enter your password"
-                onInput={() => setError("")}
-                {...register("password", {
-                  required: true,
-                })}
-              />
+        <form
+          id="loginForm"
+          onSubmit={handleSubmit(loginSubmit)}
+          className="w-full max-w-sm relative flex flex-col gap-5 pt-2"
+        >
+          <Input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            {...register("email", {
+              required: true,
+              pattern: {
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Please enter a valid email address",
+              },
+            })}
+          />
 
-              <div
-                onClick={passwordVisibilityHandler}
-                className="cursor-pointer fill-gray-300 w-4 absolute right-2"
-              >
-                {passwordInputType === "password" ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                    <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                    <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z" />
-                  </svg>
-                )}
-              </div>
-            </div>
+          <Input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            {...register("password", {
+              required: true,
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            })}
+          />
 
-            {error && (
-              <p className="text-red-500 font-medium text-center">{error}</p>
-            )}
+          {renderErrors()}
 
-            <Button type="submit">Login</Button>
-          </form>
-        </div>
+          <Button type="submit" style={1} size="lg" disabled={isLoading}>
+            {isLoading ? <Loader size="sm" color="primary" /> : "Login"}
+          </Button>
+        </form>
+
+        <Link
+          to="/reset-password"
+          className="text-secondary/75 pt-2 border-b border-dashed border-secondary/25 transition-all hover:border-accent hover:text-accent "
+        >
+          Forget your password?
+        </Link>
       </Container>
     </>
   );
-}
+};
 
 export default Login;

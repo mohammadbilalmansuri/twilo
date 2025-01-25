@@ -19,63 +19,104 @@ import {
   Login,
   Signup,
   NotFound,
+  VerifyEmail,
+  EmailSent,
+  Posts,
 } from "./pages";
-import AuthLayout from "./AuthLayout.jsx";
+import Protect from "./Protect.jsx";
 import { HelmetProvider } from "react-helmet-async";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="" element={<Home />} />
+      <Route
+        path=""
+        element={
+          <Protect authentication={false}>
+            <Home />
+          </Protect>
+        }
+      />
+      <Route
+        path="posts"
+        element={
+          <Protect>
+            <Posts />
+          </Protect>
+        }
+      />
       <Route
         path="login"
         element={
-          <AuthLayout authentication={false}>
+          <Protect authentication={false}>
             <Login />
-          </AuthLayout>
+          </Protect>
         }
       />
       <Route
         path="signup"
         element={
-          <AuthLayout authentication={false}>
+          <Protect authentication={false}>
             <Signup />
-          </AuthLayout>
+          </Protect>
+        }
+      />
+      <Route
+        path="verify"
+        element={
+          <Protect>
+            <EmailSent />
+          </Protect>
+        }
+      />
+      <Route
+        path="verify-email"
+        element={
+          <Protect>
+            <VerifyEmail />
+          </Protect>
         }
       />
       <Route
         path="create-post"
         element={
-          <AuthLayout authentication>
+          <Protect>
             <CreatePost />
-          </AuthLayout>
+          </Protect>
         }
       />
       <Route
         path="edit-post/:slug"
         element={
-          <AuthLayout authentication>
+          <Protect>
             <EditPost />
-          </AuthLayout>
+          </Protect>
         }
       />
       <Route
         path="post/:slug"
         element={
-          <AuthLayout authentication>
+          <Protect>
             <Post />
-          </AuthLayout>
+          </Protect>
         }
       />
       <Route
-        path="user/:slug"
+        path="user/:id"
         element={
-          <AuthLayout authentication>
+          <Protect>
             <User />
-          </AuthLayout>
+          </Protect>
         }
       />
-      <Route path="*" element={<NotFound />} />
+      <Route
+        path="*"
+        element={
+          <Protect authentication={false}>
+            <NotFound />
+          </Protect>
+        }
+      />
     </Route>
   )
 );
@@ -93,59 +134,12 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: (
-          // <AuthLayout authentication={false}>
+          // <Protect authentication={false}>
           <Login />
-          // </AuthLayout>
+          // </Protect>
         ),
       },
-      {
-        path: "/signup",
-        element: (
-          <AuthLayout authentication={false}>
-            <Signup />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/your-posts",
-        element: (
-          <AuthLayout authentication>
-            <YourPosts />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/add-post",
-        element: (
-          <AuthLayout authentication>
-            <AddPost />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/edit-post/:slug",
-        element: (
-          <AuthLayout authentication>
-            <EditPost />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/post/:slug",
-        element: (
-          <AuthLayout authentication>
-            <Post />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/user/:slug",
-        element: (
-          <AuthLayout authentication>
-            <Account />
-          </AuthLayout>
-        ),
-      },
+      // so on...
     ],
   },
 ]);
