@@ -1,7 +1,6 @@
 import config from "../config";
-import { Client, ID, Storage } from "appwrite";
+import { Client, ID, ImageFormat, Storage } from "appwrite";
 
-// this service is for store media files.
 export class StorageService {
   client = new Client();
   storage;
@@ -15,6 +14,9 @@ export class StorageService {
   }
 
   async uploadFile(file) {
+    if (!file) {
+      throw new Error("File is required");
+    }
     try {
       return await this.storage.createFile(
         config.appwriteBucketId,
@@ -28,6 +30,9 @@ export class StorageService {
   }
 
   async updateFile(file) {
+    if (!file) {
+      throw new Error("File is required");
+    }
     try {
       return await this.storage.updateFile(config.appwriteBucketId, file);
     } catch (error) {
@@ -37,6 +42,10 @@ export class StorageService {
   }
 
   async deleteFile(fileId) {
+    if (!fileId) {
+      throw new Error("File ID is required");
+    }
+
     try {
       await this.storage.deleteFile(config.appwriteBucketId, fileId);
       return true;
@@ -46,12 +55,18 @@ export class StorageService {
     }
   }
 
-  // here we can use async function but this getFilePreview methos response fast thats why we are not using.
   getFilePreview(fileId) {
-    return this.storage.getFilePreview(config.appwriteBucketId, fileId);
+    if (!fileId) {
+      throw new Error("File ID is required");
+    }
+
+    return this.storage.getFilePreview(
+      config.appwriteBucketId,
+      fileId,
+      ImageFormat.Webp
+    );
   }
 }
 
 const storageService = new StorageService();
-
 export default storageService;

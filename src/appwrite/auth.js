@@ -14,23 +14,30 @@ export class AuthService {
   }
 
   async createAccount({ userId, email, password, name }) {
+    if (!userId || !email || !password || !name) {
+      throw new Error("User ID, email, password, and name are required.");
+    }
+
     try {
       await this.account.create(userId, email, password, name);
-      const user = await this.loginUser({ email, password });
       await this.sendVerificationEmail();
-      return user;
+      return true;
     } catch (error) {
-      console.error("Appwrite :: createAccount :: ", error);
+      console.error("Appwrite :: createAccount :: ", error.message);
       throw error;
     }
   }
 
   async loginUser({ email, password }) {
+    if (!email || !password) {
+      throw new Error("Email and password are required.");
+    }
+
     try {
       await this.account.createEmailPasswordSession(email, password);
       return await this.getCurrentUser();
     } catch (error) {
-      console.error("Appwrite :: loginUser :: ", error);
+      console.error("Appwrite :: loginUser :: ", error.message);
       throw error;
     }
   }
@@ -39,7 +46,7 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error) {
-      console.log("Appwrite Service :: getCurrentUser :: ", error);
+      console.error("Appwrite Service :: getCurrentUser :: ", error.message);
       throw error;
     }
   }
@@ -49,17 +56,21 @@ export class AuthService {
       await this.account.createVerification(config.verifyEmailUrl);
       return true;
     } catch (error) {
-      console.error("Appwrite :: sendVerificationEmail :: ", error);
+      console.error("Appwrite :: sendVerificationEmail :: ", error.message);
       throw error;
     }
   }
 
   async verifyEmail(userId, secret) {
+    if (!userId || !secret) {
+      throw new Error("User ID and secret are required.");
+    }
+
     try {
       await this.account.updateVerification(userId, secret);
       return true;
     } catch (error) {
-      console.error("Appwrite :: verifyEmail :: ", error);
+      console.error("Appwrite :: verifyEmail :: ", error.message);
       throw error;
     }
   }
@@ -69,68 +80,83 @@ export class AuthService {
       await this.account.deleteSessions();
       return true;
     } catch (error) {
-      console.error("Appwrite :: logoutUser :: ", error);
+      console.error("Appwrite :: logoutUser :: ", error.message);
       throw error;
     }
   }
 
   async updateName(name) {
+    if (!name) {
+      throw new Error("Name is required.");
+    }
+
     try {
       await this.account.updateName(name);
       return true;
     } catch (error) {
-      console.log("Appwrite :: updateUserName :: ", error);
+      console.error("Appwrite :: updateUserName :: ", error.message);
       throw error;
     }
   }
 
   async updatePassword(newPassword, currentPassword) {
+    if (!newPassword || !currentPassword) {
+      throw new Error("New password and current password are required.");
+    }
+
     try {
       await this.account.updatePassword(newPassword, currentPassword);
       return true;
     } catch (error) {
-      console.log("Appwrite :: updatePassword :: ", error);
+      console.error("Appwrite :: updatePassword :: ", error.message);
       throw error;
     }
   }
 
   async sendResetPasswordLink(email) {
+    if (!email) {
+      throw new Error("Email is required.");
+    }
+
     try {
       await this.account.createRecovery(email, config.resetPasswordUrl);
       return true;
     } catch (error) {
-      console.log("Appwrite :: resetPassword :: ", error);
+      console.error("Appwrite :: sendResetPasswordLink :: ", error.message);
       throw error;
     }
   }
 
   async resetPassword(userId, secret, password) {
+    if (!userId || !secret || !password) {
+      throw new Error("User ID, secret, and password are required.");
+    }
+
     try {
       await this.account.updateRecovery(userId, secret, password);
       return true;
     } catch (error) {
-      console.log("Appwrite :: resetPassword :: ", error);
+      console.error("Appwrite :: resetPassword :: ", error.message);
       throw error;
     }
   }
 
   async deleteAccount(email, password, userId) {
-    try {
-      await this.loginUser(email, password);
-      await this.account.deleteIdentity(userId);
-      return true;
-    } catch (error) {
-      console.log("Appwrite :: deleteAccount :: ", error);
-      throw error;
+    if (!email || !password || !userId) {
+      throw new Error("Email, password, and user ID are required.");
     }
-  }
 
-  async changeEmail(email, password) {
     try {
-      await this.account.updateEmail(email, password);
+      const user = await this.loginUser({ email, password });
+
+      if (user.$id !== userId) {
+        throw new Error("User not authorized to delete account.");
+      }
+
+      await this.account.deleteIdentity();
       return true;
     } catch (error) {
-      console.log("Appwrite :: changeEmail :: ", error);
+      console.error("Appwrite :: deleteAccount :: ", error.message);
       throw error;
     }
   }
