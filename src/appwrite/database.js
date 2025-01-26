@@ -1,7 +1,7 @@
 import config from "../config";
 import { Client, Databases, ID, Query } from "appwrite";
+import authService from "./auth";
 
-// this service is for post related sevices in database.
 export class DatabaseService {
   client = new Client();
   databases;
@@ -14,35 +14,140 @@ export class DatabaseService {
     this.databases = new Databases(this.client);
   }
 
-  async createPost({ title, slug, content, media, userId, userName }) {
+  // User related methods
+
+  async createUser({ userId, name, email }) {
+    if (!userId || !name || !email) {
+      throw new Error("User ID, name and email are required.");
+    }
+
+    try {
+      await this.databases.createDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId,
+        { name, email }
+      );
+      return true;
+    } catch (error) {
+      console.error("Appwrite :: createUser :: ", error.message);
+      throw error;
+    }
+  }
+
+  async updateUserName(userId, name) {
+    if (!userId || !name) {
+      throw new Error("User ID and name are required.");
+    }
+
+    try {
+      return await this.databases.updateDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId,
+        { name }
+      );
+    } catch (error) {
+      console.error("Appwrite :: updateUserName :: ", error.message);
+      throw error;
+    }
+  }
+
+  async getUser(userId) {
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+
+    try {
+      return await this.databases.getDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId
+      );
+    } catch (error) {
+      console.error("Appwrite :: getUser :: ", error.message);
+      throw error;
+    }
+  }
+
+  async deleteUser(userId) {
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+
+    try {
+      await this.databases.deleteDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId
+      );
+
+      const connections = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwriteConnectionsCollectionId,
+        [
+          Query.or([
+            Query.equal("follower", userId),
+            Query.equal("followed", userId),
+          ]),
+        ]
+      );
+      await Promise.all(
+        connections.documents.map((connection) =>
+          this.deleteConnection(connection["$id"])
+        )
+      );
+
+      return true;
+    } catch (error) {
+      console.error("Appwrite :: deleteUser :: ", error.message);
+      throw error;
+    }
+  }
+
+  // Post related methods
+
+  async createPost({ title, content, media, owner }) {
+    if (!title || !content || !userId || !userName || !userCreatedAt) {
+      throw new Error("Title, content, user ID, owner ID are required.");
+    }
+
     try {
       return await this.databases.createDocument(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
         ID.unique(),
-        { title, userId, slug, content, media, userName }
+        { title, content, media, owner }
       );
     } catch (error) {
-      console.log("Appwrite Service :: createPost :: ERROR:", error);
+      console.error("Appwrite :: createPost :: ", error.message);
       throw error;
     }
   }
 
-  async updatePost(postId, { title, content, slug, media }) {
+  async updatePost(postId, updatedPostData) {
+    if (!postId || !updatedPostData) {
+      throw new Error("Post ID and updated data are required.");
+    }
+
     try {
       return await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
         postId,
-        { title, slug, content, media }
+        updatedPostData
       );
     } catch (error) {
-      console.log("Appwrite Service :: updatePost :: ERROR:", error);
+      console.error("Appwrite :: updatePost :: ", error.message);
       throw error;
     }
   }
 
   async deletePost(postId) {
+    if (!postId) {
+      throw new Error("Post ID is required.");
+    }
+
     try {
       await this.databases.deleteDocument(
         config.appwriteDatabaseId,
@@ -51,94 +156,230 @@ export class DatabaseService {
       );
       return true;
     } catch (error) {
-      console.log("Appwrite Service :: deletePost :: ERROR:", error);
+      console.error("Appwrite :: deletePost :: ", error.message);
       throw error;
     }
   }
 
-  // using appwrite Query to filter post according queries values for this we have to import Query from appwrite and create and index of that query in appwrite collection.
-  //like this but we are not using this here just because we will filter userpost from state.
-  async getPosts(queries = [Query.orderDesc("$updatedAt")]) {
+  async getPost(postId) {
+    if (!postId) {
+      throw new Error("Post ID is required.");
+    }
+
     try {
+      return await this.databases.getDocument(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        postId
+      );
+    } catch (error) {
+      console.error("Appwrite :: getPost :: ", error.message);
+      throw error;
+    }
+  }
+
+  async getPosts(limit, cursor) {
+    try {
+      const queries = [Query.orderDesc("$updatedAt")];
+      if (limit) queries.push(Query.limit(limit));
+      if (cursor) queries.push(Query.cursorAfter(cursor));
+
       return await this.databases.listDocuments(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
-        queries // we can also define queries directly here
+        queries
       );
     } catch (error) {
-      console.log("Appwrite Service :: getPosts :: ERROR:", error);
+      console.error("Appwrite :: getPosts :: ", error.message);
       throw error;
     }
   }
 
-  // here we can get posts without any query in assending order by default
-  // async getPosts() {
-  //   try {
-  //     return await this.databases.listDocuments(
-  //       config.appwriteDatabaseId,
-  //       config.appwritePostsCollectionId
-  //     );
-  //   } catch (error) {
-  //     console.log("Appwrite Service :: getPosts :: ERROR:", error);
-  //     throw error;
-  //   }
-  // }
+  async getPostsByUser(userId, limit, cursor) {
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
 
-  // with help of this we can get a single post in the basis of postId and if we want to get posts on the basis of other attribute we have to use queries
-  // async getPost(postId) {
-  //   try {
-  //     return await this.databases.getDocument(
-  //       config.appwriteDatabaseId,
-  //       config.appwritePostsCollectionId,
-  //       postId
-  //     );
-  //   } catch (error) {
-  //     console.log("Appwrite Service :: getPost :: ERROR:", error);
-  //     throw error;
-  //   }
-  // }
+    try {
+      const queries = [
+        Query.equal("owner", userId),
+        Query.orderDesc("$updatedAt"),
+      ];
+      if (limit) queries.push(Query.limit(limit));
+      if (cursor) queries.push(Query.cursorAfter(cursor));
 
-  async addUser({ email, name, id }) {
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        queries
+      );
+    } catch (error) {
+      console.error("Appwrite :: getPostsByUser :: ", error.message);
+      throw error;
+    }
+  }
+
+  async getFeed(userId, limit, cursor) {
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+
+    try {
+      const following = await this.getFollowing(userId);
+      const followedUserIds = following.documents.map((doc) => doc.followed);
+
+      const queries = [
+        Query.in("owner", followedUserIds),
+        Query.orderDesc("$updatedAt"),
+      ];
+      if (limit) queries.push(Query.limit(limit));
+      if (cursor) queries.push(Query.cursorAfter(cursor));
+
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        queries
+      );
+    } catch (error) {
+      console.error("Appwrite :: getFeed :: ", error.message);
+      throw error;
+    }
+  }
+
+  // Connection related methods
+
+  async createConnection(follower, followed) {
+    if (!follower || !followed) {
+      throw new Error("Follower and followed IDs are required.");
+    }
+
     try {
       return await this.databases.createDocument(
         config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId,
-        id,
-        { email, name }
+        config.appwriteConnectionsCollectionId,
+        ID.unique(),
+        { follower, followed }
       );
     } catch (error) {
-      console.log("Appwrite Service :: addUser :: ERROR:", error);
+      console.error("Appwrite :: createConnection :: ", error.message);
       throw error;
     }
   }
 
-  async updateUser(id, { name }) {
+  async deleteConnection(connectionId) {
+    if (!connectionId) {
+      throw new Error("Connection ID is required.");
+    }
+
     try {
-      return await this.databases.updateDocument(
+      await this.databases.deleteDocument(
         config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId,
-        id,
-        { name }
+        config.appwriteConnectionsCollectionId,
+        connectionId
       );
+      return true;
     } catch (error) {
-      console.log("Appwrite Service :: updateUser :: ERROR:", error);
+      console.error("Appwrite :: deleteConnection :: ", error.message);
       throw error;
     }
   }
 
-  async getUsers() {
+  async getFollowers(userId) {
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+
     try {
       return await this.databases.listDocuments(
         config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId
+        config.appwriteConnectionsCollectionId,
+        [Query.equal("followed", userId), Query.orderDesc("$updatedAt")]
       );
     } catch (error) {
-      console.log("Appwrite Service :: getUsers :: ERROR:", error);
+      console.error("Appwrite :: getFollowers :: ", error.message);
+      throw error;
+    }
+  }
+
+  async getFollowing(userId) {
+    if (!userId) {
+      throw new Error("User ID is required.");
+    }
+
+    try {
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwriteConnectionsCollectionId,
+        [Query.equal("follower", userId), Query.orderDesc("$updatedAt")]
+      );
+    } catch (error) {
+      console.error("Appwrite :: getFollowing :: ", error.message);
+      throw error;
+    }
+  }
+
+  // Comment related methods
+
+  async addComment({ postId, comment, owner }) {
+    if (!postId || !userId || !userName || !comment || !userCreatedAt) {
+      throw new Error("Post ID, comment and owner ID are required.");
+    }
+
+    try {
+      return await this.databases.createDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        ID.unique(),
+        { postId, comment, owner }
+      );
+    } catch (error) {
+      console.error("Appwrite :: addComment :: ", error.message);
+      throw error;
+    }
+  }
+
+  async deleteComment(commentId) {
+    if (!commentId) {
+      throw new Error("Comment ID is required.");
+    }
+
+    try {
+      await this.databases.deleteDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        commentId
+      );
+      return true;
+    } catch (error) {
+      console.error("Appwrite :: deleteComment :: ", error.message);
+      throw error;
+    }
+  }
+
+  async getCommentsByPost(postId, limit, cursor) {
+    if (!postId) {
+      throw new Error("Post ID is required.");
+    }
+
+    try {
+      const queries = [
+        Query.equal("postId", postId),
+        Query.orderDesc("$updatedAt"),
+      ];
+      if (limit) queries.push(Query.limit(limit));
+      if (cursor) queries.push(Query.cursorAfter(cursor));
+
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        queries
+      );
+    } catch (error) {
+      console.error("Appwrite :: getCommentsByPost :: ", error.message);
       throw error;
     }
   }
 }
 
 const databaseService = new DatabaseService();
-
 export default databaseService;
