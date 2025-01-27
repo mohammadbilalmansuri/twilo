@@ -8,7 +8,7 @@ import PostCardUser from "./PostCardUser";
 import Input from "./Input";
 import PostForm from "./PostForm";
 import RTE from "./RTE";
-import Upload from "./Upload";
+import Textarea from "./Textarea";
 
 export {
   Loader,
@@ -21,5 +21,5 @@ export {
   Input,
   PostForm,
   RTE,
-  Upload,
+  Textarea,
 };

@@ -47,7 +47,7 @@ const Login = () => {
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-accent text-center">{errorMessages}</p>
+      <p className="text-accent text-center pt-0.5 pb-1">{errorMessages}</p>
     ) : null;
   };
 
@@ -57,10 +57,10 @@ const Login = () => {
         <title>Login - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-16 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-4xl font-bold leading-tight">
+      <Container className="min-h py-10 flex flex-col items-center justify-center gap-4">
+        <h2 className="text-4xl font-bold leading-tight">
           Login to your account
-        </h1>
+        </h2>
 
         <p className="text-lg text-secondary/75">
           Don't have any accounts?{" "}
@@ -72,7 +72,7 @@ const Login = () => {
         <form
           id="loginForm"
           onSubmit={handleSubmit(loginSubmit)}
-          className="w-full max-w-sm relative flex flex-col gap-5 pt-2"
+          className="w-full max-w-sm relative flex flex-col gap-4 pt-2"
         >
           <Input
             type="email"
@@ -80,6 +80,10 @@ const Login = () => {
             placeholder="Enter your email"
             {...register("email", {
               required: true,
+              maxLength: {
+                value: 128,
+                message: "Email must be less than 128 characters",
+              },
               pattern: {
                 value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: "Please enter a valid email address",

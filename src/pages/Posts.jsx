@@ -23,10 +23,10 @@ function Posts() {
   // };
 
   return (
-    <Container className="min-h py-16 flex flex-col items-center justify-center text-center">
+    <Container className="min-h py-10 flex flex-col items-center justify-center text-center">
       Posts
     </Container>
-    // <Container className="py-16 flex flex-col items-center gap-6 text-center">
+    // <Container className="py-10 flex flex-col items-center gap-6 text-center">
     //   {posts?.length === 0 ? (
     //     <>
     //       <h1 className="text-4xl font-bold">There is nothing to show!</h1>

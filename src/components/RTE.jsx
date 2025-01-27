@@ -5,14 +5,10 @@ import { Controller } from "react-hook-form";
 export default function RTE({
   name,
   control,
-  label,
-  placeholder = "",
-  defaultValue = "",
+  defaultValue = "Enter post content",
 }) {
   return (
-    <div className="w-full">
-      {label && <label className="font-bold pl-1 text-lg">{label}</label>}
-
+    <div className="w-full h-[500px] bg-neutral rounded-lg">
       <Controller
         name={name || "content"}
         control={control}
@@ -21,9 +17,8 @@ export default function RTE({
             apiKey="epivuqih8joupa8ehphk8iqckt0o1qg3w7zhw4g5ickmz7ge"
             initialValue={defaultValue}
             init={{
-              initialValue: defaultValue,
-              placeholder,
-              height: 400,
+              height: 500,
+              menubar: false,
               menubar: true,
               plugins: [
                 "advlist",
@@ -51,7 +46,7 @@ export default function RTE({
                 "alignright alignjustify | bullist numlist outdent indent | " +
                 "removeformat | help",
               content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                "body { font-family: Helvetica,Arial,sans-serif; font-size:18px; background-color: #222831; color: #eeeeeee6 !important; }",
             }}
             onEditorChange={onChange}
           />

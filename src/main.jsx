@@ -22,6 +22,7 @@ import {
   VerifyEmail,
   EmailSent,
   Posts,
+  ResetPassword,
 } from "./pages";
 import Protect from "./Protect.jsx";
 import { HelmetProvider } from "react-helmet-async";
@@ -77,6 +78,7 @@ const router = createBrowserRouter(
           </Protect>
         }
       />
+      <Route path="reset-password" element={<ResetPassword />} />
       <Route
         path="create-post"
         element={
@@ -86,7 +88,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="edit-post/:slug"
+        path="edit-post/:id"
         element={
           <Protect>
             <EditPost />
@@ -94,7 +96,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="post/:slug"
+        path="post/:id"
         element={
           <Protect>
             <Post />

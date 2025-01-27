@@ -54,7 +54,7 @@ function PostCardUser({
   }
 
   return (
-    <div className="group bg-gray-800 rounded-xl">
+    <div className="group bg-gray-800 rounded-lg">
       <Link to={`/post/${slug}`} className="grid grid-cols-5">
         <div className="overflow-hidden rounded-l-xl col-span-2">
           <img

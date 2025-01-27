@@ -145,7 +145,7 @@ export default function Post() {
           <img
             src={storageService.getFilePreview(post.media)}
             alt={post.title}
-            className="rounded-xl aspect-video object-cover"
+            className="rounded-lg aspect-video object-cover"
           />
 
           <h1 className="pt-4 pl-1 text-2xl font-bold">{post.title}</h1>

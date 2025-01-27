@@ -144,7 +144,7 @@ function User() {
         </Helmet>
 
         <Container className="flex flex-col items-center gap-10">
-          <div className="w-full flex justify-between items-center gap-5 bg-gray-800 py-5 px-10 rounded-xl">
+          <div className="w-full flex justify-between items-center gap-5 bg-gray-800 py-5 px-10 rounded-lg">
             <div className="flex gap-5 items-center">
               <img
                 src={`https://cloud.appwrite.io/v1/avatars/initials?name=${user?.name}`}

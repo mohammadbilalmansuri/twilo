@@ -54,7 +54,7 @@ function PostCard({
   }
 
   return (
-    <div className="relative group bg-gray-800 rounded-xl">
+    <div className="relative group bg-gray-800 rounded-lg">
       <Link to={`/post/${slug}`}>
         <div className="w-full overflow-hidden rounded-t-xl">
           <img

@@ -5,7 +5,7 @@ function Home() {
     <Container
       parentTag="div"
       parentClasses="min-h justify-center"
-      className="py-16 flex flex-col items-center gap-6 text-center"
+      className="py-10 flex flex-col items-center gap-6 text-center"
     >
       <h2 className="text-xl leading-tight border-b border-dashed border-b-secondary/25 pb-0.5">
         Start your blogging journey today with Twilo
