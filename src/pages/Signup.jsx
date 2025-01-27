@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { login } from "../store/authSlice";
 import { Container, Button, Input, Loader } from "../components";
-import { authService } from "../appwrite";
+import { authService, databaseService } from "../appwrite";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -23,12 +23,20 @@ const Signup = () => {
     setIsLoading(true);
     setServerError("");
     try {
-      const userData = await authService.createAccount(data);
-      if (userData) {
-        localStorage.setItem("isLoggedIn", "true");
-        dispatch(login(userData));
-        navigate("/verify");
-      }
+      const { name, userId, email, password } = data;
+      const userData = await authService.createAccount({
+        name,
+        userId,
+        email,
+        password,
+      });
+      await databaseService.createUser({
+        userId,
+        name,
+        email,
+      });
+      dispatch(login(userData));
+      navigate("/verify");
     } catch (err) {
       setServerError(err?.message || "Something went wrong. Please try again.");
     } finally {
@@ -48,7 +56,7 @@ const Signup = () => {
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-accent text-center">{errorMessages}</p>
+      <p className="text-accent text-center pt-0.5 pb-1">{errorMessages}</p>
     ) : null;
   };
 
@@ -58,7 +66,7 @@ const Signup = () => {
         <title>Sign up - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-16 flex flex-col items-center justify-center gap-4">
+      <Container className="min-h py-10 flex flex-col items-center justify-center gap-4">
         <h1 className="text-4xl font-bold leading-tight">
           Create a new account
         </h1>
@@ -73,7 +81,7 @@ const Signup = () => {
         <form
           id="signupForm"
           onSubmit={handleSubmit(signupSubmit)}
-          className="w-full max-w-sm relative flex flex-col gap-5 pt-2"
+          className="w-full max-w-sm relative flex flex-col gap-4 pt-2"
         >
           <Input
             type="text"
@@ -86,8 +94,8 @@ const Signup = () => {
                 message: "Full name must be at least 3 characters",
               },
               maxLength: {
-                value: 128,
-                message: "Full name must be less than 128 characters",
+                value: 36,
+                message: "Full name must be less than 36 characters",
               },
             })}
           />
@@ -100,7 +108,7 @@ const Signup = () => {
               required: true,
               minLength: {
                 value: 5,
-                message: "Username must be at least 6 characters",
+                message: "Username must be at least 5 characters",
               },
               maxLength: {
                 value: 36,
@@ -120,6 +128,10 @@ const Signup = () => {
             placeholder="Enter your email"
             {...register("email", {
               required: true,
+              maxLength: {
+                value: 128,
+                message: "Email must be less than 128 characters",
+              },
               pattern: {
                 value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: "Please enter a valid email address",

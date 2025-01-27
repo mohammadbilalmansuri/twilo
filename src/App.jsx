@@ -4,7 +4,7 @@ import { databaseService } from "./appwrite";
 import { setPosts } from "./store/postSlice";
 import { setUsers } from "./store/userSlice";
 import { Header, Footer, Loader } from "./components";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 
 function App() {

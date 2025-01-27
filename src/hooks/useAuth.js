@@ -18,7 +18,9 @@ const useAuth = () => {
       navigate("/login");
     } catch (error) {
       console.error("Unable to logout user:", error);
-      alert("Logout failed. Please refresh the page and try again.");
+      alert(
+        "Logout failed. Please refresh the page and try again. If the issue persists, please clear your browser's site data."
+      );
     }
   }, [dispatch, navigate]);
 

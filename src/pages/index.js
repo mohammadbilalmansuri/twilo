@@ -9,6 +9,7 @@ import Signup from "./Signup";
 import NotFound from "./NotFound.jsx";
 import VerifyEmail from "./VerifyEmail.jsx";
 import EmailSent from "./EmailSent.jsx";
+import ResetPassword from "./ResetPassword.jsx";
 
 export {
   Home,
@@ -22,4 +23,5 @@ export {
   NotFound,
   VerifyEmail,
   EmailSent,
+  ResetPassword,
 };

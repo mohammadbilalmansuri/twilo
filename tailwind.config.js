@@ -22,6 +22,7 @@ export default {
         "zen-dots": ['"Zen Dots"', '"Monda"', '"sans-serif"', '"system-ui"'],
       },
       spacing: {
+        13: "3.25rem",
         14: "3.5rem",
         15: "3.75rem",
       },

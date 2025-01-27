@@ -10,7 +10,7 @@ export default function NotFound() {
       <Container
         parentTag="div"
         parentClasses="min-h justify-center"
-        className="py-16 flex flex-col items-center gap-8 text-center"
+        className="py-10 flex flex-col items-center gap-8 text-center"
       >
         <h2 className="text-8xl font-zen-dots text-accent tracking-wider">
           4O4

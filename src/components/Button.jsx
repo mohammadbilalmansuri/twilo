@@ -17,8 +17,8 @@ const Button = ({
 
   const sizes = {
     sm: "h-9 px-4 text-base",
-    md: "h-10 px-4 text-lg",
-    lg: "h-12 px-5 text-lg",
+    md: "h-11 px-4 text-lg",
+    lg: "h-13 px-5 text-lg",
   };
 
   const classes = `leading-tight font-semibold transition-all rounded-lg hover:animate-pulse active:scale-95 flex items-center justify-center ${

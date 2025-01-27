@@ -50,7 +50,7 @@ const VerifyEmail = () => {
         <title>Verify Email - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-16 flex flex-col items-center justify-center text-center gap-8">
+      <Container className="min-h py-10 flex flex-col items-center justify-center text-center gap-8">
         {status === null ? (
           <Loader size="md" />
         ) : (

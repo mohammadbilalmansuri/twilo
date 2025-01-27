@@ -18,6 +18,7 @@ const config = {
     import.meta.env.VITE_APPWRITE_COMMENTS_COLLECTION_ID
   ),
   appwriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
+  huggingFaceApiKey: String(import.meta.env.VITE_HUGGINGFACE_API_KEY),
 };
 
 export default config;
