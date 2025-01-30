@@ -14,7 +14,7 @@ const Input = forwardRef(
   ) => {
     const [passwordInputType, setPasswordInputType] = useState("password");
 
-    const inputClasses = `w-full text-lg outline-none rounded-lg p-3.5 h-13 placeholder:text-secondary/50 bg-transparent border border-dashed border-secondary/25 focus:border-accent${
+    const inputClasses = `w-full text-lg outline-none rounded-lg p-3 h-13 placeholder:text-black/40 bg-transparent border border-black/20 focus:border-blue${
       className ? ` ${className}` : ""
     }`;
 
@@ -45,7 +45,7 @@ const Input = forwardRef(
         <input
           type={type === "password" ? passwordInputType : type}
           placeholder={placeholder}
-          className={`${inputClasses} pr-10`}
+          className={`${inputClasses} pr-9`}
           ref={ref}
           id={id}
           {...props}
@@ -54,7 +54,8 @@ const Input = forwardRef(
         {type === "password" && (
           <svg
             viewBox={`0 0 ${passwordInputType === "password" ? 640 : 576} 512`}
-            className="size-5 absolute right-3.5 fill-secondary/50 cursor-pointer"
+            aria-label="Toggle password visibility"
+            className="size-4.5 absolute right-3 fill-black/40 cursor-pointer"
             onClick={() => {
               setPasswordInputType((prev) =>
                 prev === "password" ? "text" : "password"

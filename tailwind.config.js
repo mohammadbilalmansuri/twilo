@@ -11,22 +11,19 @@ export default {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      primary: "#222831",
-      secondary: "#EEEEEE",
-      neutral: "#31363F",
-      accent: "#F6B17A",
+      white: "#ffffff",
+      black: "#000000",
+      blue: "#006ce7",
+      red: "#ef4444",
     },
     extend: {
-      fontFamily: {
-        monda: ['"Monda"', '"sans-serif"', '"system-ui"'],
-        "zen-dots": ['"Zen Dots"', '"Monda"', '"sans-serif"', '"system-ui"'],
-      },
       spacing: {
         13: "3.25rem",
         14: "3.5rem",
         15: "3.75rem",
       },
       size: {
+        4.5: "1.125rem",
         14: "3.5rem",
         18: "4.5rem",
       },

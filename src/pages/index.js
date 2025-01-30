@@ -8,8 +8,9 @@ import Login from "./Login";
 import Signup from "./Signup";
 import NotFound from "./NotFound.jsx";
 import VerifyEmail from "./VerifyEmail.jsx";
-import EmailSent from "./EmailSent.jsx";
+import Verify from "./Verify.jsx";
 import ResetPassword from "./ResetPassword.jsx";
+import SendPasswordResetLink from "./SendPasswordResetLink.jsx";
 
 export {
   Home,
@@ -22,6 +23,7 @@ export {
   Signup,
   NotFound,
   VerifyEmail,
-  EmailSent,
+  Verify,
   ResetPassword,
+  SendPasswordResetLink,
 };

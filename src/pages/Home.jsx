@@ -5,15 +5,15 @@ function Home() {
     <Container
       parentTag="div"
       parentClasses="min-h justify-center"
-      className="py-10 flex flex-col items-center gap-6 text-center"
+      className="py-8 flex flex-col items-center gap-6 text-center"
     >
-      <h2 className="text-xl leading-tight border-b border-dashed border-b-secondary/25 pb-0.5">
+      <h2 className="text-xl leading-tight border-b border-b-black/20 pb-0.5">
         Start your blogging journey today with Twilo
       </h2>
-      <h1 className="text-[40px] font-bold leading-tight">
+      <h1 className="text-4xl font-bold leading-tight">
         Write. Share. Explore. Connect.
       </h1>
-      <p className="text-lg text-secondary/75 max-w-[700px]">
+      <p className="text-lg text-black/60 max-w-screen-sm">
         Twilo is your go-to platform for effortless blogging. Share your
         thoughts, ideas, and stories with a community of readers. Whether you're
         writing for fun or building an audience, Twilo makes it easy to get

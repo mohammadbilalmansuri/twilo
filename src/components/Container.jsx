@@ -6,7 +6,7 @@ const Container = ({
 }) => {
   const content = (
     <div
-      className={`w-full max-w-screen-lg px-4 relative${
+      className={`w-full max-w-screen-lg px-3 relative${
         className ? ` ${className}` : ""
       }`}
     >
@@ -16,7 +16,7 @@ const Container = ({
 
   return ParentTag ? (
     <ParentTag
-      className={`w-full relative flex flex-col items-center px-4${
+      className={`w-full relative flex flex-col items-center px-3${
         parentClasses ? ` ${parentClasses}` : ""
       }`}
     >

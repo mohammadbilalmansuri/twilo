@@ -2,7 +2,7 @@ import { forwardRef, useId } from "react";
 
 const Textarea = forwardRef(
   ({ label, id = useId(), placeholder = "", className, ...props }, ref) => {
-    const classes = `w-full text-lg outline-none rounded-lg p-3.5 placeholder:text-secondary/25 text-secondary/75 bg-transparent border border-dashed border-secondary/25 focus:border-accent${
+    const classes = `w-full text-lg outline-none rounded-lg p-3.5 placeholder:text-black/25 text-black/75 bg-transparent border border-dashed border-black/25 focus:border-blue${
       className ? ` ${className}` : ""
     }`;
 

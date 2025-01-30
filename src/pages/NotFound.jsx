@@ -12,9 +12,7 @@ export default function NotFound() {
         parentClasses="min-h justify-center"
         className="py-10 flex flex-col items-center gap-8 text-center"
       >
-        <h2 className="text-8xl font-zen-dots text-accent tracking-wider">
-          4O4
-        </h2>
+        <h2 className="text-8xl font-zen-dots text-blue tracking-wider">4O4</h2>
         <h1 className="text-4xl font-bold leading-tight">
           Opps! Page Not Found
         </h1>

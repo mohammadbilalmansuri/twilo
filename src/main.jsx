@@ -20,8 +20,9 @@ import {
   Signup,
   NotFound,
   VerifyEmail,
-  EmailSent,
+  Verify,
   Posts,
+  SendPasswordResetLink,
   ResetPassword,
 } from "./pages";
 import Protect from "./Protect.jsx";
@@ -66,7 +67,7 @@ const router = createBrowserRouter(
         path="verify"
         element={
           <Protect>
-            <EmailSent />
+            <Verify />
           </Protect>
         }
       />
@@ -77,6 +78,10 @@ const router = createBrowserRouter(
             <VerifyEmail />
           </Protect>
         }
+      />
+      <Route
+        path="send-password-reset-link"
+        element={<SendPasswordResetLink />}
       />
       <Route path="reset-password" element={<ResetPassword />} />
       <Route

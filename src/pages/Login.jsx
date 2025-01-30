@@ -47,7 +47,7 @@ const Login = () => {
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-accent text-center pt-0.5 pb-1">{errorMessages}</p>
+      <p className="text-red text-center pt-0.5 pb-1">{errorMessages}</p>
     ) : null;
   };
 
@@ -57,14 +57,14 @@ const Login = () => {
         <title>Login - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-10 flex flex-col items-center justify-center gap-4">
+      <Container className="min-h py-8 flex flex-col items-center justify-center gap-4">
         <h2 className="text-4xl font-bold leading-tight">
           Login to your account
         </h2>
 
-        <p className="text-lg text-secondary/75">
+        <p className="text-lg text-black/60">
           Don't have any accounts?{" "}
-          <Link to="/login" className="text-accent hover:underline">
+          <Link to="/login" className="text-blue hover:underline">
             Sign Up
           </Link>
         </p>
@@ -107,13 +107,13 @@ const Login = () => {
           {renderErrors()}
 
           <Button type="submit" style={1} size="lg" disabled={isLoading}>
-            {isLoading ? <Loader size="sm" color="primary" /> : "Login"}
+            {isLoading ? <Loader size="sm" color="white" /> : "Login"}
           </Button>
         </form>
 
         <Link
-          to="/reset-password"
-          className="text-secondary/75 pt-2 border-b border-dashed border-secondary/25 transition-all hover:border-accent hover:text-accent "
+          to="/send-password-reset-link"
+          className="text-black/60 pt-2 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
         >
           Forget your password?
         </Link>

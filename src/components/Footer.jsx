@@ -4,14 +4,14 @@ export default function Footer() {
   return (
     <Container
       parentTag="footer"
-      className="h-14 py-3 flex justify-between items-center border-x border-t border-secondary/25 border-dashed rounded-t-xl"
+      className="h-14 py-3 flex justify-between items-center border border-black/20 border-b-0 rounded-t-xl"
     >
       <p>©2025 Twilo | All Rights Reserved.</p>
 
       <div className="flex gap-4 items-center">
         <a
           href="https://www.linkedin.com/in/mohammadbilalmansuri"
-          className="icon bg-neutral fill-secondary"
+          className="icon bg-black/5 hover:bg-black/10 fill-black"
           target="_blank"
         >
           <svg
@@ -24,7 +24,7 @@ export default function Footer() {
         </a>
         <a
           href="https://github.com/mohammadbilalmansuri"
-          className="icon bg-neutral fill-secondary"
+          className="icon bg-black/5 hover:bg-black/10 fill-black"
           target="_blank"
         >
           <svg
@@ -37,7 +37,7 @@ export default function Footer() {
         </a>
         <a
           href="https://twitter.com/bilalmansuri04"
-          className="icon bg-neutral fill-secondary"
+          className="icon bg-black/5 hover:bg-black/10 fill-black"
           target="_blank"
         >
           <svg

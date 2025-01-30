@@ -4,29 +4,31 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --primary: #222831;
-    --secondary: #eeeeee;
-    --accent: #f6b17a;
-    --neutral: #31363f;
+    --white: #ffffff;
+    --black: #000000;
+    --blue: #006ce7;
+    --gray: #eeeeee;
+    --monda: "Monda", "sans-serif", "system-ui";
+    --zen-dots: "Zen Dots", "sans-serif", "system-ui";
   }
 
   * {
-    @apply font-monda;
+    font-family: var(--monda) !important;
   }
 
   ::selection {
-    @apply bg-accent text-primary;
+    @apply bg-blue text-white;
   }
 
   .min-h {
-    @apply min-h-[calc(100dvh-116px)];
+    @apply min-h-[calc(100dvh-120px)];
   }
 
   input:autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-text-fill-color: var(--secondary);
+    -webkit-text-fill-color: #000000;
     transition: background-color 100000s ease-in-out 0s;
     box-shadow: none;
   }
@@ -35,139 +37,13 @@
 @tailwind components;
 @layer components {
   .logo {
-    @apply text-2xl font-zen-dots tracking-widest uppercase font-bold leading-none -mb-1 text-accent;
+    @apply text-2xl tracking-widest uppercase font-bold leading-6 -mb-1.5 text-blue;
+    font-family: var(--zen-dots) !important;
   }
 
   .icon {
-    @apply hover:animate-pulse active:scale-95 rounded-lg size-8 flex flex-col items-center justify-center;
+    @apply transition-all active:scale-90 rounded-lg size-8 flex flex-col items-center justify-center;
   }
 }
 
 @tailwind utilities;
-
-.tox-edit-focus {
-  border-color: 1px dashed var(--accent) !important;
-}
-
-.tox.tox-tinymce {
-  border: 1px dashed #eeeeee40 !important;
-  border-radius: 8px !important;
-}
-
-.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
-  color: var(--secondary) !important;
-}
-
-.tox.tox-tinymce * {
-  @apply text-secondary/50 fill-secondary/50 font-monda;
-  background-color: var(--primary) !important;
-}
-
-.tox .tox-edit-area::before {
-  border: none !important;
-}
-
-.tox .tox-statusbar {
-  border-top: 1px dashed #eeeeee40 !important;
-}
-
-.tox:not(.tox-tinymce-inline) .tox-editor-header {
-  padding: 0 !important;
-}
-
-.tox-menubar {
-  margin: 2px -4px 0px -4px !important;
-  border-bottom: 1px dashed #eeeeee40 !important;
-}
-
-.tox-toolbar-overlord {
-  margin-top: 0 !important;
-  border-bottom: 1px dashed #eeeeee40 !important;
-}
-
-.tox .tox-dialog-wrap__backdrop {
-  background-color: transparent !important;
-}
-
-.tox-dialog * {
-  background-color: var(--neutral) !important;
-  color: #eeeeeee6 !important;
-}
-
-.tox-dialog__footer {
-  display: none !important;
-}
-
-.tox-statusbar {
-  display: none !important;
-}
-
-.tiny-react_69339693521737903736816_ifr #tinymce {
-  display: none !important;
-}
-
-.tox-dialog__body-nav {
-  display: none !important;
-}
-
-.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
-  color: var(--secondary) !important;
-}
-
-.tox-menu {
-  background-color: var(--primary) !important;
-  border: 1px dashed #eeeeee40 !important;
-}
-
-.tox-menu * {
-  color: var(--secondary) !important;
-  fill: var(--secondary) !important;
-  border-style: dashed !important;
-  border-color: #eeeeee40 !important;
-}
-
-.tox-collection__item--active,
-.tox
-  .tox-collection--list
-  .tox-collection__item--enabled:not(.tox-collection__item--state-disabled) {
-  background-color: var(--accent) !important;
-  color: var(--primary) !important;
-  fill: var(--primary) !important;
-}
-
-.tox-mbtn__select-chevron--active::after {
-  border-color: var(--accent) !important;
-  outline: var(--accent) !important;
-}
-
-table[border]:not([border="0"]):not([style*="border-style"]) td,
-table[border]:not([border="0"]):not([style*="border-style"]) th {
-  border: 1px dashed #eeeeee40 !important;
-}
-
-.tox input,
-.tox select,
-.tox textarea {
-  border: 1px dashed #eeeeee40 !important;
-  box-shadow: none !important;
-}
-
-.tox .tox-insert-table-picker .tox-insert-table-picker__selected {
-  background-color: var(--accent) !important;
-}
-
-.tox .tox-insert-table-picker {
-  background-color: transparent !important;
-}
-
-.tox .tox-split-button:hover {
-  box-shadow: none !important;
-}
-
-.tox .tox-tbtn--active,
-.tox .tox-tbtn--enabled,
-.tox .tox-tbtn--enabled:focus,
-.tox .tox-tbtn--enabled:hover {
-  background-color: var(--accent) !important;
-  color: var(--primary) !important;
-}
