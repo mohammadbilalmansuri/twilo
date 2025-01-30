@@ -114,7 +114,7 @@ export class AuthService {
     }
   }
 
-  async sendResetPasswordLink(email) {
+  async sendPasswordResetLink(email) {
     if (!email) {
       throw new Error("Email is required.");
     }
@@ -123,12 +123,12 @@ export class AuthService {
       await this.account.createRecovery(email, config.resetPasswordUrl);
       return true;
     } catch (error) {
-      console.error("Appwrite :: sendResetPasswordLink :: ", error.message);
+      console.error("Appwrite :: sendPasswordResetLink :: ", error.message);
       throw error;
     }
   }
 
-  async resetPassword(userId, secret, password) {
+  async resetPassword({ userId, secret, password }) {
     if (!userId || !secret || !password) {
       throw new Error("User ID, secret, and password are required.");
     }
