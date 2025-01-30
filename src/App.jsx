@@ -16,9 +16,13 @@ function App() {
       try {
         if (isLoggedIn) await getUser();
       } catch (error) {
-        alert("Session expired. Please login again.");
-        dispatch(logout());
-        navigate("/login");
+        if (error.message === "User (role: guests) missing scope (account)") {
+          alert("Session expired. Please login again.");
+          dispatch(logout());
+          navigate("/login");
+        } else {
+          alert(error.message);
+        }
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
