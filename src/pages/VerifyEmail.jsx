@@ -45,7 +45,9 @@ const VerifyEmail = () => {
     };
 
     verifyUserEmail();
-    return () => (isMounted = false);
+    return () => {
+      isMounted = false;
+    };
   }, [userId, secret, navigate, dispatch]);
 
   return (
