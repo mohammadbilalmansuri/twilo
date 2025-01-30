@@ -15,22 +15,26 @@ const VerifyEmail = () => {
   const secret = searchParams.get("secret");
 
   useEffect(() => {
-    let timer;
+    let isMounted = true;
+
     const verifyUserEmail = async () => {
       try {
         if (!userId || !secret) throw new Error("Invalid verification link");
         await authService.verifyEmail(userId, secret);
+        if (!isMounted) return;
+
         setStatus({
           type: "success",
           message: "Email verified successfully",
           subMessage: "Redirecting...",
         });
 
-        timer = setTimeout(() => {
-          dispatch(verify());
-          navigate("/posts");
-        }, 3000);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        if (!isMounted) return;
+        dispatch(verify());
+        navigate("/posts");
       } catch (err) {
+        if (!isMounted) return;
         setStatus({
           type: "error",
           message: "Failed to verify email",
@@ -41,7 +45,7 @@ const VerifyEmail = () => {
     };
 
     verifyUserEmail();
-    return () => clearTimeout(timer);
+    return () => (isMounted = false);
   }, [userId, secret, navigate, dispatch]);
 
   return (
