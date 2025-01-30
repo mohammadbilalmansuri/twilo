@@ -114,7 +114,7 @@ export default function Post() {
                 <div className="flex gap-3 items-center">
                   <Link
                     to={`/edit-post/${post.slug}`}
-                    className="p-2 rounded-md bg-accent/75 fill-gray-100 transition-all duration-200 hover:bg-accent/50"
+                    className="p-2 rounded-md bg-blue/75 fill-gray-100 transition-all duration-200 hover:bg-blue/50"
                   >
                     <svg
                       width="16"

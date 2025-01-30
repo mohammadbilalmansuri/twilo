@@ -11,19 +11,19 @@ const Button = ({
   ...props
 }) => {
   const styles = {
-    1: "bg-accent text-primary",
-    2: "bg-neutral text-secondary",
+    1: "bg-blue text-white hover:bg-blue/85",
+    2: "bg-black/5 text-black font-semibold hover:bg-black/10",
   };
 
   const sizes = {
-    sm: "h-9 px-4 text-base",
-    md: "h-11 px-4 text-lg",
+    sm: "h-10 px-4 text-base",
+    md: "h-[46px] px-4 text-lg",
     lg: "h-13 px-5 text-lg",
   };
 
-  const classes = `leading-tight font-semibold transition-all rounded-lg hover:animate-pulse active:scale-95 flex items-center justify-center ${
+  const classes = `leading-tight transition-all rounded-lg active:scale-[0.98] flex items-center justify-center ${
     styles[style] || styles[1]
-  } ${sizes[size] || sizes["md"]}${className ? ` ${className}` : ""}`;
+  } ${sizes[size] || sizes.md}${className ? ` ${className}` : ""}`;
 
   if (as === "link") {
     return (

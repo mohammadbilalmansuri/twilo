@@ -9,7 +9,7 @@ function Header() {
   return (
     <Container
       parentTag="header"
-      className="h-15 py-3 flex justify-between items-center border-x border-b border-secondary/25 border-dashed rounded-b-xl"
+      className="h-16 py-3 flex justify-between items-center border border-t-0 border-black/15 rounded-b-lg"
     >
       {isLoggedIn ? (
         isVerified ? (
@@ -32,7 +32,7 @@ function Header() {
               <>
                 <Link
                   to="/posts"
-                  className="icon bg-neutral fill-secondary"
+                  className="icon bg-black/5 fill-black hover:bg-black/10"
                   aria-label="Home Icon"
                 >
                   <svg viewBox="0 0 576 512" className="size-4">
@@ -43,10 +43,8 @@ function Header() {
                 <NavLink
                   to="/create-post"
                   className={({ isActive }) =>
-                    `icon bg-neutral ${
-                      isActive
-                        ? "fill-accent pointer-events-none"
-                        : "fill-secondary"
+                    `icon fill-black bg-black/5 hover:bg-black/10 ${
+                      isActive ? " pointer-events-none" : ""
                     }`
                   }
                 >
@@ -62,7 +60,7 @@ function Header() {
             )}
 
             <button
-              className="icon bg-neutral fill-secondary"
+              className="icon bg-black/5 fill-black hover:bg-black/10"
               onClick={logoutUser}
             >
               <svg
@@ -78,7 +76,7 @@ function Header() {
               <NavLink
                 to={`/user/${userData?.$id}`}
                 className={({ isActive }) =>
-                  `icon bg-accent fill-primary${
+                  `icon bg-blue hover:bg-blue/85 fill-white${
                     isActive ? " pointer-events-none" : ""
                   }`
                 }

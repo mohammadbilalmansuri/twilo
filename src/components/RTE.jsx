@@ -1,4 +1,3 @@
-import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 
@@ -8,7 +7,7 @@ export default function RTE({
   defaultValue = "Enter post content",
 }) {
   return (
-    <div className="w-full h-[500px] bg-neutral rounded-lg">
+    <div className="w-full h-[500px]">
       <Controller
         name={name || "content"}
         control={control}
@@ -18,7 +17,6 @@ export default function RTE({
             initialValue={defaultValue}
             init={{
               height: 500,
-              menubar: false,
               menubar: true,
               plugins: [
                 "advlist",
@@ -45,8 +43,8 @@ export default function RTE({
                 "bold italic forecolor | alignleft aligncenter " +
                 "alignright alignjustify | bullist numlist outdent indent | " +
                 "removeformat | help",
-              content_style:
-                "body { font-family: Helvetica,Arial,sans-serif; font-size:18px; background-color: #222831; color: #eeeeeee6 !important; }",
+              // content_style:
+              //   "body { font-family: Helvetica,Arial,sans-serif; font-size:18px; }",
             }}
             onEditorChange={onChange}
           />

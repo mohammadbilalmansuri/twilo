@@ -56,7 +56,7 @@ const Signup = () => {
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-accent text-center pt-0.5 pb-1">{errorMessages}</p>
+      <p className="text-red text-center pt-0.5 pb-1">{errorMessages}</p>
     ) : null;
   };
 
@@ -66,14 +66,14 @@ const Signup = () => {
         <title>Sign up - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-10 flex flex-col items-center justify-center gap-4">
+      <Container className="min-h py-8 flex flex-col items-center justify-center gap-4">
         <h1 className="text-4xl font-bold leading-tight">
           Create a new account
         </h1>
 
-        <p className="text-lg text-secondary/75">
+        <p className="text-lg text-black/60">
           Already have an account?{" "}
-          <Link to="/login" className="text-accent hover:underline">
+          <Link to="/login" className="text-blue hover:underline">
             Login
           </Link>
         </p>
@@ -155,7 +155,7 @@ const Signup = () => {
           {renderErrors()}
 
           <Button type="submit" style={1} size="lg" disabled={isLoading}>
-            {isLoading ? <Loader size="sm" color="primary" /> : "Sign Up"}
+            {isLoading ? <Loader size="sm" color="white" /> : "Sign Up"}
           </Button>
         </form>
       </Container>

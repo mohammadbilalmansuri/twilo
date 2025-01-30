@@ -50,14 +50,14 @@ const VerifyEmail = () => {
         <title>Verify Email - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-10 flex flex-col items-center justify-center text-center gap-8">
+      <Container className="min-h py-8 flex flex-col items-center justify-center text-center gap-8">
         {status === null ? (
           <Loader size="md" />
         ) : (
           <>
             <svg
               viewBox={`0 0 ${status.type === "error" ? 512 : 640} 512`}
-              className="size-16 fill-accent"
+              className="size-16 fill-blue"
               role="img"
               aria-label={
                 status.type === "error" ? "Error Icon" : "Email Sent Icon"
@@ -76,7 +76,7 @@ const VerifyEmail = () => {
               {status.message}
             </h2>
 
-            <p className="text-lg text-secondary/75 -mt-4" aria-live="polite">
+            <p className="text-lg text-black/60 -mt-4" aria-live="polite">
               {status.subMessage}
             </p>
           </>

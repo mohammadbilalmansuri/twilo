@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Container, Button, Loader } from "../components";
 import { authService } from "../appwrite";
 
-const EmailSent = () => {
+const Verify = () => {
   const [status, setStatus] = useState({
     type: "success",
     message: "Verification email sent successfully!",
@@ -38,13 +38,13 @@ const EmailSent = () => {
         <title>Verify - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-10 flex flex-col items-center justify-center text-center gap-8">
+      <Container className="min-h py-8 flex flex-col items-center justify-center text-center gap-8">
         {isLoading ? (
           <Loader size="lg" />
         ) : (
           <svg
             viewBox={`0 0 ${status.type === "error" ? 512 : 640} 512`}
-            className="size-16 fill-accent"
+            className="size-16 fill-blue"
             aria-label={
               status.type === "error" ? "Error icon" : "Email Sent Icon"
             }
@@ -65,10 +65,10 @@ const EmailSent = () => {
             : "Please verify to activate your account"}
         </h2>
 
-        <p className="text-lg text-secondary/75 -mt-4">{status.message}</p>
+        <p className="text-lg text-black/60 -mt-4">{status.message}</p>
 
         {status.type === "error" && failedAttempts > 1 && (
-          <p className="text-secondary/75 -mt-6">
+          <p className="text-black/60 -mt-6">
             Please try again or re-login if the issue persists.
           </p>
         )}
@@ -87,4 +87,4 @@ const EmailSent = () => {
   );
 };
 
-export default EmailSent;
+export default Verify;

@@ -48,7 +48,7 @@ function App() {
           {error ? (
             <div className="w-full max-w-[700px] min-h flex flex-col gap-4 items-center text-center justify-center">
               <h4 className="text-2xl font-medium">{error}</h4>
-              <p className="text-lg text-secondary/75">
+              <p className="text-lg text-black/75">
                 Please try again or re-login if the issue persists.
               </p>
             </div>

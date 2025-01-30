@@ -1,7 +1,8 @@
-const Loader = ({ size = "md", color = "accent" }) => {
+const Loader = ({ size = "md", color = "blue" }) => {
   const colors = {
-    accent: "fill-accent",
-    primary: "fill-primary",
+    blue: "fill-blue",
+    white: "fill-white",
+    black: "fill-black",
   };
 
   const sizes = {
@@ -13,8 +14,8 @@ const Loader = ({ size = "md", color = "accent" }) => {
   return (
     <svg
       viewBox="0 0 24 24"
-      className={`animate-spin ${sizes[size] || sizes["sm"]} ${
-        colors[color] || colors["accent"]
+      className={`animate-spin ${sizes[size] || sizes.sm} ${
+        colors[color] || colors.blue
       }`}
     >
       <path
