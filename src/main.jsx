@@ -10,156 +10,30 @@ import {
 import App from "./App.jsx";
 import "./index.css";
 import store from "./store/store.js";
-import {
-  Home,
-  CreatePost,
-  Post,
-  EditPost,
-  User,
-  Login,
-  Signup,
-  NotFound,
-  VerifyEmail,
-  Verify,
-  Posts,
-  SendPasswordResetLink,
-  ResetPassword,
-} from "./pages";
-import Protect from "./Protect.jsx";
 import { HelmetProvider } from "react-helmet-async";
+import Protect from "./Protect.jsx";
+import routes from "./routes.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route
-        path=""
-        element={
-          <Protect authentication={false}>
-            <Home />
-          </Protect>
-        }
-      />
-      <Route
-        path="posts"
-        element={
-          <Protect>
-            <Posts />
-          </Protect>
-        }
-      />
-      <Route
-        path="login"
-        element={
-          <Protect authentication={false}>
-            <Login />
-          </Protect>
-        }
-      />
-      <Route
-        path="signup"
-        element={
-          <Protect authentication={false}>
-            <Signup />
-          </Protect>
-        }
-      />
-      <Route
-        path="verify"
-        element={
-          <Protect>
-            <Verify />
-          </Protect>
-        }
-      />
-      <Route
-        path="verify-email"
-        element={
-          <Protect>
-            <VerifyEmail />
-          </Protect>
-        }
-      />
-      <Route
-        path="send-password-reset-link"
-        element={<SendPasswordResetLink />}
-      />
-      <Route path="reset-password" element={<ResetPassword />} />
-      <Route
-        path="create-post"
-        element={
-          <Protect>
-            <CreatePost />
-          </Protect>
-        }
-      />
-      <Route
-        path="edit-post/:id"
-        element={
-          <Protect>
-            <EditPost />
-          </Protect>
-        }
-      />
-      <Route
-        path="post/:id"
-        element={
-          <Protect>
-            <Post />
-          </Protect>
-        }
-      />
-      <Route
-        path="user/:id"
-        element={
-          <Protect>
-            <User />
-          </Protect>
-        }
-      />
-      <Route
-        path="*"
-        element={
-          <Protect authentication={false}>
-            <NotFound />
-          </Protect>
-        }
-      />
+      {routes.map(({ path, element, auth }) => (
+        <Route
+          key={path}
+          path={path}
+          element={<Protect authentication={auth}>{element}</Protect>}
+        />
+      ))}
     </Route>
   )
 );
 
-/* // another approach
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/login",
-        element: (
-          // <Protect authentication={false}>
-          <Login />
-          // </Protect>
-        ),
-      },
-      // so on...
-    ],
-  },
-]);
-*/
-
-const helmetContext = {
-  helmet: {},
-};
+const helmetContext = {};
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <HelmetProvider context={helmetContext}>
+      <HelmetProvider context={{ helmetContext }}>
         <RouterProvider router={router} />
       </HelmetProvider>
     </Provider>
