@@ -73,13 +73,7 @@ const Verify = () => {
           </p>
         )}
 
-        <Button
-          style={2}
-          size="lg"
-          fontSize="lg"
-          onClick={resendEmail}
-          disabled={isLoading}
-        >
+        <Button style={2} size="lg" onClick={resendEmail} disabled={isLoading}>
           Resend
         </Button>
       </Container>

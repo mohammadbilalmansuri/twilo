@@ -1,40 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Container, PostForm } from "../components";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
+import { useNavigate, useParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { useSelector } from "react-redux";
 
-function EditPost() {
-  const { slug } = useParams();
+const EditPost = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.userData);
+  const { userData } = useAuth();
   const posts = useSelector((state) => state.post.posts);
   const [post, setPost] = useState(null);
 
+  const currentPost = useMemo(
+    () => posts.find((post) => post.$id === id),
+    [id, posts]
+  );
+  const isAuthor = useMemo(
+    () =>
+      currentPost && userData ? currentPost.owner === userData.$id : false,
+    [currentPost, userData]
+  );
+
   useEffect(() => {
-    const currentPost = posts.find((post) => post.slug === slug);
-    const isAuthor =
-      currentPost && userData ? currentPost.userId === userData.$id : false;
+    !isAuthor ? setPost(currentPost) : navigate("/404");
+  }, [isAuthor, currentPost, navigate]);
 
-    if (isAuthor) {
-      setPost(currentPost);
-    } else {
-      navigate("/");
-    }
-  }, [slug, posts, userData, navigate]);
+  if (!post) {
+    navigate("/404");
+    return null;
+  }
 
-  return post ? (
+  return (
     <>
       <Helmet>
-        <title>Edit Post - {post.title} | Twilo</title>
+        <title>Edit Post - {post?.title || "Untitled"} - Twilo</title>
       </Helmet>
 
-      <Container className="flex flex-col justify-center items-center gap-5">
-        <h1 className="text-4xl font-bold">Edit Post</h1>
+      <Container className="py-8 min-h flex flex-col items-center gap-8">
+        <h2 className="text-4xl font-bold leading-tight">Edit post</h2>
         <PostForm post={post} />
       </Container>
     </>
-  ) : null;
-}
+  );
+};
 
 export default EditPost;

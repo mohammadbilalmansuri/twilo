@@ -24,7 +24,17 @@ const Protect = ({ children, authentication = true }) => {
         navigate("/verify", { replace: true });
       }
     } else if (isLoggedIn) {
-      navigate("/posts", { replace: true });
+      if (
+        [
+          "/",
+          "/login",
+          "/signup",
+          "/send-password-reset-link",
+          "/reset-password",
+        ].includes(location.pathname)
+      ) {
+        navigate("/posts", { replace: true });
+      }
     }
     setLoading(false);
   }, [authentication, isLoggedIn, isVerified, location.pathname, navigate]);

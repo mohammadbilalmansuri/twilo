@@ -1,4 +1,6 @@
 import { Container } from "../components";
+import { Helmet } from "react-helmet-async";
+
 function Posts() {
   // const posts = useSelector((state) => state.post.posts);
   // const [isSorted, setIsSorted] = useState(true);
@@ -23,9 +25,15 @@ function Posts() {
   // };
 
   return (
-    <Container className="min-h py-10 flex flex-col items-center justify-center text-center">
-      Posts
-    </Container>
+    <>
+      <Helmet>
+        <title>Twilo - Write. Share. Explore. Connect.</title>
+      </Helmet>
+
+      <Container className="min-h py-10 flex flex-col items-center justify-center text-center">
+        Posts
+      </Container>
+    </>
     // <Container className="py-10 flex flex-col items-center gap-6 text-center">
     //   {posts?.length === 0 ? (
     //     <>
