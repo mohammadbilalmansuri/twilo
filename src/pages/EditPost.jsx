@@ -23,13 +23,14 @@ const EditPost = () => {
   );
 
   useEffect(() => {
-    !isAuthor ? setPost(currentPost) : navigate("/404");
+    if (currentPost === undefined) {
+      navigate("/404");
+    } else if (isAuthor) {
+      setPost(currentPost);
+    }
   }, [isAuthor, currentPost, navigate]);
 
-  if (!post) {
-    navigate("/404");
-    return null;
-  }
+  if (!post) return null;
 
   return (
     <>
