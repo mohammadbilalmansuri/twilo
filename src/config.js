@@ -12,6 +12,7 @@ const config = {
   appwriteCommentsCollectionId: import.meta.env
     .VITE_APPWRITE_COMMENTS_COLLECTION_ID,
   appwriteBucketId: import.meta.env.VITE_APPWRITE_BUCKET_ID,
+  tinyMceApiKey: import.meta.env.VITE_TINYMCE_API_KEY,
 };
 
 export default config;
