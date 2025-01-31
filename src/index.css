@@ -3,7 +3,6 @@
 @tailwind base;
 @layer base {
   :root {
-    color-scheme: dark;
     --white: #ffffff;
     --black: #000000;
     --blue: #006ce7;
@@ -47,3 +46,21 @@
 }
 
 @tailwind utilities;
+
+.tox .tox-edit-area::before {
+  border-width: 1px !important;
+  border-radius: 0 !important;
+}
+
+.tox-tinymce {
+  border: 1px solid #00000040 !important;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+  box-shadow: none !important;
+  border-bottom: 1px solid #00000040 !important;
+}
+
+.tox .tox-statusbar {
+  border-top: 1px solid #00000040 !important;
+}

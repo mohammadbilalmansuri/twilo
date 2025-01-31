@@ -9,7 +9,7 @@ function PostCard({
   userName,
   userId,
   content,
-  media,
+  thumbnail,
   $updatedAt,
 }) {
   function formatTime(time) {
@@ -58,7 +58,7 @@ function PostCard({
       <Link to={`/post/${slug}`}>
         <div className="w-full overflow-hidden rounded-t-xl">
           <img
-            src={storageService.getFilePreview(media)}
+            src={storageService.getFilePreview(thumbnail)}
             alt={title}
             className="transition-all duration-300 group-hover:scale-105 aspect-video object-cover rounded-t-xl"
           />

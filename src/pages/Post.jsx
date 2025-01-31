@@ -10,20 +10,20 @@ import { Helmet } from "react-helmet-async";
 
 export default function Post() {
   const [post, setPost] = useState(null);
-  const { slug } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
   const posts = useSelector((state) => state.post.posts);
 
   useEffect(() => {
-    const currentPost = posts.find((post) => post.slug === slug);
+    const currentPost = posts.find((post) => post.$id === id);
     if (currentPost) {
       setPost(currentPost);
     } else {
       navigate("/");
     }
-  }, [slug, posts, navigate]);
+  }, [id, posts, navigate]);
 
   const isAuthor = post && userData ? post.userId === userData.$id : false;
 
@@ -31,7 +31,7 @@ export default function Post() {
     try {
       const status = await databaseService.deletePost(post.$id);
       if (status) {
-        storageService.deleteFile(post.media);
+        storageService.deleteFile(post.thumbnail);
         dispatch(removePost(post.$id));
         navigate("/");
       }
@@ -46,7 +46,7 @@ export default function Post() {
       .deletePost(post.$id)
       .then((status) => {
         if (status) {
-          storageService.deleteFile(post.media);
+          storageService.deleteFile(post.thumbnail);
           dispatch(removePost(post.$id));
           navigate("/");
         }
@@ -113,7 +113,7 @@ export default function Post() {
               {isAuthor && (
                 <div className="flex gap-3 items-center">
                   <Link
-                    to={`/edit-post/${post.slug}`}
+                    to={`/edit-post/${post.$id}`}
                     className="p-2 rounded-md bg-blue/75 fill-gray-100 transition-all duration-200 hover:bg-blue/50"
                   >
                     <svg
@@ -143,7 +143,7 @@ export default function Post() {
             </div>
           </div>
           <img
-            src={storageService.getFilePreview(post.media)}
+            src={storageService.getFilePreview(post.thumbnail)}
             alt={post.title}
             className="rounded-lg aspect-video object-cover"
           />

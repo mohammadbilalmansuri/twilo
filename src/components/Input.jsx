@@ -14,7 +14,7 @@ const Input = forwardRef(
   ) => {
     const [passwordInputType, setPasswordInputType] = useState("password");
 
-    const inputClasses = `w-full text-lg outline-none rounded-lg p-3 h-13 placeholder:text-black/40 bg-transparent border border-black/20 focus:border-blue${
+    const inputClasses = `w-full text-lg outline-none rounded-lg p-3 h-13 placeholder:text-black/50 bg-transparent border border-black/20 focus:border-blue${
       className ? ` ${className}` : ""
     }`;
 
@@ -55,7 +55,7 @@ const Input = forwardRef(
           <svg
             viewBox={`0 0 ${passwordInputType === "password" ? 640 : 576} 512`}
             aria-label="Toggle password visibility"
-            className="size-4.5 absolute right-3 fill-black/40 cursor-pointer"
+            className="size-4.5 absolute right-3 fill-black/50 cursor-pointer"
             onClick={() => {
               setPasswordInputType((prev) =>
                 prev === "password" ? "text" : "password"

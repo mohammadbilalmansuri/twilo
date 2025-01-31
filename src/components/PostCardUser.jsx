@@ -9,7 +9,7 @@ function PostCardUser({
   userName,
   userId,
   content,
-  media,
+  thumbnail,
   $updatedAt,
 }) {
   function formatTime(time) {
@@ -58,7 +58,7 @@ function PostCardUser({
       <Link to={`/post/${slug}`} className="grid grid-cols-5">
         <div className="overflow-hidden rounded-l-xl col-span-2">
           <img
-            src={storageService.getFilePreview(media)}
+            src={storageService.getFilePreview(thumbnail)}
             alt={title}
             className="transition-all duration-300 group-hover:scale-105 aspect-square object-cover rounded-l-xl"
           />

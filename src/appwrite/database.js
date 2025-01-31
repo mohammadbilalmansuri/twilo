@@ -41,12 +41,13 @@ export class DatabaseService {
     }
 
     try {
-      return await this.databases.updateDocument(
+      await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwriteUsersCollectionId,
         userId,
         { name }
       );
+      return true;
     } catch (error) {
       console.error("Appwrite :: updateUserName :: ", error.message);
       throw error;
@@ -107,9 +108,9 @@ export class DatabaseService {
 
   // Post related methods
 
-  async createPost({ title, content, media, owner }) {
-    if (!title || !content || !userId || !userName || !userCreatedAt) {
-      throw new Error("Title, content, user ID, owner ID are required.");
+  async createPost({ title, content, thumbnail, owner }) {
+    if (!title || !content || !owner) {
+      throw new Error("Title, content, owner ID are required.");
     }
 
     try {
@@ -117,7 +118,7 @@ export class DatabaseService {
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
         ID.unique(),
-        { title, content, media, owner }
+        { title, content, thumbnail, owner }
       );
     } catch (error) {
       console.error("Appwrite :: createPost :: ", error.message);
@@ -321,7 +322,7 @@ export class DatabaseService {
   // Comment related methods
 
   async addComment({ postId, comment, owner }) {
-    if (!postId || !userId || !userName || !comment || !userCreatedAt) {
+    if (!postId || !comment || !owner) {
       throw new Error("Post ID, comment and owner ID are required.");
     }
 
