@@ -78,14 +78,17 @@ const PostForm = ({ post }) => {
       } else {
         const postData = {
           title: data.title,
+          excerpt: data.excerpt,
           content: data.content,
           thumbnail: file ? file.$id : "",
           owner: userData.$id,
         };
 
-        const newPost = await databaseService.createPost(postData);
-        dispatch(addPost(newPost));
-        navigate(`/post/${newPost.$id}`);
+        console.log(postData);
+
+        // const newPost = await databaseService.createPost(postData);
+        // dispatch(addPost(newPost));
+        // navigate(`/post/${newPost.$id}`);
       }
     } catch (error) {
       setError(error?.message || "Something went wrong. Please try again.");
@@ -95,7 +98,12 @@ const PostForm = ({ post }) => {
   };
 
   const renderErrors = () => {
-    const errorMessages = [errors?.title?.message, error]
+    const errorMessages = [
+      errors?.title?.message,
+      errors?.excerpt?.message,
+      errors?.content?.message,
+      error,
+    ]
       .filter(Boolean)
       .join(", ");
 

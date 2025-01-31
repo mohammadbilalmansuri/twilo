@@ -32,6 +32,12 @@ export default function RTE({
         <Controller
           name={name || "content"}
           control={control}
+          rules={{
+            maxLength: {
+              value: 5000,
+              message: "Post content limit exceeded",
+            },
+          }}
           render={({ field: { onChange } }) => (
             <Editor
               apiKey={config.tinyMceApiKey}
@@ -65,21 +71,8 @@ export default function RTE({
                   "bold italic forecolor | alignleft aligncenter " +
                   "alignright alignjustify | bullist numlist outdent indent | " +
                   "removeformat | help",
-                content_style: "body { font-size:18px; }",
-                setup: (editor) => {
-                  const max = 3000;
-                  editor.on("submit", (event) => {
-                    const numChars = editor.getContent({
-                      format: "text",
-                    }).length;
-
-                    if (numChars > max) {
-                      alert("Maximum " + max + " characters allowed.");
-                      event.preventDefault();
-                      return false;
-                    }
-                  });
-                },
+                content_style:
+                  "body { font-size:18px; } * { margin: 0; box-sizing: border-box;}",
               }}
               onEditorChange={onChange}
             />
