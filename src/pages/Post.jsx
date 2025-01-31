@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import databaseService from "../appwrite/database";
 import storageService from "../appwrite/storage";
-import { Container } from "../components";
 import parse from "html-react-parser";
 import { useDispatch, useSelector } from "react-redux";
 import { removePost } from "../store/postSlice";
 import { Helmet } from "react-helmet-async";
+import formatTime from "../utils/formatTime";
 
 export default function Post() {
   const [post, setPost] = useState(null);
@@ -40,53 +40,6 @@ export default function Post() {
     }
   };
 
-  //second approach
-  /* const deletePost = () => {
-    databaseService
-      .deletePost(post.$id)
-      .then((status) => {
-        if (status) {
-          storageService.deleteFile(post.thumbnail);
-          dispatch(removePost(post.$id));
-          navigate("/");
-        }
-      })
-      .catch((error) => console.log("Unable to delete post :: ", error));
-  }; */
-
-  function formatTime(time) {
-    const now = new Date();
-    const postTime = new Date(time);
-
-    const diffMilliseconds = now - postTime;
-    const diffSeconds = Math.floor(diffMilliseconds / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-    const diffYears = Math.floor(diffDays / 365);
-
-    if (diffYears > 0) {
-      return `${diffYears} year${diffYears !== 1 ? "s" : ""} ago`;
-    } else if (diffDays === 0) {
-      if (diffHours < 1) {
-        return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-      }
-      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-    } else if (diffDays === 1) {
-      return `Yesterday at ${postTime.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`;
-    } else {
-      return postTime.toLocaleString([], {
-        day: "numeric",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    }
-  }
-
   return (
     post && (
       <>
@@ -94,7 +47,7 @@ export default function Post() {
           <title>{post.title} - Twilo</title>
         </Helmet>
 
-        <Container className="flex flex-col gap-3">
+        <div className="max-w relative flex flex-col gap-3">
           <div className="w-full flex justify-between items-center">
             <Link
               to={`/user/${post.userId}`}
@@ -150,7 +103,7 @@ export default function Post() {
 
           <h1 className="pt-4 pl-1 text-2xl font-bold">{post.title}</h1>
           <div className="pl-1 text-lg">{parse(post.content)}</div>
-        </Container>
+        </div>
       </>
     )
   );

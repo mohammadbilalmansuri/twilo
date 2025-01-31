@@ -1,5 +1,4 @@
 import Loader from "./Loader";
-import Container from "./Container";
 import Button from "./Button";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -12,7 +11,6 @@ import Textarea from "./Textarea";
 
 export {
   Loader,
-  Container,
   Button,
   Header,
   Footer,

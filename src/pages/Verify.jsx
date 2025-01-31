@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Container, Button, Loader } from "../components";
+import { Button, Loader } from "../components";
 import { authService } from "../appwrite";
 
 const Verify = () => {
@@ -38,7 +38,7 @@ const Verify = () => {
         <title>Verify - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-8 flex flex-col items-center justify-center text-center gap-8">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center text-center gap-8">
         {isLoading ? (
           <Loader size="lg" />
         ) : (
@@ -76,7 +76,7 @@ const Verify = () => {
         <Button style={2} size="lg" onClick={resendEmail} disabled={isLoading}>
           Resend
         </Button>
-      </Container>
+      </div>
     </>
   );
 };

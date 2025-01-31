@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Input, Button, RTE, Loader } from "./index";
+import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
 import { addPost, updatePost, removePost } from "../store/postSlice";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ const PostForm = ({ post }) => {
   } = useForm({
     defaultValues: {
       title: post?.title || "",
+      excerpt: post?.excerpt || "",
       content: post?.content || "",
     },
   });
@@ -116,14 +117,31 @@ const PostForm = ({ post }) => {
         {...register("title", {
           required: true,
           minLength: {
-            value: 16,
-            message: "Post title must be at least 16 characters",
+            value: 15,
+            message: "Post title must be at least 14 characters",
           },
           maxLength: {
-            value: 255,
-            message: "Post title must be less than 255 characters",
+            value: 150,
+            message: "Post title must be less than 150 characters",
           },
         })}
+      />
+
+      <Textarea
+        id="excerpt"
+        placeholder="Enter post excerpt"
+        {...register("excerpt", {
+          required: true,
+          minLength: {
+            value: 15,
+            message: "Post excerpt must be at least 16 characters",
+          },
+          maxLength: {
+            value: 300,
+            message: "Post excerpt must be less than 300 characters",
+          },
+        })}
+        className="h-28 resize-none"
       />
 
       <RTE

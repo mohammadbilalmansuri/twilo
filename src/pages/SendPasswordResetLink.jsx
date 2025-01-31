@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
-import { Container, Button, Input, Loader } from "../components";
+import { Button, Input, Loader } from "../components";
 import { authService } from "../appwrite";
 
 const SendPasswordResetLink = () => {
@@ -47,7 +47,7 @@ const SendPasswordResetLink = () => {
         <title>Send Password Reset Link - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-8 flex flex-col items-center justify-center gap-6">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
         <h2 className="text-4xl font-bold leading-tight">
           Send Password Reset Link
         </h2>
@@ -93,7 +93,7 @@ const SendPasswordResetLink = () => {
         >
           Go back to login
         </Link>
-      </Container>
+      </div>
     </>
   );
 };

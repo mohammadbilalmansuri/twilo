@@ -19,7 +19,7 @@ export default function RTE({
   }, []);
 
   return (
-    <div className="w-full h-[600px] bg-black/5 rounded-lg">
+    <div className="w-full h-[500px] bg-black/5 rounded-lg">
       <div
         className={`size-full ${
           loading ? "opacity-0 pointer-events-none" : ""
@@ -34,7 +34,7 @@ export default function RTE({
               initialValue={defaultValue}
               init={{
                 placeholder: placeholder,
-                height: 600,
+                height: 500,
                 menubar: true,
                 plugins: [
                   "advlist",

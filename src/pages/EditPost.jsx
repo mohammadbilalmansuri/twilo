@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Container, PostForm } from "../components";
+import { PostForm } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
@@ -16,6 +16,7 @@ const EditPost = () => {
     () => posts.find((post) => post.$id === id),
     [id, posts]
   );
+
   const isAuthor = useMemo(
     () =>
       currentPost && userData ? currentPost.owner === userData.$id : false,
@@ -24,7 +25,7 @@ const EditPost = () => {
 
   useEffect(() => {
     if (currentPost === undefined) {
-      navigate("/404");
+      navigate("/");
     } else if (isAuthor) {
       setPost(currentPost);
     }
@@ -35,13 +36,13 @@ const EditPost = () => {
   return (
     <>
       <Helmet>
-        <title>Edit Post - {post?.title || "Untitled"} - Twilo</title>
+        <title>Edit Post - {post?.title} - Twilo</title>
       </Helmet>
 
-      <Container className="py-8 min-h flex flex-col items-center gap-8">
+      <div className="max-w relative py-8 flex flex-col items-center gap-8">
         <h2 className="text-4xl font-bold leading-tight">Edit post</h2>
         <PostForm post={post} />
-      </Container>
+      </div>
     </>
   );
 };

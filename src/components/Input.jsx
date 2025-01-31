@@ -2,14 +2,7 @@ import { forwardRef, useId, useState } from "react";
 
 const Input = forwardRef(
   (
-    {
-      label,
-      id = useId(),
-      type = "text",
-      placeholder = "",
-      className,
-      ...props
-    },
+    { id = useId(), type = "text", placeholder = "", className, ...props },
     ref
   ) => {
     const [passwordInputType, setPasswordInputType] = useState("password");
@@ -18,43 +11,21 @@ const Input = forwardRef(
       className ? ` ${className}` : ""
     }`;
 
-    if (!label && type !== "password") {
+    if (type === "password") {
       return (
-        <input
-          type={type}
-          placeholder={placeholder}
-          className={inputClasses}
-          ref={ref}
-          id={id}
-          {...props}
-        />
-      );
-    }
+        <div className="w-full relative flex flex-col items-center justify-center">
+          <input
+            type={type === "password" ? passwordInputType : type}
+            placeholder={placeholder}
+            className={`${inputClasses} pr-9`}
+            ref={ref}
+            id={id}
+            {...props}
+          />
 
-    return (
-      <div className="w-full flex flex-col relative items-center justify-center">
-        {label && (
-          <label
-            htmlFor={id}
-            className="cursor-pointer text-lg font-semibold leading-tight"
-          >
-            {label}
-          </label>
-        )}
-
-        <input
-          type={type === "password" ? passwordInputType : type}
-          placeholder={placeholder}
-          className={`${inputClasses} pr-9`}
-          ref={ref}
-          id={id}
-          {...props}
-        />
-
-        {type === "password" && (
           <svg
-            viewBox={`0 0 ${passwordInputType === "password" ? 640 : 576} 512`}
             aria-label="Toggle password visibility"
+            viewBox={`0 0 ${passwordInputType === "password" ? 640 : 576} 512`}
             className="size-4.5 absolute right-3 fill-black/50 cursor-pointer"
             onClick={() => {
               setPasswordInputType((prev) =>
@@ -70,8 +41,19 @@ const Input = forwardRef(
               }
             />
           </svg>
-        )}
-      </div>
+        </div>
+      );
+    }
+
+    return (
+      <input
+        type={type}
+        placeholder={placeholder}
+        className={inputClasses}
+        ref={ref}
+        id={id}
+        {...props}
+      />
     );
   }
 );

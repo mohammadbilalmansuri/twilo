@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
-import { Container, Button, Input, Loader } from "../components";
+import { Button, Input, Loader } from "../components";
 import { authService } from "../appwrite";
 
 const ResetPassword = () => {
@@ -77,7 +77,7 @@ const ResetPassword = () => {
       </Helmet>
 
       {isValid === false ? (
-        <Container className="min-h py-8 flex flex-col items-center justify-center text-center gap-8">
+        <div className="max-w min-h relative py-8 flex flex-col items-center justify-center text-center gap-8">
           <svg
             viewBox="0 0 512 512"
             className="size-16 fill-red"
@@ -89,9 +89,9 @@ const ResetPassword = () => {
           <h2 className="text-3xl font-bold leading-tight">
             Invalid password reset link!
           </h2>
-        </Container>
+        </div>
       ) : (
-        <Container className="min-h py-8 flex flex-col items-center justify-center gap-6">
+        <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
           <h2 className="text-4xl font-bold leading-tight">Reset Password</h2>
 
           <form
@@ -136,7 +136,7 @@ const ResetPassword = () => {
               </div>
             )}
           </form>
-        </Container>
+        </div>
       )}
     </>
   );

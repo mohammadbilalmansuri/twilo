@@ -34,15 +34,13 @@ function App() {
   return (
     <>
       <Header />
-      {loading ? (
-        <div className="w-full min-h flex flex-col items-center justify-center">
-          <Loader />
-        </div>
-      ) : (
-        <main className="w-full relative flex flex-col items-center">
-          <Outlet />
-        </main>
-      )}
+      <main
+        className={`w-full relative flex flex-col items-center px-3 min-h mt-16${
+          loading ? " justify-center" : ""
+        }`}
+      >
+        {loading ? <Loader /> : <Outlet />}
+      </main>
       <Footer />
     </>
   );
