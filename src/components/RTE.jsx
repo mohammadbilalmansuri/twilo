@@ -19,7 +19,11 @@ export default function RTE({
   }, []);
 
   return (
-    <div className="w-full h-[500px] bg-black/5 rounded-lg">
+    <div
+      className={`w-full h-[500px] rounded-lg${
+        loading ? " border border-black/20" : ""
+      }`}
+    >
       <div
         className={`size-full ${
           loading ? "opacity-0 pointer-events-none" : ""
