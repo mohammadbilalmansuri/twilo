@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Container, PostCardUser, Button, Input } from "../components";
+import { PostCardUser, Button, Input } from "../components";
 import { useForm } from "react-hook-form";
 import authService from "../appwrite/auth";
 import databaseService from "../appwrite/database";
@@ -143,7 +143,7 @@ function User() {
           <title>{user?.name} - Twilo</title>
         </Helmet>
 
-        <Container className="flex flex-col items-center gap-10">
+        <div className="flex flex-col items-center gap-10">
           <div className="w-full flex justify-between items-center gap-5 bg-gray-800 py-5 px-10 rounded-lg">
             <div className="flex gap-5 items-center">
               <img
@@ -333,7 +333,7 @@ function User() {
               )}
             </div>
           )}
-        </Container>
+        </div>
       </>
     )
   );

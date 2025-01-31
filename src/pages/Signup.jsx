@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { login } from "../store/authSlice";
-import { Container, Button, Input, Loader } from "../components";
+import { Button, Input, Loader } from "../components";
 import { authService, databaseService } from "../appwrite";
 
 const Signup = () => {
@@ -66,7 +66,7 @@ const Signup = () => {
         <title>Sign up - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-8 flex flex-col items-center justify-center gap-4">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-4">
         <h1 className="text-4xl font-bold leading-tight">
           Create a new account
         </h1>
@@ -158,7 +158,7 @@ const Signup = () => {
             {isLoading ? <Loader size="sm" color="white" /> : "Sign Up"}
           </Button>
         </form>
-      </Container>
+      </div>
     </>
   );
 };

@@ -108,9 +108,9 @@ export class DatabaseService {
 
   // Post related methods
 
-  async createPost({ title, content, thumbnail, owner }) {
+  async createPost({ title, excerpt, content, thumbnail, owner }) {
     if (!title || !content || !owner) {
-      throw new Error("Title, content, owner ID are required.");
+      throw new Error("Title, excerpt, content, owner ID are required.");
     }
 
     try {
@@ -118,7 +118,7 @@ export class DatabaseService {
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
         ID.unique(),
-        { title, content, thumbnail, owner }
+        { title, excerpt, content, thumbnail, owner }
       );
     } catch (error) {
       console.error("Appwrite :: createPost :: ", error.message);
@@ -179,23 +179,6 @@ export class DatabaseService {
     }
   }
 
-  async getPosts(limit, cursor) {
-    try {
-      const queries = [Query.orderDesc("$updatedAt")];
-      if (limit) queries.push(Query.limit(limit));
-      if (cursor) queries.push(Query.cursorAfter(cursor));
-
-      return await this.databases.listDocuments(
-        config.appwriteDatabaseId,
-        config.appwritePostsCollectionId,
-        queries
-      );
-    } catch (error) {
-      console.error("Appwrite :: getPosts :: ", error.message);
-      throw error;
-    }
-  }
-
   async getPostsByUser(userId, limit, cursor) {
     if (!userId) {
       throw new Error("User ID is required.");
@@ -220,19 +203,9 @@ export class DatabaseService {
     }
   }
 
-  async getFeed(userId, limit, cursor) {
-    if (!userId) {
-      throw new Error("User ID is required.");
-    }
-
+  async getPosts(limit, cursor) {
     try {
-      const following = await this.getFollowing(userId);
-      const followedUserIds = following.documents.map((doc) => doc.followed);
-
-      const queries = [
-        Query.in("owner", followedUserIds),
-        Query.orderDesc("$updatedAt"),
-      ];
+      const queries = [Query.orderDesc("$updatedAt")];
       if (limit) queries.push(Query.limit(limit));
       if (cursor) queries.push(Query.cursorAfter(cursor));
 
@@ -242,7 +215,7 @@ export class DatabaseService {
         queries
       );
     } catch (error) {
-      console.error("Appwrite :: getFeed :: ", error.message);
+      console.error("Appwrite :: getPosts :: ", error.message);
       throw error;
     }
   }

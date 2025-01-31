@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Container, Loader } from "./components";
+import { Loader } from "./components";
 import useAuth from "./hooks/useAuth";
 
 const Protect = ({ children, authentication = true }) => {
@@ -30,9 +30,9 @@ const Protect = ({ children, authentication = true }) => {
   }, [authentication, isLoggedIn, isVerified, location.pathname, navigate]);
 
   return loading ? (
-    <Container className="min-h flex items-center justify-center">
+    <div className="max-w relative min-h flex items-center justify-center">
       <Loader />
-    </Container>
+    </div>
   ) : (
     children
   );

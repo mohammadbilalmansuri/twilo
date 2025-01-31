@@ -15,12 +15,20 @@
     font-family: var(--monda) !important;
   }
 
+  .font-zen-dots {
+    font-family: var(--zen-dots) !important;
+  }
+
   ::selection {
     @apply bg-blue text-white;
   }
 
   .min-h {
     @apply min-h-[calc(100dvh-120px)];
+  }
+
+  .max-w {
+    @apply w-full max-w-screen-lg;
   }
 
   input:autofill,

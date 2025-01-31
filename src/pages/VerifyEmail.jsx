@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { authService } from "../appwrite";
 import { verify } from "../store/authSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Container, Loader } from "../components";
+import { Loader } from "../components";
 import { Helmet } from "react-helmet-async";
 
 const VerifyEmail = () => {
@@ -56,7 +56,7 @@ const VerifyEmail = () => {
         <title>Verify Email - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-8 flex flex-col items-center justify-center text-center gap-8">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center text-center gap-8">
         {status === null ? (
           <Loader size="md" />
         ) : (
@@ -87,7 +87,7 @@ const VerifyEmail = () => {
             </p>
           </>
         )}
-      </Container>
+      </div>
     </>
   );
 };

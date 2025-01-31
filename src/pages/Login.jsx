@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { login } from "../store/authSlice";
-import { Container, Button, Input, Loader } from "../components";
+import { Button, Input, Loader } from "../components";
 import { authService } from "../appwrite";
 
 const Login = () => {
@@ -57,7 +57,7 @@ const Login = () => {
         <title>Login - Twilo</title>
       </Helmet>
 
-      <Container className="min-h py-8 flex flex-col items-center justify-center gap-4">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-4">
         <h2 className="text-4xl font-bold leading-tight">
           Login to your account
         </h2>
@@ -117,7 +117,7 @@ const Login = () => {
         >
           Forget your password?
         </Link>
-      </Container>
+      </div>
     </>
   );
 };

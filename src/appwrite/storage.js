@@ -60,11 +60,7 @@ export class StorageService {
       throw new Error("File ID is required");
     }
 
-    return this.storage.getFilePreview(
-      config.appwriteBucketId,
-      fileId,
-      ImageFormat.Webp
-    );
+    return this.storage.getFilePreview(config.appwriteBucketId, fileId);
   }
 }
 
