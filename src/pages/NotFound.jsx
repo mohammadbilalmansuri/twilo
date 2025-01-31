@@ -16,14 +16,7 @@ export default function NotFound() {
         <h1 className="text-4xl font-bold leading-tight">
           Opps! Page Not Found
         </h1>
-        <Button
-          style={2}
-          padding="md"
-          fontSize="lg"
-          as="link"
-          to="/"
-          className="mt-4"
-        >
+        <Button style={2} size="lg" as="link" to="/" className="mt-4">
           Go To Home
         </Button>
       </Container>
