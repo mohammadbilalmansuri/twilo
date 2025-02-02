@@ -9,6 +9,7 @@ const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { isLoggedIn, getUser } = useAuth();
 
   useEffect(() => {
@@ -21,16 +22,11 @@ const App = () => {
       try {
         await getUser();
       } catch (error) {
-        if (error.message === "User (role: guests) missing scope (account)") {
-          alert("Session expired, logging out...");
-          dispatch(logout());
-          navigate("/login", { replace: true });
-        } else {
-          console.error("Error fetching user:", error);
-          alert(
-            "An error occurred while fetching user data. Please try again."
-          );
-        }
+        setError("Session expired, logging out...");
+        dispatch(logout());
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        navigate("/login", { replace: true });
+        n;
       } finally {
         setLoading(false);
       }
@@ -43,10 +39,11 @@ const App = () => {
       <Header />
       <main
         className={`w-full relative flex flex-col items-center px-4 min-h mt-16${
-          loading ? " justify-center" : ""
+          loading ? " justify-center gap-6" : ""
         }`}
       >
         {loading ? <Loader /> : <Outlet />}
+        {error && <p className="text-lg">{error}</p>}
       </main>
       <Footer />
     </>
