@@ -51,24 +51,28 @@
   .icon {
     @apply transition-all active:scale-90 rounded-lg size-8 flex flex-col items-center justify-center;
   }
+
+  .masonry-column {
+    @apply flex flex-col gap-4;
+  }
 }
 
 @tailwind utilities;
 
 .tox .tox-edit-area::before {
-  border-width: 1px !important;
+  border-width: 1.5px !important;
   border-radius: 0 !important;
 }
 
 .tox-tinymce {
-  border: 1px solid #00000040 !important;
+  border: 1.5px solid #0000001a !important;
 }
 
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
   box-shadow: none !important;
-  border-bottom: 1px solid #00000040 !important;
+  border-bottom: 1.5px solid #0000001a !important;
 }
 
 .tox .tox-statusbar {
-  border-top: 1px solid #00000040 !important;
+  border-top: 1.5px solid #0000001a !important;
 }

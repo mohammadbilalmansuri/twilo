@@ -35,7 +35,7 @@ function App() {
     <>
       <Header />
       <main
-        className={`w-full relative flex flex-col items-center px-3 min-h mt-16${
+        className={`w-full relative flex flex-col items-center px-4 min-h mt-16${
           loading ? " justify-center" : ""
         }`}
       >

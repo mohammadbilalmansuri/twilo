@@ -7,7 +7,7 @@ const Input = forwardRef(
   ) => {
     const [passwordInputType, setPasswordInputType] = useState("password");
 
-    const inputClasses = `w-full text-lg outline-none rounded-lg p-3 h-13 placeholder:text-black/50 bg-transparent border border-black/20 focus:border-blue${
+    const inputClasses = `w-full text-lg outline-none rounded-lg p-3 h-13 placeholder:text-black/50 bg-transparent border-1.5 border-black/10 focus:border-blue${
       className ? ` ${className}` : ""
     }`;
 

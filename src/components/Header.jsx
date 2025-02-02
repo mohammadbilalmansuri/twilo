@@ -2,12 +2,12 @@ import { Link, NavLink } from "react-router-dom";
 import { Button } from "../components";
 import useAuth from "../hooks/useAuth";
 
-function Header() {
+const Header = () => {
   const { isLoggedIn, isVerified, userData, logoutUser } = useAuth();
 
   return (
-    <header className="w-full fixed top-0 z-50 flex flex-col items-center px-3">
-      <div className="max-w relative h-16 p-3 flex justify-between items-center border border-t-0 border-black/15 rounded-b-lg bg-white">
+    <header className="w-full fixed top-0 z-50 flex flex-col items-center px-4">
+      <div className="max-w relative h-16 p-3 flex justify-between items-center border-1.5 border-t-0 border-black/10 rounded-b-lg bg-white">
         {isLoggedIn ? (
           isVerified ? (
             <Link to="/posts" className="logo">
@@ -102,6 +102,6 @@ function Header() {
       </div>
     </header>
   );
-}
+};
 
 export default Header;
