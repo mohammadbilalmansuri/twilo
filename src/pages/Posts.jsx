@@ -1,142 +1,53 @@
-// import { useEffect, useState } from "react";
-// import { Container } from "../components";
-// import { Helmet } from "react-helmet-async";
-// import { databaseService } from "../appwrite";
-// import { setPosts } from "../store/postSlice";
-
-// function Posts() {
-//   const [posts, setPosts] = useState([]);
-
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       try {
-//         const response = await databaseService.getPosts();
-//         setPosts(response.documents);
-//       } catch (error) {
-//         console.error("Failed to fetch posts", error);
-//       }
-//     };
-
-//     fetchPosts();
-//   }, []);
-
-//   // const posts = useSelector((state) => state.post.posts);
-//   // const [isSorted, setIsSorted] = useState(true);
-
-//   // const sortedPosts = useMemo(() => {
-//   //   return isSorted ? posts : [...posts].reverse();
-//   // }, [posts, isSorted]);
-
-//   // const [currentPage, setCurrentPage] = useState(1);
-//   // const postsPerPage = 10;
-//   // const indexOfLastPost = currentPage * postsPerPage;
-//   // const indexOfFirstPost = indexOfLastPost - postsPerPage;
-//   // const currentPagePosts = sortedPosts?.slice(
-//   //   indexOfFirstPost,
-//   //   indexOfLastPost
-//   // );
-//   // const paginate = useCallback((pageNumber) => setCurrentPage(pageNumber), []);
-
-//   // const toggleSort = () => {
-//   //   setIsSorted((prevIsSorted) => !prevIsSorted);
-//   //   setCurrentPage(1);
-//   // };
-
-//   return (
-//     <>
-//       <Helmet>
-//         <title>Twilo - Write. Share. Explore. Connect.</title>
-//       </Helmet>
-
-//       <Container className="min-h py-10 flex flex-col items-center justify-center text-center">
-//         Posts
-//       </Container>
-//     </>
-//     // <Container className="py-10 flex flex-col items-center gap-6 text-center">
-//     //   {posts?.length === 0 ? (
-//     //     <>
-//     //       <h1 className="text-4xl font-bold">There is nothing to show!</h1>
-//     //       <h2 className="text-2xl font-medium">Please create posts.</h2>
-//     //       <Link to="/create-post">
-//     //         <Button type="button">Create Post</Button>
-//     //       </Link>
-//     //     </>
-//     //   ) : (
-//     //     <>
-//     //       <div className="flex justify-between items-center">
-//     //         <h1 className="text-3xl font-bold">All Posts</h1>
-//     //         <div className="flex gap-5">
-//     //           {sortedPosts?.length > 1 && (
-//     //             <Button type="button" onClick={toggleSort}>
-//     //               {isSorted ? "See Oldest First" : "See Latest First"}
-//     //             </Button>
-//     //           )}
-//     //           <Link to="/create-post">
-//     //             <Button type="button">Create New Post</Button>
-//     //           </Link>
-//     //         </div>
-//     //       </div>
-
-//     //       <div className="grid grid-cols-2 gap-7">
-//     //         {currentPagePosts?.map((post) => (
-//     //           <PostCard key={post?.$id} {...post} />
-//     //         ))}
-//     //       </div>
-//     //       {sortedPosts?.length > postsPerPage && (
-//     //         <div className="flex gap-3 justify-center items-center pt-5">
-//     //           {/* here "_" in the arrow function is used to ignore the value of array */}
-//     //           {Array.from(
-//     //             { length: Math.ceil(posts.length / postsPerPage) },
-//     //             (_, index) => (
-//     //               <button
-//     //                 key={index}
-//     //                 onClick={() => paginate(index + 1)}
-//     //                 className={`h-8 w-8 text-lg leading-[0] rounded-md transition-all duration-200 ${
-//     //                   currentPage === index + 1
-//     //                     ? "bg-gray-600"
-//     //                     : "bg-gray-800 hover:bg-gray-700"
-//     //                 }`}
-//     //               >
-//     //                 {index + 1}
-//     //               </button>
-//     //             )
-//     //           )}
-//     //         </div>
-//     //       )}
-//     //     </>
-//     //   )}
-//     // </Container>
-//   );
-// }
-
-// export default Posts;
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
+import { useInView } from "react-intersection-observer";
 import { databaseService } from "../appwrite";
-import PostCard from "../components/PostCard";
+import { setPosts } from "../store/postSlice";
+import { PostCard, Loader, Button } from "../components";
+import Masonry from "react-masonry-css";
 
-function Posts() {
-  const [posts, setPosts] = useState([]);
+const Posts = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.post.posts);
   const [loading, setLoading] = useState(false);
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [noPosts, setNoPosts] = useState(false);
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.5 });
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async (cursor) => {
-    if (loading) return;
+  const fetchPosts = useCallback(async () => {
+    if (!hasMore || loading) return;
     setLoading(true);
 
     try {
-      const response = await databaseService.getPosts(20, 0);
-      setPosts(response.documents);
+      const response = await databaseService.getPosts(10, cursor);
+      if (response.documents.length > 0) {
+        dispatch(setPosts([...posts, ...response.documents]));
+        setCursor(response.documents[response.documents.length - 1].$id);
+      } else {
+        setHasMore(false);
+      }
     } catch (error) {
+      alert(
+        `${error.message} | Please try again or re-login if the issue persists`
+      );
       console.error("Failed to fetch posts", error);
+    } finally {
+      setLoading(false);
     }
+  }, [cursor, hasMore, loading, posts, dispatch]);
 
-    setLoading(false);
-  };
+  // Initial fetch
+  useEffect(() => {
+    if (posts.length === 0) fetchPosts();
+    if (posts.length === 0 && !loading && !hasMore) setNoPosts(true);
+  }, []);
+
+  // Fetch more when scrolled to bottom
+  useEffect(() => {
+    if (inView && hasMore) fetchPosts();
+  }, [inView, hasMore]);
 
   return (
     <>
@@ -144,13 +55,52 @@ function Posts() {
         <title>Twilo - Write. Share. Explore. Connect.</title>
       </Helmet>
 
-      <div className="max-w relative pt-4 pb-8 grid grid-cols-2 gap-4 px-0">
-        {posts.map((post) => (
-          <PostCard key={post.$id} post={post} />
-        ))}
-      </div>
+      {loading && posts.length === 0 ? (
+        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center">
+          <Loader />
+        </div>
+      ) : noPosts ? (
+        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-6">
+          <h2 className="text-center text-3xl leading-tight font-bold">
+            No posts available at the moment
+          </h2>
+          <h3 className="text-2xl leading-tight text-black/60">
+            Be the first to create one!
+          </h3>
+          <Button className="mt-2" as="link" to="/create-post">
+            Create Post
+          </Button>
+        </div>
+      ) : (
+        <div className="max-w relative py-4 flex flex-col gap-4">
+          <Masonry
+            breakpointCols={{
+              default: 2,
+              660: 1,
+            }}
+            className="flex gap-4"
+            columnClassName="masonry-column"
+          >
+            {posts.map((post) => (
+              <PostCard key={post.$id} {...post} />
+            ))}
+          </Masonry>
+
+          {loading && (
+            <div className="flex justify-center items-center py-4">
+              <Loader />
+            </div>
+          )}
+
+          <div ref={ref} className="h-2"></div>
+
+          {!hasMore && (
+            <p className="text-center text-black/60 text-lg">No more posts</p>
+          )}
+        </div>
+      )}
     </>
   );
-}
+};
 
 export default Posts;
