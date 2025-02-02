@@ -10,44 +10,41 @@ import Masonry from "react-masonry-css";
 const Posts = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.post.posts);
-  const [loading, setLoading] = useState(false);
-  const [cursor, setCursor] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [noPosts, setNoPosts] = useState(false);
+  const cursor = useSelector((state) => state.post.cursor);
+  const [state, setState] = useState({
+    loading: false,
+    hasMore: true,
+    noPosts: false,
+  });
+  const [error, setError] = useState(null);
   const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.5 });
 
   const fetchPosts = useCallback(async () => {
-    if (!hasMore || loading) return;
-    setLoading(true);
+    if (!state.hasMore || state.loading) return;
+    setState((prevState) => ({ ...prevState, loading: true }));
 
     try {
       const response = await databaseService.getPosts(10, cursor);
       if (response.documents.length > 0) {
         dispatch(setPosts([...posts, ...response.documents]));
-        setCursor(response.documents[response.documents.length - 1].$id);
       } else {
-        setHasMore(false);
-        if (posts.length === 0) setNoPosts(true);
+        setState((prevState) => ({
+          ...prevState,
+          hasMore: false,
+          noPosts: response.total === 0,
+        }));
       }
     } catch (error) {
-      alert(
-        `${error.message} | Please try again or re-login if the issue persists`
-      );
+      setError(error.message);
       console.error("Failed to fetch posts", error);
     } finally {
-      setLoading(false);
+      setState((prevState) => ({ ...prevState, loading: false }));
     }
-  }, [cursor, hasMore, loading, posts, dispatch]);
+  }, [cursor, dispatch, posts, state.hasMore, state.loading]);
 
-  // Initial fetch
   useEffect(() => {
-    if (posts.length === 0) fetchPosts();
-  }, []);
-
-  // Fetch more when scrolled to bottom
-  useEffect(() => {
-    if (inView && hasMore) fetchPosts();
-  }, [inView, hasMore]);
+    if (posts.length === 0 || (inView && state.hasMore)) fetchPosts();
+  }, [inView, fetchPosts, posts.length, state.hasMore]);
 
   return (
     <>
@@ -55,11 +52,18 @@ const Posts = () => {
         <title>Twilo - Write. Share. Explore. Connect.</title>
       </Helmet>
 
-      {loading && posts.length === 0 ? (
+      {error ? (
+        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-4 text-center">
+          <h3 className="text-3xl font-semibold leading-normal">{error}</h3>
+          <p className="text-lg text-black/60">
+            Please try again or re-login if the issue persists
+          </p>
+        </div>
+      ) : state.loading && posts.length === 0 ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center">
           <Loader />
         </div>
-      ) : noPosts ? (
+      ) : state.noPosts ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center text-center gap-6">
           <h2 className="text-center text-4xl leading-tight font-bold">
             No posts available at the moment
@@ -72,29 +76,33 @@ const Posts = () => {
           </Button>
         </div>
       ) : (
-        <div className="max-w relative py-4 flex flex-col">
+        <div className="max-w relative pt-4 pb-6 flex flex-col gap-6">
           <Masonry
+            breakpointCols={{ default: 2, 660: 1 }}
             className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1"
             columnClassName="masonry-column"
           >
-            {posts.map((post) => (
-              <PostCard key={post.$id} {...post} />
-            ))}
+            {posts.length > 0 &&
+              posts.map((post, index) => {
+                if (index === posts.length - 1) {
+                  return <PostCard ref={ref} key={post.$id} {...post} />;
+                } else {
+                  return <PostCard key={post.$id} {...post} />;
+                }
+              })}
           </Masonry>
 
-          {loading && (
-            <div className="flex justify-center items-center pt-6">
+          {state.loading && (
+            <div className="flex justify-center items-center">
               <Loader />
             </div>
           )}
 
-          {!hasMore && posts.length > 0 && (
-            <p className="text-center text-black/60 text-lg pt-6">
+          {!state.hasMore && posts.length > 0 && (
+            <p className="text-center text-black/60 text-lg">
               You've reached the end of the posts. Stay tuned for more updates!
             </p>
           )}
-
-          <div ref={ref} className="h-2"></div>
         </div>
       )}
     </>
