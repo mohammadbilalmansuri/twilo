@@ -26,7 +26,7 @@ const PostCard = ({ $id, title, excerpt, thumbnail, owner, $updatedAt }) => {
       </div>
 
       <h3 className="text-lg font-medium leading-tight">{title}</h3>
-      <p className="text-black/60 -mt-2">{excerpt}</p>
+      <p className="text-lg text-black/60 -mt-2">{excerpt}</p>
 
       {thumbnail && (
         <img
