@@ -84,11 +84,9 @@ const PostForm = ({ post }) => {
           owner: userData.$id,
         };
 
-        console.log(postData);
-
-        // const newPost = await databaseService.createPost(postData);
-        // dispatch(addPost(newPost));
-        // navigate(`/post/${newPost.$id}`);
+        const newPost = await databaseService.createPost(postData);
+        dispatch(addPost(newPost));
+        navigate(`/post/${newPost.$id}`);
       }
     } catch (error) {
       setError(error?.message || "Something went wrong. Please try again.");
@@ -173,7 +171,7 @@ const PostForm = ({ post }) => {
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current.click()}
-            className={`size-full text-lg cursor-pointer border border-black/20 rounded-lg flex items-center justify-center gap-3 ${
+            className={`size-full text-lg cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-3 ${
               selectedFile || post?.thumbnail
                 ? "text-black fill-black"
                 : "text-black/50 fill-black/50"
@@ -201,7 +199,7 @@ const PostForm = ({ post }) => {
 
             <span className="w-full overflow-hidden text-nowrap text-ellipsis">
               {!selectedFile && !post?.thumbnail
-                ? "Select or drop post thumbnail here"
+                ? "Select or drop post thumbnail"
                 : selectedFile
                 ? selectedFile.name
                 : post?.thumbnail}

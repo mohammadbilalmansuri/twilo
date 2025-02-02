@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PostForm } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { useSelector } from "react-redux";
+import { databaseService } from "../appwrite";
 
 const EditPost = () => {
   const { id } = useParams();
@@ -12,24 +13,28 @@ const EditPost = () => {
   const posts = useSelector((state) => state.post.posts);
   const [post, setPost] = useState(null);
 
-  const currentPost = useMemo(
-    () => posts.find((post) => post.$id === id),
-    [id, posts]
-  );
-
-  const isAuthor = useMemo(
-    () =>
-      currentPost && userData ? currentPost.owner === userData.$id : false,
-    [currentPost, userData]
-  );
-
   useEffect(() => {
-    if (currentPost === undefined) {
-      navigate("/");
-    } else if (isAuthor) {
-      setPost(currentPost);
-    }
-  }, [isAuthor, currentPost, navigate]);
+    const fetchPost = async () => {
+      let currentPost = posts.find((post) => post.$id === id);
+      if (!currentPost) {
+        try {
+          currentPost = await databaseService.getPost(id);
+        } catch (error) {
+          console.error("Failed to fetch post:", error);
+        }
+      }
+
+      if (!currentPost) {
+        navigate("/posts");
+      } else if (currentPost.owner.$id === userData.$id) {
+        setPost(currentPost);
+      } else {
+        navigate("/posts");
+      }
+    };
+
+    fetchPost();
+  }, [id, posts, userData, navigate]);
 
   if (!post) return null;
 
