@@ -27,6 +27,10 @@ export default {
         14: "3.5rem",
         18: "4.5rem",
       },
+      borderWidth: {
+        1.5: "1.5px",
+        3: "3px",
+      },
     },
   },
   plugins: [],
