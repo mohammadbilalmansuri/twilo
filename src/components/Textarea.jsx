@@ -10,7 +10,7 @@ const Textarea = forwardRef(
         placeholder={placeholder}
         maxLength={maxLength}
         ref={ref}
-        className={`w-full text-lg outline-none rounded-lg p-3 placeholder:text-black/50 bg-transparent border border-black/20 focus:border-blue${
+        className={`w-full text-lg outline-none rounded-lg p-3 placeholder:text-black/50 bg-transparent border-1.5 border-black/10 focus:border-blue${
           className ? ` ${className}` : ""
         }`}
         {...props}
