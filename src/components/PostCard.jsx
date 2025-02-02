@@ -1,41 +1,40 @@
 import { useNavigate } from "react-router-dom";
 import storageService from "../appwrite/storage";
-import parse from "html-react-parser";
 import formatTime from "../utils/formatTime";
-import truncateContent from "../utils/truncateContent";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ $id, title, excerpt, thumbnail, owner, $updatedAt }) => {
   const navigate = useNavigate();
-  const { title, excerpt, thumbnail, $id, owner, $updatedAt } = post;
 
   return (
     <div
       id={$id}
-      onClick={() => {
-        navigate(`/post/${$id}`);
-      }}
-      className="w-full h-40 relative border border-black/20 rounded-lg transition-all hover:border-blue flex items-center cursor-pointer"
+      onClick={() => navigate(`/post/${$id}`)}
+      className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/50 flex flex-col cursor-pointer p-4 gap-4 break-inside-avoid"
     >
-      {/* <img
-        src={storageService.getFilePreview(thumbnail)}
-        alt={title}
-        className="w-1/3 h-full object-cover object-center rounded-l-lg"
-      /> */}
-
-      <div className="w-2/3 flex flex-col gap-2 p-6">
-        <h3 className="text-lg font-semibold leading-tight">{title}</h3>
+      <div className="w-full flex justify-between items-center gap-4">
         <button
-          className="leading-tight flex items-center gap-2 pb-0.5"
+          className="leading-none text-blue text-lg pl-2 border-l-2 hover:underline"
           onClick={(e) => {
             e.stopPropagation();
             navigate(`/user/${owner.$id}`);
           }}
         >
-          by
-          <span className="border-b">{owner.$id}</span>
+          {owner.name}
         </button>
-        <p>{formatTime($updatedAt)}</p>
+
+        <p className="leading-tight">{formatTime($updatedAt)}</p>
       </div>
+
+      <h3 className="text-lg font-medium leading-tight">{title}</h3>
+      <p className="text-black/60 -mt-2">{excerpt}</p>
+
+      {thumbnail && (
+        <img
+          src={storageService.getFilePreview(thumbnail)}
+          alt={title}
+          className="w-full object-cover object-center rounded-lg"
+        />
+      )}
     </div>
   );
 };
