@@ -15,7 +15,7 @@ const useAuth = () => {
     try {
       await authService.logoutUser();
       dispatch(logout());
-      navigate("/login");
+      navigate("/login", { replace: true });
     } catch (error) {
       console.error("Unable to logout user:", error);
       alert(
