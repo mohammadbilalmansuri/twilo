@@ -9,23 +9,19 @@ const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    setPosts: (state, action) => {
+    setPosts: (state, { payload }) => {
       state.status = true;
-      state.posts = action.payload;
+      state.posts = payload;
     },
-    addPost: (state, action) => {
-      state.posts = [action.payload, ...state.posts];
+    addPost: (state, { payload }) => {
+      state.posts = [payload, ...state.posts];
     },
-    removePost: (state, action) => {
-      state.posts = state.posts.filter(
-        (post) => post.$id !== action.payload.$id
-      );
+    removePost: (state, { payload }) => {
+      state.posts = state.posts.filter(({ $id }) => $id !== payload.$id);
     },
-    updatePost: (state, action) => {
-      const index = state.posts.findIndex(
-        (post) => post.$id === action.payload.$id
-      );
-      if (index !== -1) state.posts[index] = action.payload;
+    updatePost: (state, { payload }) => {
+      const index = state.posts.findIndex(({ $id }) => $id === payload.$id);
+      if (index !== -1) state.posts[index] = payload;
     },
     cleanPosts: (state) => {
       state.status = false;
