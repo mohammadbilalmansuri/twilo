@@ -27,6 +27,7 @@ const Posts = () => {
         setCursor(response.documents[response.documents.length - 1].$id);
       } else {
         setHasMore(false);
+        if (posts.length === 0) setNoPosts(true);
       }
     } catch (error) {
       alert(
@@ -41,7 +42,6 @@ const Posts = () => {
   // Initial fetch
   useEffect(() => {
     if (posts.length === 0) fetchPosts();
-    if (posts.length === 0 && !loading && !hasMore) setNoPosts(true);
   }, []);
 
   // Fetch more when scrolled to bottom
