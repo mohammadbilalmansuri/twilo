@@ -30,10 +30,10 @@ const authSlice = createSlice({
       localStorage.setItem("isVerified", "true");
     },
     logout: (state) => {
-      state.status = false;
-      state.verified = false;
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("isVerified");
+      state.status = false;
+      state.verified = false;
       state.userData = {};
     },
   },
