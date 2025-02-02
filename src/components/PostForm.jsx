@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
-import { addPost, removePost } from "../store/postSlice";
+import { addPost, updatePost } from "../store/postSlice";
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
 
@@ -17,7 +17,9 @@ const PostForm = ({ post }) => {
   const [thumbnail, setThumbnail] = useState({
     old: post?.thumbnail || null,
     new: null,
+    previewUrl: null,
   });
+  const isPostsAlreadyFetched = useSelector((state) => state.post.status);
 
   const {
     register,
@@ -36,14 +38,19 @@ const PostForm = ({ post }) => {
   const handleFileChange = useCallback(
     (file) => {
       if (!file) return;
-      if (error === "File size exceeds the 10MB limit.") setError("");
       if (file.size > 10 * 1024 * 1024) {
-        alert("File size exceeds the 10MB limit.");
+        setError("File size exceeds the 10MB limit.");
         return;
       }
-      setThumbnail((prev) => ({ ...prev, new: file }));
+      if (error === "File size exceeds the 10MB limit.") setError("");
+      if (thumbnail.previewUrl) URL.revokeObjectURL(thumbnail.previewUrl);
+      setThumbnail((prev) => ({
+        ...prev,
+        new: file,
+        previewUrl: URL.createObjectURL(file),
+      }));
     },
-    [error]
+    [thumbnail.new, error]
   );
 
   const handleDrop = (e) => {
@@ -54,8 +61,8 @@ const PostForm = ({ post }) => {
 
   const removeThumbnail = (e) => {
     e.stopPropagation();
-    setThumbnail((prev) => ({ ...prev, new: null }));
-    if (thumbnail.old) setThumbnail((prev) => ({ ...prev, old: null }));
+    if (thumbnail.previewUrl) URL.revokeObjectURL(thumbnail.previewUrl);
+    setThumbnail({ old: null, new: null });
     fileInputRef.current.value = "";
   };
 
@@ -73,19 +80,19 @@ const PostForm = ({ post }) => {
         if (data.excerpt !== post.excerpt) postData.excerpt = data.excerpt;
         if (data.content !== post.content) postData.content = data.content;
 
-        if (post.thumbnail && !file) {
+        if (thumbnail.old === null && post.thumbnail) {
           await storageService.deleteFile(post.thumbnail);
           postData.thumbnail = "";
-        } else if (file) {
-          postData.thumbnail = file.$id;
         }
+
+        if (file) postData.thumbnail = file.$id;
 
         const updatedPost = await databaseService.updatePost(
           post.$id,
           postData
         );
-        dispatch(removePost(post.$id));
-        dispatch(addPost(updatedPost));
+
+        if (isPostsAlreadyFetched) dispatch(updatePost(updatedPost));
         navigate(`/post/${updatedPost.$id}`);
       } else {
         const postData = {
@@ -97,7 +104,7 @@ const PostForm = ({ post }) => {
         };
 
         const newPost = await databaseService.createPost(postData);
-        dispatch(addPost(newPost));
+        if (isPostsAlreadyFetched) dispatch(addPost(newPost));
         navigate(`/post/${newPost.$id}`);
       }
     } catch (error) {
@@ -134,10 +141,6 @@ const PostForm = ({ post }) => {
         placeholder="Enter post title"
         {...register("title", {
           required: true,
-          minLength: {
-            value: 15,
-            message: "Post title must be at least 14 characters",
-          },
           maxLength: {
             value: 150,
             message: "Post title must be less than 150 characters",
@@ -150,10 +153,6 @@ const PostForm = ({ post }) => {
         placeholder="Enter post excerpt"
         {...register("excerpt", {
           required: true,
-          minLength: {
-            value: 15,
-            message: "Post excerpt must be at least 16 characters",
-          },
           maxLength: {
             value: 300,
             message: "Post excerpt must be less than 300 characters",
@@ -201,7 +200,7 @@ const PostForm = ({ post }) => {
               <img
                 src={
                   thumbnail.new
-                    ? URL.createObjectURL(thumbnail.new)
+                    ? thumbnail.previewUrl
                     : storageService.getFilePreview(thumbnail.old)
                 }
                 alt="Post Thumbnail"
