@@ -5,30 +5,37 @@ import useAuth from "./hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { logout } from "./store/authSlice";
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const { isLoggedIn, getUser } = useAuth();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const checkSession = async () => {
+      if (!isLoggedIn) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        if (isLoggedIn) await getUser();
+        await getUser();
       } catch (error) {
         if (error.message === "User (role: guests) missing scope (account)") {
-          alert("Session expired. Please login again.");
+          alert("Session expired, logging out...");
           dispatch(logout());
-          navigate("/login");
+          navigate("/login", { replace: true });
         } else {
-          alert(error.message);
+          console.error("Error fetching user:", error);
+          alert(
+            "An error occurred while fetching user data. Please try again."
+          );
         }
-        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    checkSession();
   }, []);
 
   return (
@@ -44,5 +51,5 @@ function App() {
       <Footer />
     </>
   );
-}
+};
 export default App;
