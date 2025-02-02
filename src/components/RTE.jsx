@@ -12,13 +12,6 @@ export default function RTE({
 }) {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div
       className={`w-full relative${
@@ -83,6 +76,7 @@ export default function RTE({
                 content_style:
                   "body { font-size:18px; } * { margin: 0; box-sizing: border-box;}",
               }}
+              onInit={() => setLoading(false)}
               onEditorChange={onChange}
             />
           )}
