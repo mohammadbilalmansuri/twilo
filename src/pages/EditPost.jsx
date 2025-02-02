@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PostForm } from "../components";
+import { PostForm, Loader } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
@@ -12,9 +12,11 @@ const EditPost = () => {
   const { userData } = useAuth();
   const posts = useSelector((state) => state.post.posts);
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
+      setLoading(true);
       let currentPost = posts.find((post) => post.$id === id);
       if (!currentPost) {
         try {
@@ -31,10 +33,18 @@ const EditPost = () => {
       } else {
         navigate("/posts");
       }
+      setLoading(false);
     };
 
     fetchPost();
   }, [id, posts, userData, navigate]);
+
+  if (loading)
+    return (
+      <div className="max-w min-h relative flex flex-col items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   if (!post) return null;
 
