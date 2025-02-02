@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <footer className="w-full relative flex flex-col items-center px-4">
       <div className="max-w relative h-14 p-3 flex justify-between items-center border-1.5 border-black/10 border-b-0 rounded-t-xl">
-        <p className="leading-tight">©2025 Twilo | All Rights Reserved.</p>
+        <p className="text-lg">©2025 Twilo | All Rights Reserved.</p>
 
         <div className="flex gap-4 items-center">
           <a

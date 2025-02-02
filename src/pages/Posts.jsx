@@ -59,7 +59,7 @@ const Posts = () => {
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center">
           <Loader />
         </div>
-      ) : !noPosts ? (
+      ) : noPosts ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center text-center gap-6">
           <h2 className="text-center text-4xl leading-tight font-bold">
             No posts available at the moment
