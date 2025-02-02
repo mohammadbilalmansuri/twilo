@@ -59,15 +59,15 @@ const Posts = () => {
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center">
           <Loader />
         </div>
-      ) : noPosts ? (
-        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-6">
-          <h2 className="text-center text-3xl leading-tight font-bold">
+      ) : !noPosts ? (
+        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center text-center gap-6">
+          <h2 className="text-center text-4xl leading-tight font-bold">
             No posts available at the moment
           </h2>
-          <h3 className="text-2xl leading-tight text-black/60">
+          <h3 className="text-2xl max-w-md leading-tight text-black/60">
             Be the first to create one!
           </h3>
-          <Button className="mt-2" as="link" to="/create-post">
+          <Button as="link" to="/create-post" size="lg" className="mt-2">
             Create Post
           </Button>
         </div>
@@ -88,9 +88,9 @@ const Posts = () => {
             </div>
           )}
 
-          {!hasMore && (
+          {!hasMore && posts.length > 0 && (
             <p className="text-center text-black/60 text-lg pt-6">
-              No more posts
+              You've reached the end of the posts. Stay tuned for more updates!
             </p>
           )}
 
