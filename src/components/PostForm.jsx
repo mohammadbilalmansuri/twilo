@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
-import { addPost, updatePost, removePost } from "../store/postSlice";
+import { addPost, removePost } from "../store/postSlice";
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
 
@@ -14,7 +14,10 @@ const PostForm = ({ post }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [thumbnail, setThumbnail] = useState({
+    old: post?.thumbnail || null,
+    new: null,
+  });
 
   const {
     register,
@@ -30,15 +33,18 @@ const PostForm = ({ post }) => {
     },
   });
 
-  const handleFileChange = (file) => {
-    if (!file) return;
-    if (error === "File size exceeds the 10MB limit.") setError("");
-    if (file.size > 10 * 1024 * 1024) {
-      alert("File size exceeds the 10MB limit.");
-      return;
-    }
-    setSelectedFile(file);
-  };
+  const handleFileChange = useCallback(
+    (file) => {
+      if (!file) return;
+      if (error === "File size exceeds the 10MB limit.") setError("");
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size exceeds the 10MB limit.");
+        return;
+      }
+      setThumbnail((prev) => ({ ...prev, new: file }));
+    },
+    [error]
+  );
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -48,7 +54,8 @@ const PostForm = ({ post }) => {
 
   const removeThumbnail = (e) => {
     e.stopPropagation();
-    setSelectedFile(null);
+    setThumbnail((prev) => ({ ...prev, new: null }));
+    if (thumbnail.old) setThumbnail((prev) => ({ ...prev, old: null }));
     fileInputRef.current.value = "";
   };
 
@@ -56,25 +63,30 @@ const PostForm = ({ post }) => {
     setLoading(true);
     setError("");
     try {
-      const file = selectedFile
-        ? await storageService.uploadFile(selectedFile)
+      const file = thumbnail.new
+        ? await storageService.uploadFile(thumbnail.new)
         : null;
 
       if (post) {
-        file && storageService.deleteFile(post.thumbnail);
-        const postData = {
-          ...data,
-          thumbnail: file ? file.$id : undefined,
-        };
+        const postData = {};
+        if (data.title !== post.title) postData.title = data.title;
+        if (data.excerpt !== post.excerpt) postData.excerpt = data.excerpt;
+        if (data.content !== post.content) postData.content = data.content;
+
+        if (post.thumbnail && !file) {
+          await storageService.deleteFile(post.thumbnail);
+          postData.thumbnail = "";
+        } else if (file) {
+          postData.thumbnail = file.$id;
+        }
+
         const updatedPost = await databaseService.updatePost(
           post.$id,
           postData
         );
-        if (updatedPost) {
-          dispatch(removePost(post.$id));
-          dispatch(updatePost(updatedPost));
-          navigate(`/post/${updatedPost.$id}`);
-        }
+        dispatch(removePost(post.$id));
+        dispatch(addPost(updatedPost));
+        navigate(`/post/${updatedPost.$id}`);
       } else {
         const postData = {
           title: data.title,
@@ -95,7 +107,7 @@ const PostForm = ({ post }) => {
     }
   };
 
-  const renderErrors = () => {
+  const renderErrors = useMemo(() => {
     const errorMessages = [
       errors?.title?.message,
       errors?.excerpt?.message,
@@ -108,7 +120,7 @@ const PostForm = ({ post }) => {
     return errorMessages.length ? (
       <p className="text-red text-center pt-2">{errorMessages}</p>
     ) : null;
-  };
+  }, [errors, error]);
 
   return (
     <form
@@ -172,12 +184,12 @@ const PostForm = ({ post }) => {
             onDrop={handleDrop}
             onClick={() => fileInputRef.current.click()}
             className={`size-full text-lg cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-3 ${
-              selectedFile || post?.thumbnail
+              thumbnail.new || thumbnail.old
                 ? "text-black fill-black"
                 : "text-black/50 fill-black/50"
             }`}
           >
-            {!selectedFile && !post?.thumbnail ? (
+            {!thumbnail.new && !thumbnail.old ? (
               <svg
                 viewBox="0 0 512 512"
                 className="size-7 min-w-fit pl-3"
@@ -188,9 +200,9 @@ const PostForm = ({ post }) => {
             ) : (
               <img
                 src={
-                  selectedFile
-                    ? URL.createObjectURL(selectedFile)
-                    : storageService.getFilePreview(post?.thumbnail)
+                  thumbnail.new
+                    ? URL.createObjectURL(thumbnail.new)
+                    : storageService.getFilePreview(thumbnail.old)
                 }
                 alt="Post Thumbnail"
                 className="h-full w-auto object-cover rounded-lg"
@@ -198,16 +210,16 @@ const PostForm = ({ post }) => {
             )}
 
             <span className="w-full overflow-hidden text-nowrap text-ellipsis">
-              {!selectedFile && !post?.thumbnail
+              {!thumbnail.new && !thumbnail.old
                 ? "Select or drop post thumbnail"
-                : selectedFile
-                ? selectedFile.name
-                : post?.thumbnail}
+                : thumbnail.new
+                ? thumbnail.new.name
+                : thumbnail.old}
             </span>
 
-            {(selectedFile || post?.thumbnail) && (
+            {(thumbnail.new || thumbnail.old) && (
               <button
-                id="remove-thumbnail"
+                type="button"
                 className="min-w-fit p-1 rounded-md z-10 bg-black/5 hover:bg-black/10 active:scale-90 mr-3"
                 onClick={removeThumbnail}
               >
@@ -240,7 +252,7 @@ const PostForm = ({ post }) => {
         </Button>
       </div>
 
-      {renderErrors()}
+      {renderErrors}
     </form>
   );
 };

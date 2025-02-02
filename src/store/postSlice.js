@@ -14,7 +14,7 @@ const postSlice = createSlice({
       state.posts = action.payload;
     },
     addPost: (state, action) => {
-      state.posts.push(action.payload);
+      state.posts = [action.payload, ...state.posts];
     },
     removePost: (state, action) => {
       state.posts = state.posts.filter(
