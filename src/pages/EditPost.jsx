@@ -9,13 +9,15 @@ import { databaseService } from "../appwrite";
 const EditPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { userData } = useAuth();
+  const { userData, isLoggedIn } = useAuth();
   const posts = useSelector((state) => state.post.posts);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
+      if (!isLoggedIn) return;
+
       setLoading(true);
       let currentPost = posts.find((post) => post.$id === id);
       if (!currentPost) {
@@ -37,7 +39,7 @@ const EditPost = () => {
     };
 
     fetchPost();
-  }, [id, posts, userData, navigate]);
+  }, [id, posts, userData, navigate, isLoggedIn]);
 
   if (loading)
     return (
