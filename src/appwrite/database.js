@@ -109,8 +109,8 @@ export class DatabaseService {
   // Post related methods
 
   async createPost({ title, excerpt, content, thumbnail, owner }) {
-    if (!title || !content || !owner) {
-      throw new Error("Title, excerpt, content, owner ID are required.");
+    if (!title || !excerpt || !owner) {
+      throw new Error("Title, excerpt, owner ID are required.");
     }
 
     try {
