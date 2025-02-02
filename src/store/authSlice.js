@@ -10,8 +10,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action) => {
-      const { emailVerification, ...rest } = action.payload;
+    login: (state, { payload }) => {
+      const { emailVerification, ...rest } = payload;
 
       if (!state.status) {
         state.status = true;
