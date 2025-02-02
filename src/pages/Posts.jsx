@@ -74,11 +74,7 @@ const Posts = () => {
       ) : (
         <div className="max-w relative py-4 flex flex-col">
           <Masonry
-            breakpointCols={{
-              default: 2,
-              660: 1,
-            }}
-            className="flex gap-4"
+            className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1"
             columnClassName="masonry-column"
           >
             {posts.map((post) => (
