@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  status: false,
+  cursor: null,
   posts: [],
 };
 
@@ -10,7 +10,8 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, { payload }) => {
-      state.status = true;
+      if (payload.length === 0) return;
+      state.cursor = payload[payload.length - 1].$id;
       state.posts = payload;
     },
     addPost: (state, { payload }) => {
@@ -24,7 +25,7 @@ const postSlice = createSlice({
       if (index !== -1) state.posts[index] = payload;
     },
     cleanPosts: (state) => {
-      state.status = false;
+      state.cursor = null;
       state.posts = [];
     },
   },
