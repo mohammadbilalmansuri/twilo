@@ -72,7 +72,7 @@ const Posts = () => {
           </Button>
         </div>
       ) : (
-        <div className="max-w relative py-4 flex flex-col gap-4">
+        <div className="max-w relative py-4 flex flex-col">
           <Masonry
             breakpointCols={{
               default: 2,
@@ -87,16 +87,18 @@ const Posts = () => {
           </Masonry>
 
           {loading && (
-            <div className="flex justify-center items-center py-4">
+            <div className="flex justify-center items-center pt-6">
               <Loader />
             </div>
           )}
 
-          <div ref={ref} className="h-2"></div>
-
           {!hasMore && (
-            <p className="text-center text-black/60 text-lg">No more posts</p>
+            <p className="text-center text-black/60 text-lg pt-6">
+              No more posts
+            </p>
           )}
+
+          <div ref={ref} className="h-2"></div>
         </div>
       )}
     </>
