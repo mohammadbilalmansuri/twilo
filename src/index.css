@@ -53,6 +53,7 @@
   }
 
   .masonry-column {
+    width: 100% !important;
     @apply flex flex-col gap-4;
   }
 }
