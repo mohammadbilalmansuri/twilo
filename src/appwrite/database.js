@@ -179,9 +179,11 @@ export class DatabaseService {
     }
   }
 
-  async getPosts(limit, cursor) {
+  async getPosts({ userId = null, limit, cursor }) {
     try {
       const queries = [Query.orderDesc("$createdAt")];
+
+      if (userId) queries.push(Query.equal("owner", userId));
       if (limit) queries.push(Query.limit(limit));
       if (cursor) queries.push(Query.cursorAfter(cursor));
 
@@ -192,30 +194,6 @@ export class DatabaseService {
       );
     } catch (error) {
       console.error("Appwrite :: getPosts :: ", error.message);
-      throw error;
-    }
-  }
-
-  async getPostsByUser(userId, limit, cursor) {
-    if (!userId) {
-      throw new Error("User ID is required.");
-    }
-
-    try {
-      const queries = [
-        Query.equal("owner", userId),
-        Query.orderDesc("$updatedAt"),
-      ];
-      if (limit) queries.push(Query.limit(limit));
-      if (cursor) queries.push(Query.cursorAfter(cursor));
-
-      return await this.databases.listDocuments(
-        config.appwriteDatabaseId,
-        config.appwritePostsCollectionId,
-        queries
-      );
-    } catch (error) {
-      console.error("Appwrite :: getPostsByUser :: ", error.message);
       throw error;
     }
   }
