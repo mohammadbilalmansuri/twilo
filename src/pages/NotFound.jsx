@@ -1,7 +1,7 @@
 import { Button } from "../components";
 import { Helmet } from "react-helmet-async";
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <>
       <Helmet>
@@ -13,9 +13,9 @@ export default function NotFound() {
           <h2 className="text-8xl font-zen-dots text-blue tracking-wider">
             4O4
           </h2>
-          <h1 className="text-4xl font-bold leading-tight">
+          <h3 className="text-4xl font-bold leading-tight">
             Opps! Page Not Found
-          </h1>
+          </h3>
           <Button style={2} size="lg" as="link" to="/" className="mt-4">
             Go To Home
           </Button>
@@ -23,4 +23,4 @@ export default function NotFound() {
       </div>
     </>
   );
-}
+};
