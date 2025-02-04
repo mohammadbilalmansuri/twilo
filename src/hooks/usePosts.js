@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { databaseService } from "../appwrite";
 import { useAuth } from ".";
 import { setPosts } from "../store/postSlice";
@@ -7,12 +7,12 @@ import { setPosts } from "../store/postSlice";
 const usePosts = () => {
   const dispatch = useDispatch();
   const { isLoggedIn, userData } = useAuth();
+  const { posts, cursor } = useSelector((state) => ({
+    posts: state.post.posts,
+    cursor: state.post.cursor,
+  }));
 
-  const isPostSFetched = useSelector((state) => state.post.cursor !== null);
-  const posts = useSelector((state) => state.post.posts);
-  const cursor = useSelector((state) => state.post.cursor);
-
-  const [state, setState] = useState({
+  const [postsState, setPostsState] = useState({
     loading: false,
     hasMore: true,
     noPosts: false,
@@ -21,8 +21,8 @@ const usePosts = () => {
 
   const fetchPosts = useCallback(
     async ({ userId = null, limit = 20 } = {}) => {
-      if (!isLoggedIn || !state.hasMore || state.loading) return;
-      setState((prev) => ({ ...prev, loading: true }));
+      if (!isLoggedIn || !postsState.hasMore || postsState.loading) return;
+      setPostsState((prev) => ({ ...prev, loading: true }));
 
       try {
         const response = await databaseService.getPosts({
@@ -31,7 +31,7 @@ const usePosts = () => {
           cursor,
         });
 
-        setState((prev) => ({
+        setPostsState((prev) => ({
           ...prev,
           hasMore: posts.length < response.total,
           noPosts: response.total === 0,
@@ -41,44 +41,69 @@ const usePosts = () => {
           dispatch(setPosts([...posts, ...response.documents]));
         }
       } catch (error) {
-        setState((prev) => ({ ...prev, error: error.message }));
+        setPostsState((prev) => ({ ...prev, error: error.message }));
         throw error;
       } finally {
-        setState((prev) => ({ ...prev, loading: false }));
+        setPostsState((prev) => ({ ...prev, loading: false }));
       }
     },
-    [isLoggedIn, state.hasMore, state.loading, cursor, dispatch, posts]
+    [
+      isLoggedIn,
+      postsState.hasMore,
+      postsState.loading,
+      cursor,
+      dispatch,
+      posts,
+    ]
   );
 
-  const fetchPost = useCallback(
-    async (id) => {
-      if (!isLoggedIn) return null;
+  const [postState, setPostState] = useState({
+    loading: false,
+    error: null,
+    isOwner: false,
+  });
 
-      const post = posts.find((post) => post.$id === id);
-      if (post) return post;
+  const getPost = useCallback(
+    async (id) => {
+      if (!isLoggedIn) return;
+      setPostState((prev) => ({ ...prev, loading: true }));
 
       try {
-        return await databaseService.getPost(id);
+        const post = posts.find((post) => post.$id === id);
+        if (post) {
+          setPostState((prev) => ({
+            ...prev,
+            isOwner: post.owner.$id === userData.$id,
+          }));
+          return post;
+        }
+
+        const fetchedPost = await databaseService.getPost(id);
+        setPostState((prev) => ({
+          ...prev,
+          isOwner: fetchedPost.owner.$id === userData.$id,
+        }));
+        return fetchedPost;
       } catch (error) {
+        setPostState((prev) => ({ ...prev, error: error.message }));
         throw error;
+      } finally {
+        setPostState((prev) => ({ ...prev, loading: false }));
       }
     },
-    [posts, isLoggedIn]
+    [posts, isLoggedIn, userData]
   );
 
-  const isPostAuthor = useCallback(
-    (post) => (post && userData ? post.owner.$id === userData.$id : false),
-    [userData]
-  );
+  const isPostsFetched = useMemo(() => posts.length > 0, [posts]);
 
   return {
-    isPostSFetched,
+    isPostsFetched,
     posts,
     cursor,
-    fetchPost,
     fetchPosts,
-    state,
-    isPostAuthor,
+    postsState,
+    getPost,
+    postState,
   };
 };
 
