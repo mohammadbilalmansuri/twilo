@@ -3,9 +3,11 @@ const Loader = ({ size = "md", color = "blue" }) => {
     blue: "fill-blue",
     white: "fill-white",
     black: "fill-black",
+    red: "fill-red",
   };
 
   const sizes = {
+    xs: "size-4",
     sm: "size-6",
     md: "size-12",
     lg: "size-16",
