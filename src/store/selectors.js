@@ -1,5 +1,4 @@
 import { createSelector } from "reselect";
-
 const selectAuthState = (state) => state.auth;
 const selectPostState = (state) => state.post;
 
