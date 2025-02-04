@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "../components";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks";
 
 const Header = () => {
   const { isLoggedIn, isVerified, userData, logoutUser } = useAuth();

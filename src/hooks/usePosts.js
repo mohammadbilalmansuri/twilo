@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useCallback } from "react";
 import { databaseService } from "../appwrite";
-import useAuth from "./useAuth";
+import { useAuth } from ".";
 import { setPosts } from "../store/postSlice";
 
 const usePosts = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Loader } from "./components";
-import useAuth from "./hooks/useAuth";
+import { useAuth } from "./hooks";
 
 const Protect = ({ children, authentication = true }) => {
   const navigate = useNavigate();

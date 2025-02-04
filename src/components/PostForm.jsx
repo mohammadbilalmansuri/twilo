@@ -5,7 +5,7 @@ import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
 import { addPost, updatePost } from "../store/postSlice";
 import { useForm } from "react-hook-form";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks";
 
 const PostForm = ({ post }) => {
   const dispatch = useDispatch();
@@ -19,7 +19,8 @@ const PostForm = ({ post }) => {
     new: null,
     previewUrl: null,
   });
-  const isPostsAlreadyFetched = useSelector((state) => state.post.status);
+  const isPostsAlreadyFetched =
+    useSelector((state) => state.post.cursor) !== null;
 
   const {
     register,
