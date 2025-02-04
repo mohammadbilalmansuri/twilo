@@ -1,39 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import { Header, Footer, Loader } from "./components";
-import { useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "./hooks";
-import { useDispatch } from "react-redux";
-import { logout } from "./store/authSlice";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { isLoggedIn, getUser } = useAuth();
+  const { checkSession, checkingSession, sessionError } = useAuth();
 
   useEffect(() => {
-    const checkSession = async () => {
-      if (!isLoggedIn) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        await getUser();
-      } catch (error) {
-        if (error.message === "User (role: guests) missing scope (account)") {
-          setError("Session expired, logging out...");
-          dispatch(logout());
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-          navigate("/login", { replace: true });
-        } else {
-          setError(error.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
     checkSession();
   }, []);
 
@@ -42,11 +15,11 @@ const App = () => {
       <Header />
       <main
         className={`w-full relative flex flex-col items-center px-4 min-h mt-16${
-          loading ? " justify-center gap-6" : ""
+          checkingSession ? " justify-center gap-6" : ""
         }`}
       >
-        {loading ? <Loader /> : <Outlet />}
-        {error && <p className="text-lg">{error}</p>}
+        {checkingSession ? <Loader /> : <Outlet />}
+        {sessionError && <p className="text-lg">{sessionError}</p>}
       </main>
       <Footer />
     </>

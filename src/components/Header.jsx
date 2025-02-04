@@ -1,10 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { Button, Loader } from "../components";
-import { useAuthState, useLogout } from "../hooks";
+import { useAuth } from "../hooks";
 
 const Header = () => {
-  const { isLoggedIn, isVerified, userData } = useAuthState();
-  const { logoutUser, loggingOut } = useLogout();
+  const { isLoggedIn, isVerified, userData, logoutUser, loggingOut } =
+    useAuth();
 
   return (
     <header className="w-full fixed top-0 z-50 flex flex-col items-center px-4">
