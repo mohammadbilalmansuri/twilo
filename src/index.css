@@ -51,11 +51,6 @@
   .icon {
     @apply transition-all active:scale-90 rounded-lg size-8 flex flex-col items-center justify-center;
   }
-
-  .masonry-column {
-    width: 100% !important;
-    @apply flex flex-col gap-4;
-  }
 }
 
 @tailwind utilities;
