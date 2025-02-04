@@ -3,7 +3,6 @@ import Button from "./Button";
 import Header from "./Header";
 import Footer from "./Footer";
 import PostCard from "./PostCard";
-import PostCardUser from "./PostCardUser";
 import Input from "./Input";
 import PostForm from "./PostForm";
 import RTE from "./RTE";
@@ -16,7 +15,6 @@ export {
   Header,
   Footer,
   PostCard,
-  PostCardUser,
   Input,
   PostForm,
   RTE,

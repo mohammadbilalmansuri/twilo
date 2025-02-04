@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import storageService from "../appwrite/storage";
 import formatTime from "../utils/formatTime";
 
-const PostCard = ({ $id, title, excerpt, thumbnail, owner, $updatedAt }) => {
+const PostCard = ({ $id, title, excerpt, thumbnail, owner, $createdAt }) => {
   const navigate = useNavigate();
 
   return (
@@ -22,7 +22,7 @@ const PostCard = ({ $id, title, excerpt, thumbnail, owner, $updatedAt }) => {
           {owner.name}
         </button>
 
-        <p className="leading-tight">{formatTime($updatedAt)}</p>
+        <p className="leading-tight">{formatTime($createdAt)}</p>
       </div>
 
       <h3 className="text-lg font-medium leading-tight">{title}</h3>
