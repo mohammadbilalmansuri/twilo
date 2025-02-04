@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Loader } from "./components";
-import { useAuthState } from "./hooks";
+import { useAuth } from "./hooks";
 
 const Protect = ({ children, authentication = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const { isLoggedIn, isVerified } = useAuthState();
+  const { isLoggedIn, isVerified } = useAuth();
 
   useEffect(() => {
     if (authentication) {
