@@ -1,9 +1,6 @@
-import { useEffect, useRef, useState, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
-import { PostCard, Loader, Button } from "../components";
-import Masonry from "react-masonry-css";
-import usePosts from "../hooks/usePosts";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import { Loader, Button, PostMasonry } from "../components";
+import { usePosts, useIntersectionObserver } from "../hooks";
 
 const Posts = () => {
   const { posts, fetchPosts, state } = usePosts();
@@ -47,14 +44,7 @@ const Posts = () => {
         </div>
       ) : (
         <div className="max-w relative py-4 flex flex-col">
-          <Masonry
-            breakpointCols={{ default: 2, 660: 1 }}
-            className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1"
-            columnClassName="masonry-column"
-          >
-            {posts.length > 0 &&
-              posts.map((post) => <PostCard key={post.$id} {...post} />)}
-          </Masonry>
+          <PostMasonry posts={posts} />
 
           {state.loading && (
             <div className="flex justify-center items-center pt-6">
