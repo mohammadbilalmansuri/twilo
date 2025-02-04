@@ -57,7 +57,7 @@ const Header = () => {
               )}
 
               <button
-                className="icon bg-black/5 fill-black hover:bg-black/10"
+                className="icon bg-black/5 fill-black hover:fill-red"
                 onClick={logoutUser}
               >
                 <svg
