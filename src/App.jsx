@@ -22,11 +22,14 @@ const App = () => {
       try {
         await getUser();
       } catch (error) {
-        setError("Session expired, logging out...");
-        dispatch(logout());
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        navigate("/login", { replace: true });
-        n;
+        if (error.message === "User (role: guests) missing scope (account)") {
+          setError("Session expired, logging out...");
+          dispatch(logout());
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          navigate("/login", { replace: true });
+        } else {
+          setError(error.message);
+        }
       } finally {
         setLoading(false);
       }
