@@ -44,9 +44,7 @@ const usePosts = () => {
         setState((prev) => ({ ...prev, error: error.message }));
         throw error;
       } finally {
-        console.log("Setting loading to false");
         setState((prev) => ({ ...prev, loading: false }));
-        console.log(state.loading);
       }
     },
     [isLoggedIn, state.hasMore, state.loading, cursor, dispatch, posts]
