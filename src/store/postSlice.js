@@ -10,7 +10,6 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, { payload }) => {
-      if (payload.length === 0) return;
       state.cursor = payload[payload.length - 1].$id;
       state.posts = payload;
     },
