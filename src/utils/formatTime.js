@@ -1,4 +1,4 @@
-const useFormatTime = (time) => {
+const formatTime = (time) => {
   const now = new Date();
   const postTime = new Date(time);
   const diffMilliseconds = now - postTime;
@@ -12,7 +12,6 @@ const useFormatTime = (time) => {
   if (diffSeconds < 60) return `${diffSeconds}s ago`;
   if (diffMinutes < 60) return `${diffMinutes}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays === 1) return `Yesterday`;
   if (diffDays < 7) return `${diffDays}d ago`;
 
   const options = { month: "short", day: "numeric" };
@@ -24,4 +23,4 @@ const useFormatTime = (time) => {
   });
 };
 
-export default useFormatTime;
+export default formatTime;
