@@ -1,50 +1,18 @@
-import { useEffect, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
-import { useInView } from "react-intersection-observer";
-import { databaseService } from "../appwrite";
-import { setPosts } from "../store/postSlice";
 import { PostCard, Loader, Button } from "../components";
 import Masonry from "react-masonry-css";
+import usePosts from "../hooks/usePosts";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
 
 const Posts = () => {
-  const dispatch = useDispatch();
-  const posts = useSelector((state) => state.post.posts);
-  const cursor = useSelector((state) => state.post.cursor);
-  const [state, setState] = useState({
-    loading: false,
-    hasMore: true,
-    noPosts: false,
-  });
-  const [error, setError] = useState(null);
-  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.5 });
-
-  const fetchPosts = useCallback(async () => {
-    if (!state.hasMore || state.loading) return;
-    setState((prevState) => ({ ...prevState, loading: true }));
-
-    try {
-      const response = await databaseService.getPosts(10, cursor);
-      if (response.documents.length > 0) {
-        dispatch(setPosts([...posts, ...response.documents]));
-      } else {
-        setState((prevState) => ({
-          ...prevState,
-          hasMore: false,
-          noPosts: response.total === 0,
-        }));
-      }
-    } catch (error) {
-      setError(error.message);
-      console.error("Failed to fetch posts", error);
-    } finally {
-      setState((prevState) => ({ ...prevState, loading: false }));
-    }
-  }, [cursor, dispatch, posts, state.hasMore, state.loading]);
-
-  useEffect(() => {
-    if (posts.length === 0 || (inView && state.hasMore)) fetchPosts();
-  }, [inView, fetchPosts, posts.length, state.hasMore]);
+  const { posts, fetchPosts, state } = usePosts();
+  const ref = useIntersectionObserver(
+    () => {
+      if (posts.length === 0 || state.hasMore) fetchPosts();
+    },
+    { threshold: 0.5 }
+  );
 
   return (
     <>
@@ -52,9 +20,11 @@ const Posts = () => {
         <title>Twilo - Write. Share. Explore. Connect.</title>
       </Helmet>
 
-      {error ? (
+      {state.error ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-4 text-center">
-          <h3 className="text-3xl font-semibold leading-normal">{error}</h3>
+          <h3 className="text-3xl font-semibold leading-normal">
+            {state.error}
+          </h3>
           <p className="text-lg text-black/60">
             Please try again or re-login if the issue persists
           </p>
@@ -76,33 +46,32 @@ const Posts = () => {
           </Button>
         </div>
       ) : (
-        <div className="max-w relative pt-4 pb-6 flex flex-col gap-6">
+        <div className="max-w relative py-4 flex flex-col">
           <Masonry
             breakpointCols={{ default: 2, 660: 1 }}
             className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1"
             columnClassName="masonry-column"
           >
             {posts.length > 0 &&
-              posts.map((post, index) => {
-                if (index === posts.length - 1) {
-                  return <PostCard ref={ref} key={post.$id} {...post} />;
-                } else {
-                  return <PostCard key={post.$id} {...post} />;
-                }
-              })}
+              posts.map((post) => <PostCard key={post.$id} {...post} />)}
           </Masonry>
 
           {state.loading && (
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center pt-6">
               <Loader />
             </div>
           )}
 
           {!state.hasMore && posts.length > 0 && (
-            <p className="text-center text-black/60 text-lg">
+            <p className="text-center text-black/60 text-lg pt-6">
               You've reached the end of the posts. Stay tuned for more updates!
             </p>
           )}
+
+          <div
+            ref={ref}
+            className="opacity-0 h-2 w-full relative pointer-events-none"
+          ></div>
         </div>
       )}
     </>
