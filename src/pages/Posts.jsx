@@ -3,7 +3,7 @@ import { Loader, Button, PostMasonry } from "../components";
 import { usePosts, useIntersectionObserver } from "../hooks";
 
 const Posts = () => {
-  const { posts, fetchPosts, state } = usePosts();
+  const { posts, fetchPosts, postsState: state } = usePosts();
   const ref = useIntersectionObserver(
     () => {
       if (posts.length === 0 || state.hasMore) fetchPosts();
