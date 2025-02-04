@@ -1,6 +1,6 @@
 import { Button } from "../components";
 
-function Home() {
+const Home = () => {
   return (
     <div className="max-w min-h flex flex-col items-center justify-center">
       <div className="w-full relative py-8 flex flex-col items-center gap-6 text-center">
@@ -22,6 +22,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
