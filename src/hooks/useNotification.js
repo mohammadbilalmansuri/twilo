@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectNotification } from "../store/selectors";
-import {
-  openNotification,
-  closeNotification,
-} from "../store/notificationSlice";
+import { open, close } from "../store/notificationSlice";
 
 const useNotification = () => {
   const dispatch = useDispatch();
@@ -13,22 +10,22 @@ const useNotification = () => {
   useEffect(() => {
     if (notification.isOpen) {
       const timer = setTimeout(() => {
-        dispatch(closeNotification());
-      }, 5000);
+        dispatch(close());
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [notification, dispatch]);
 
-  const open = (content) => {
-    if (notification.isOpen) dispatch(closeNotification());
-    dispatch(openNotification(content));
+  const notify = ({ type = "success", message = "" }) => {
+    if (notification.isOpen) dispatch(close());
+    dispatch(open({ type, message }));
   };
 
-  const close = () => {
-    if (notification.isOpen) dispatch(closeNotification());
+  const closeNotification = () => {
+    if (notification.isOpen) dispatch(close());
   };
 
-  return { notification, open, close };
+  return { notification, notify, closeNotification };
 };
 
 export default useNotification;

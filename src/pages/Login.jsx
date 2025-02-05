@@ -13,35 +13,32 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors: formErrors },
   } = useForm();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const loginSubmit = async (data) => {
-    setIsLoading(true);
-    setServerError("");
+    setLoading(true);
+    setError("");
     try {
       const userData = await authService.loginUser(data);
       dispatch(login(userData));
-      if (userData.emailVerification) {
-        navigate("/posts");
-      } else {
-        navigate("/verify");
-      }
+      userData.emailVerification
+        ? navigate("/posts", { replace: true })
+        : navigate("/varify", { replace: true });
     } catch (err) {
-      setServerError(err?.message || "Something went wrong. Please try again.");
+      setError(err?.message || "Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const renderErrors = () => {
     const errorMessages = [
-      errors?.email?.message,
-      errors?.password?.message,
-      serverError,
+      formErrors?.email?.message,
+      formErrors?.password?.message,
+      error,
     ]
       .filter(Boolean)
       .join(", ");
@@ -72,7 +69,7 @@ const Login = () => {
         <form
           id="loginForm"
           onSubmit={handleSubmit(loginSubmit)}
-          className="w-full max-w-sm relative flex flex-col gap-4 pt-2"
+          className="w-full max-w-sm relative flex flex-col gap-4 pt-1"
         >
           <Input
             type="email"
@@ -106,14 +103,14 @@ const Login = () => {
 
           {renderErrors()}
 
-          <Button type="submit" style={1} size="lg" disabled={isLoading}>
-            {isLoading ? <Loader size="sm" color="white" /> : "Login"}
+          <Button type="submit" style={1} size="lg" disabled={loading}>
+            {loading ? <Loader size="sm" color="white" /> : "Login"}
           </Button>
         </form>
 
         <Link
           to="/send-password-reset-link"
-          className="text-black/60 pt-2 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
+          className="text-lg text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
         >
           Forget your password?
         </Link>

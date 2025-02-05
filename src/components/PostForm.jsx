@@ -1,11 +1,11 @@
 import { useState, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
 import { addPost, updatePost } from "../store/postSlice";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../hooks";
+import { useAuth, usePosts } from "../hooks";
 
 const PostForm = ({ post }) => {
   const dispatch = useDispatch();
@@ -19,8 +19,7 @@ const PostForm = ({ post }) => {
     new: null,
     previewUrl: null,
   });
-  const isPostsAlreadyFetched =
-    useSelector((state) => state.post.cursor) !== null;
+  const { isPostsFetched } = usePosts();
 
   const {
     register,
@@ -93,7 +92,7 @@ const PostForm = ({ post }) => {
           postData
         );
 
-        if (isPostsAlreadyFetched) dispatch(updatePost(updatedPost));
+        if (isPostsFetched) dispatch(updatePost(updatedPost));
         navigate(`/post/${updatedPost.$id}`);
       } else {
         const postData = {
@@ -105,7 +104,7 @@ const PostForm = ({ post }) => {
         };
 
         const newPost = await databaseService.createPost(postData);
-        if (isPostsAlreadyFetched) dispatch(addPost(newPost));
+        if (isPostsFetched) dispatch(addPost(newPost));
         navigate(`/post/${newPost.$id}`);
       }
     } catch (error) {

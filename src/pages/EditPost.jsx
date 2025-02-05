@@ -1,59 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { PostForm, Loader } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import { useSelector } from "react-redux";
-import { databaseService } from "../appwrite";
+import { usePost } from "../hooks";
 
 const EditPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { userData, isLoggedIn } = useAuth();
-  const posts = useSelector((state) => state.post.posts);
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { post, isOwner, loading, fetchPost } = usePost(id);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      if (!isLoggedIn) return;
-
-      setLoading(true);
-      let currentPost = posts.find((post) => post.$id === id);
-      if (!currentPost) {
-        try {
-          currentPost = await databaseService.getPost(id);
-        } catch (error) {
-          console.error("Failed to fetch post:", error);
+    if (id)
+      fetchPost(id).then(() => {
+        if (!post && loading !== null) {
+          navigate("/posts");
+        } else if (!isOwner) {
+          navigate(`/post/${id}`);
         }
-      }
+      });
+  }, [id, fetchPost, post, loading, navigate]);
 
-      if (!currentPost) {
-        navigate("/posts");
-      } else if (currentPost.owner.$id === userData.$id) {
-        setPost(currentPost);
-      } else {
-        navigate("/posts");
-      }
-      setLoading(false);
-    };
-
-    fetchPost();
-  }, [id, posts, userData, navigate, isLoggedIn]);
-
-  if (loading)
+  if (loading) {
     return (
       <div className="max-w min-h relative flex flex-col items-center justify-center">
         <Loader />
       </div>
     );
+  }
 
-  if (!post) return null;
-
-  return (
+  return post && isOwner ? (
     <>
       <Helmet>
-        <title>Edit Post - {post?.title} - Twilo</title>
+        <title>Edit Post - {String(post?.title)} - Twilo</title>
       </Helmet>
 
       <div className="max-w relative py-8 flex flex-col items-center gap-8">
@@ -61,7 +39,7 @@ const EditPost = () => {
         <PostForm post={post} />
       </div>
     </>
-  );
+  ) : null;
 };
 
 export default EditPost;

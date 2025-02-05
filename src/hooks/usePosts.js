@@ -1,28 +1,24 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { databaseService } from "../appwrite";
-import { useAuth } from ".";
 import { setPosts } from "../store/postSlice";
+import usePostState from "./usePostState";
 
 const usePosts = () => {
   const dispatch = useDispatch();
-  const { isLoggedIn, userData } = useAuth();
-  const { posts, cursor } = useSelector((state) => ({
-    posts: state.post.posts,
-    cursor: state.post.cursor,
-  }));
-
-  const [postsState, setPostsState] = useState({
+  const { posts, cursor } = usePostState();
+  const [state, setState] = useState({
     loading: false,
+    error: null,
     hasMore: true,
     noPosts: false,
-    error: null,
   });
 
-  const fetchPosts = useCallback(
+  const fetch = useCallback(
     async ({ userId = null, limit = 20 } = {}) => {
-      if (!isLoggedIn || !postsState.hasMore || postsState.loading) return;
-      setPostsState((prev) => ({ ...prev, loading: true }));
+      if (state.loading || !state.hasMore) return;
+
+      setState((prev) => ({ ...prev, loading: true, error: null }));
 
       try {
         const response = await databaseService.getPosts({
@@ -31,79 +27,34 @@ const usePosts = () => {
           cursor,
         });
 
-        setPostsState((prev) => ({
-          ...prev,
-          hasMore: posts.length < response.total,
-          noPosts: response.total === 0,
-        }));
-
-        if (response.documents.length > 0) {
-          dispatch(setPosts([...posts, ...response.documents]));
-        }
-      } catch (error) {
-        setPostsState((prev) => ({ ...prev, error: error.message }));
-        throw error;
-      } finally {
-        setPostsState((prev) => ({ ...prev, loading: false }));
-      }
-    },
-    [
-      isLoggedIn,
-      postsState.hasMore,
-      postsState.loading,
-      cursor,
-      dispatch,
-      posts,
-    ]
-  );
-
-  const [postState, setPostState] = useState({
-    loading: false,
-    error: null,
-    isOwner: false,
-  });
-
-  const getPost = useCallback(
-    async (id) => {
-      if (!isLoggedIn) return;
-      setPostState((prev) => ({ ...prev, loading: true }));
-
-      try {
-        const post = posts.find((post) => post.$id === id);
-        if (post) {
-          setPostState((prev) => ({
+        if (response.total === 0) {
+          setState((prev) => ({
             ...prev,
-            isOwner: post.owner.$id === userData.$id,
+            hasMore: false,
+            noPosts: true,
           }));
-          return post;
+          return;
         }
 
-        const fetchedPost = await databaseService.getPost(id);
-        setPostState((prev) => ({
+        dispatch(setPosts(response.documents));
+        setState((prev) => ({
           ...prev,
-          isOwner: fetchedPost.owner.$id === userData.$id,
+          hasMore: posts.length + response.documents.length < response.total,
+          noPosts: false,
         }));
-        return fetchedPost;
       } catch (error) {
-        setPostState((prev) => ({ ...prev, error: error.message }));
-        throw error;
+        setState((prev) => ({ ...prev, error: error.message }));
       } finally {
-        setPostState((prev) => ({ ...prev, loading: false }));
+        setState((prev) => ({ ...prev, loading: false }));
       }
     },
-    [posts, isLoggedIn, userData]
+    [cursor, dispatch, state.hasMore, state.loading]
   );
-
-  const isPostsFetched = useMemo(() => posts.length > 0, [posts]);
 
   return {
-    isPostsFetched,
     posts,
-    cursor,
-    fetchPosts,
-    postsState,
-    getPost,
-    postState,
+    state,
+    fetch,
   };
 };
 

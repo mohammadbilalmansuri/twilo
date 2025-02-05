@@ -3,13 +3,10 @@ import { Loader, Button, PostMasonry } from "../components";
 import { usePosts, useIntersectionObserver } from "../hooks";
 
 const Posts = () => {
-  const { posts, fetchPosts, postsState: state } = usePosts();
-  const ref = useIntersectionObserver(
-    () => {
-      if (posts.length === 0 || state.hasMore) fetchPosts();
-    },
-    { threshold: 0.5 }
-  );
+  const { posts, state, fetch } = usePosts();
+  const ref = useIntersectionObserver(() => {
+    if (posts.length === 0 || state.hasMore) fetch();
+  });
 
   return (
     <>
@@ -19,9 +16,7 @@ const Posts = () => {
 
       {state.error ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-4 text-center">
-          <h3 className="text-3xl font-semibold leading-normal">
-            {state.error}
-          </h3>
+          <h3 className="text-3xl font-bold leading-normal">{state.error}</h3>
           <p className="text-lg text-black/60">
             Please try again or re-login if the issue persists
           </p>
@@ -43,25 +38,27 @@ const Posts = () => {
           </Button>
         </div>
       ) : (
-        <div className="max-w relative py-4 flex flex-col">
+        <div className="max-w relative pt-4 flex flex-col">
           <PostMasonry posts={posts} />
 
           {state.loading && (
-            <div className="flex justify-center items-center pt-6">
+            <div className="flex justify-center items-center py-6">
               <Loader />
             </div>
           )}
 
           {!state.hasMore && posts.length > 0 && (
-            <p className="text-center text-black/60 text-lg pt-6">
+            <p className="text-center text-black/60 text-lg py-6">
               You've reached the end of the posts. Stay tuned for more updates!
             </p>
           )}
 
-          <div
-            ref={ref}
-            className="opacity-0 h-2 w-full relative pointer-events-none"
-          ></div>
+          {state.hasMore && (
+            <div
+              ref={ref}
+              className="w-full 0 h-1 opacity- pointer-events-none"
+            ></div>
+          )}
         </div>
       )}
     </>

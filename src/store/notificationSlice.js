@@ -2,24 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isOpen: false,
-  content: "",
+  type: "success",
+  message: "",
 };
 
 const notificationSlice = createSlice({
   name: "notification",
   initialState,
   reducers: {
-    openNotification: (state, { payload }) => {
+    open: (state, { payload }) => {
       state.isOpen = true;
-      state.content = payload;
+      state.type = payload.type;
+      state.message = payload.message;
     },
-    closeNotification: (state) => {
+    close: (state) => {
       state.isOpen = false;
-      state.content = "";
+      state.message = "";
     },
   },
 });
 
-export const { openNotification, closeNotification } =
-  notificationSlice.actions;
+export const { open, close } = notificationSlice.actions;
 export default notificationSlice.reducer;

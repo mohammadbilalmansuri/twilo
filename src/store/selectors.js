@@ -37,6 +37,7 @@ export const selectNotification = createSelector(
   [selectNotificationState],
   (notificationState) => ({
     isOpen: notificationState.isOpen,
-    content: notificationState.content,
+    type: notificationState.type,
+    message: notificationState.message,
   })
 );

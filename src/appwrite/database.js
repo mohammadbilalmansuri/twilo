@@ -1,6 +1,5 @@
 import config from "../config";
 import { Client, Databases, ID, Query } from "appwrite";
-import authService from "./auth";
 
 export class DatabaseService {
   client = new Client();
@@ -14,9 +13,9 @@ export class DatabaseService {
     this.databases = new Databases(this.client);
   }
 
-  // User related methods
+  // Profile methods
 
-  async createUser({ userId, name, email }) {
+  async createProfile({ userId, name, email }) {
     if (!userId || !name || !email) {
       throw new Error("User ID, name and email are required.");
     }
@@ -24,37 +23,37 @@ export class DatabaseService {
     try {
       await this.databases.createDocument(
         config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId,
+        config.appwriteProfilesCollectionId,
         userId,
         { name, email }
       );
       return true;
     } catch (error) {
-      console.error("Appwrite :: createUser :: ", error.message);
+      console.error("Appwrite :: createProfile :: ", error.message);
       throw error;
     }
   }
 
-  async updateUserName(userId, name) {
-    if (!userId || !name) {
-      throw new Error("User ID and name are required.");
+  async updateProfile(userId, updatedProfileData) {
+    if (!userId || !updatedProfileData) {
+      throw new Error("User ID and updated data are required.");
     }
 
     try {
       await this.databases.updateDocument(
         config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId,
+        config.appwriteProfilesCollectionId,
         userId,
-        { name }
+        updatedProfileData
       );
       return true;
     } catch (error) {
-      console.error("Appwrite :: updateUserName :: ", error.message);
+      console.error("Appwrite :: updateProfile :: ", error.message);
       throw error;
     }
   }
 
-  async getUser(userId) {
+  async getProfile(userId) {
     if (!userId) {
       throw new Error("User ID is required.");
     }
@@ -62,29 +61,11 @@ export class DatabaseService {
     try {
       return await this.databases.getDocument(
         config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId,
+        config.appwriteProfilesCollectionId,
         userId
       );
     } catch (error) {
-      console.error("Appwrite :: getUser :: ", error.message);
-      throw error;
-    }
-  }
-
-  async deleteUser(userId) {
-    if (!userId) {
-      throw new Error("User ID is required.");
-    }
-
-    try {
-      await this.databases.deleteDocument(
-        config.appwriteDatabaseId,
-        config.appwriteUsersCollectionId,
-        userId
-      );
-      return true;
-    } catch (error) {
-      console.error("Appwrite :: deleteUser :: ", error.message);
+      console.error("Appwrite :: getProfile :: ", error.message);
       throw error;
     }
   }
