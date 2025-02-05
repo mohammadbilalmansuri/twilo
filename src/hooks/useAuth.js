@@ -7,7 +7,7 @@ import {
 } from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../appwrite";
-import { logout } from "../store/authSlice";
+import { login, logout } from "../store/authSlice";
 
 const useAuth = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -18,12 +18,14 @@ const useAuth = () => {
 
   // Check Session
 
-  const [checkingSession, setCheckingSession] = useState(true);
-  const [sessionError, setSessionError] = useState(null);
+  const [session, setSession] = useState({
+    loading: true,
+    error: null,
+  });
 
   const checkSession = useCallback(async () => {
     if (!isLoggedIn) {
-      setCheckingSession(false);
+      setSession((prev) => ({ ...prev, loading: false }));
       return;
     }
 
@@ -32,17 +34,48 @@ const useAuth = () => {
       dispatch(login(user));
     } catch (error) {
       if (error.message === "User (role: guests) missing scope (account)") {
-        setSessionError("Session expired, logging out...");
+        setSession((prev) => ({
+          ...prev,
+          error: "Session expired, please login again.",
+        }));
         dispatch(logout());
-        await new Promise((resolve) => setTimeout(resolve, 2000));
         navigate("/login", { replace: true });
       } else {
-        setSessionError(error.message);
+        setSession((prev) => ({ ...prev, error: error.message }));
       }
     } finally {
-      setCheckingSession(false);
+      setSession((prev) => ({ ...prev, loading: false }));
     }
   }, [isLoggedIn, dispatch, navigate]);
+
+  // Check Route Authentication
+  const checkAuth = useCallback(
+    async (authentication, location) => {
+      if (authentication) {
+        if (!isLoggedIn) {
+          navigate("/login", { replace: true, state: { from: location } });
+          return;
+        }
+
+        if (isVerified) {
+          if (["/verify", "/verify-email"].includes(location.pathname)) {
+            navigate("/posts", { replace: true });
+          }
+        } else if (!["/verify", "/verify-email"].includes(location.pathname)) {
+          navigate("/verify", { replace: true });
+        }
+      } else if (isLoggedIn) {
+        if (
+          ["/", "/login", "/register", "send-password-reset-link"].includes(
+            location.pathname
+          )
+        ) {
+          navigate("/posts", { replace: true });
+        }
+      }
+    },
+    [isLoggedIn, isVerified, navigate]
+  );
 
   // Logout
 
@@ -68,9 +101,9 @@ const useAuth = () => {
     isLoggedIn,
     userData,
     isVerified,
+    session,
     checkSession,
-    checkingSession,
-    sessionError,
+    checkAuth,
     loggingOut,
     logoutUser,
   };

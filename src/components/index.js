@@ -8,6 +8,7 @@ import PostForm from "./PostForm";
 import RTE from "./RTE";
 import Textarea from "./Textarea";
 import PostMasonry from "./PostMasonry";
+import Notification from "./Notification";
 
 export {
   Loader,
@@ -20,4 +21,5 @@ export {
   RTE,
   Textarea,
   PostMasonry,
+  Notification,
 };
