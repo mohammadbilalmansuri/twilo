@@ -1,48 +1,22 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
-import { login } from "../store/authSlice";
 import { Button, Input, Loader } from "../components";
-import { authService, databaseService } from "../appwrite";
+import { useAuth } from "../hooks";
 
 const Signup = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { signupUser } = useAuth();
+  const [state, setState] = useState({
+    loading: false,
+    error: null,
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
-
-  const signupSubmit = async (data) => {
-    setIsLoading(true);
-    setServerError("");
-    try {
-      const { name, userId, email, password } = data;
-      const userData = await authService.createAccount({
-        name,
-        userId,
-        email,
-        password,
-      });
-      await databaseService.createUser({
-        userId,
-        name,
-        email,
-      });
-      dispatch(login(userData));
-      navigate("/verify");
-    } catch (err) {
-      setServerError(err?.message || "Something went wrong. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const renderErrors = () => {
     const errorMessages = [
@@ -50,15 +24,19 @@ const Signup = () => {
       errors?.userId?.message,
       errors?.email?.message,
       errors?.password?.message,
-      serverError,
+      state.error,
     ]
       .filter(Boolean)
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-red text-center pt-0.5 pb-1">{errorMessages}</p>
+      <p className="leading-tight text-red text-center">{errorMessages}</p>
     ) : null;
   };
+
+  const handleSignup = handleSubmit(async (data) => {
+    await signupUser(data, setState);
+  });
 
   return (
     <>
@@ -66,12 +44,12 @@ const Signup = () => {
         <title>Sign up - Twilo</title>
       </Helmet>
 
-      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-4xl font-bold leading-tight">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
+        <h1 className="text-4xl font-bold leading-none">
           Create a new account
         </h1>
 
-        <p className="text-lg text-black/60">
+        <p className="text-lg leading-none text-black/60 -mt-1">
           Already have an account?{" "}
           <Link to="/login" className="text-blue hover:underline">
             Login
@@ -80,8 +58,8 @@ const Signup = () => {
 
         <form
           id="signupForm"
-          onSubmit={handleSubmit(signupSubmit)}
-          className="w-full max-w-sm relative flex flex-col gap-4 pt-2"
+          onSubmit={handleSignup}
+          className="w-full max-w-sm relative flex flex-col gap-4"
         >
           <Input
             type="text"
@@ -154,8 +132,8 @@ const Signup = () => {
 
           {renderErrors()}
 
-          <Button type="submit" style={1} size="lg" disabled={isLoading}>
-            {isLoading ? <Loader size="sm" color="white" /> : "Sign Up"}
+          <Button type="submit" style={1} size="lg" disabled={state.loading}>
+            {state.loading ? <Loader size="sm" color="white" /> : "Sign Up"}
           </Button>
         </form>
       </div>

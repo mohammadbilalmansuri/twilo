@@ -9,6 +9,7 @@ import RTE from "./RTE";
 import Textarea from "./Textarea";
 import PostMasonry from "./PostMasonry";
 import Notification from "./Notification";
+import Loading from "./Loading";
 
 export {
   Loader,
@@ -22,4 +23,5 @@ export {
   Textarea,
   PostMasonry,
   Notification,
+  Loading,
 };

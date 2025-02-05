@@ -7,8 +7,8 @@ const Header = () => {
     useAuth();
 
   return (
-    <header className="w-full fixed top-0 z-50 flex flex-col items-center px-4">
-      <div className="max-w relative h-16 p-3 flex justify-between items-center border-1.5 border-t-0 border-black/10 rounded-b-lg bg-white">
+    <header className="w-full fixed top-0 z-40 flex flex-col items-center px-4">
+      <div className="max-w relative h-16 p-3 flex justify-between items-center border-1.5 border-t-0 border-black/10 backdrop-blur-lg rounded-b-lg">
         {isLoggedIn ? (
           isVerified ? (
             <Link to="/posts" className="logo">

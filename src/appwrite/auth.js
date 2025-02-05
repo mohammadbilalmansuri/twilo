@@ -141,26 +141,6 @@ export class AuthService {
       throw error;
     }
   }
-
-  async deleteAccount(email, password, userId) {
-    if (!email || !password || !userId) {
-      throw new Error("Email, password, and user ID are required.");
-    }
-
-    try {
-      const user = await this.loginUser({ email, password });
-
-      if (user.$id !== userId) {
-        throw new Error("User not authorized to delete account.");
-      }
-
-      await this.account.deleteIdentity();
-      return true;
-    } catch (error) {
-      console.error("Appwrite :: deleteAccount :: ", error.message);
-      throw error;
-    }
-  }
 }
 
 const authService = new AuthService();
