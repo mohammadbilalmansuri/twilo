@@ -11,7 +11,7 @@ const postSlice = createSlice({
   reducers: {
     setPosts: (state, { payload }) => {
       state.cursor = payload[payload.length - 1].$id;
-      state.posts = payload;
+      state.posts = [...state.posts, ...payload];
     },
     addPost: (state, { payload }) => {
       state.posts = [payload, ...state.posts];
