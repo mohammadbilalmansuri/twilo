@@ -7,8 +7,12 @@ const Notification = () => {
 
   return (
     <div
-      className={`fixed z-50 top-20 rounded-lg border-1.5 border-black/10 bg-white py-2 px-3 flex gap-4 items-center ${
-        notification.type === "error" ? "text-red" : "text-blue"
+      className={`fixed z-50 top-20 bg-white rounded-lg border-1.5 border-current py-2 px-3 flex gap-4 items-center ${
+        notification.type === "error"
+          ? "text-red"
+          : notification.type === "success"
+          ? "text-blue"
+          : "text-black"
       }`}
     >
       <p className="leading-normal text-lg">{notification.message}</p>
@@ -38,7 +42,7 @@ const Notification = () => {
               attributeName="stroke-dashoffset"
               from="1536"
               to="0"
-              dur="3s"
+              dur="4s"
               fill="freeze"
             />
           </rect>

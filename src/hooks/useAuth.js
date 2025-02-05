@@ -1,4 +1,3 @@
-import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectIsLoggedIn,
@@ -20,7 +19,7 @@ const useAuth = () => {
 
   // Check Session
 
-  const checkSession = useCallback(async () => {
+  const checkSession = async () => {
     if (!isLoggedIn) return;
 
     try {
@@ -41,110 +40,217 @@ const useAuth = () => {
         });
       }
     }
-  }, [isLoggedIn, dispatch, navigate]);
+  };
 
   // Check Route Authentication
 
-  const checkAuth = useCallback(
-    async (authentication, pathname) => {
-      if (authentication) {
-        if (!isLoggedIn) {
-          navigate("/login", { replace: true });
-          return;
-        }
-
-        if (!isVerified) {
-          if (!["/verify", "/verify-email"].includes(pathname)) {
-            navigate("/verify", { replace: true });
-          }
-          return;
-        }
-
-        if (["/verify", "/verify-email"].includes(pathname)) {
-          navigate("/posts", { replace: true });
-        }
+  const checkAuth = async (authentication, pathname) => {
+    if (authentication) {
+      if (!isLoggedIn) {
+        navigate("/login", { replace: true });
         return;
       }
 
-      if (
-        isLoggedIn &&
-        ["/", "/login", "/register", "/send-password-reset-link"].includes(
-          pathname
-        )
-      ) {
-        navigate("/posts", { replace: true });
+      if (!isVerified) {
+        if (!["/verify", "/verification"].includes(pathname)) {
+          navigate("/verify", { replace: true });
+          return;
+        }
+      } else {
+        if (["/verify", "/verification"].includes(pathname)) {
+          navigate("/posts", { replace: true });
+          return;
+        }
       }
-    },
-    [isLoggedIn, isVerified, navigate]
-  );
+    } else {
+      if (isLoggedIn && ["/", "/login", "/register"].includes(pathname)) {
+        navigate("/posts", { replace: true });
+        return;
+      }
+    }
+  };
+
+  // Sign Up
+
+  const signupUser = async (
+    { name, userId, email, password },
+    setSigningUp
+  ) => {
+    setSigningUp(true);
+    try {
+      const userData = await authService.createAccount({
+        name,
+        userId,
+        email,
+        password,
+      });
+      await databaseService.createProfile({
+        userId,
+        name,
+        email,
+      });
+      dispatch(login(userData));
+      notify({
+        type: "success",
+        message: "Account created successfully!",
+      });
+      navigate("/verify", { replace: true });
+    } catch (err) {
+      notify({
+        type: "error",
+        message:
+          err.message ===
+          "A user with the same id, email, or phone already exists in this project."
+            ? "An account with the same email or username already exists."
+            : err?.message,
+      });
+    } finally {
+      setSigningUp(false);
+    }
+  };
+
+  // Login
+
+  const loginUser = async ({ email, password }, setLoggingIn) => {
+    setLoggingIn(true);
+    try {
+      const user = await authService.loginUser({ email, password });
+      dispatch(login(user));
+      notify({
+        type: "success",
+        message: "Logged in successfully!",
+      });
+      user.emailVerification
+        ? navigate("/posts", { replace: true })
+        : navigate("/verify", { replace: true });
+    } catch (err) {
+      notify({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLoggingIn(false);
+    }
+  };
 
   // Logout
 
-  const [loggingOut, setLoggingOut] = useState(false);
-
-  const logoutUser = useCallback(async () => {
+  const logoutUser = async (setLoggingOut) => {
     setLoggingOut(true);
     try {
       await authService.logoutUser();
       dispatch(logout());
+      notify({
+        type: "success",
+        message: "Logged out successfully!",
+      });
       navigate("/login", { replace: true });
-      notify({ type: "success", message: "Logged out successfully." });
     } catch (error) {
-      console.error("Unable to logout user:", error);
       notify({
         type: "error",
-        message:
-          "Logout failed. Please refresh and try again. Clear site data if the issue persists.",
+        message: error.message,
       });
     } finally {
       setLoggingOut(false);
     }
-  }, [dispatch, navigate]);
+  };
 
-  // Sign Up
+  // Send Password Reset Link
 
-  const signupUser = useCallback(
-    async ({ name, userId, email, password }, setState) => {
-      setState({ loading: true, error: null });
-      try {
-        const userData = await authService.createAccount({
-          name,
-          userId,
-          email,
-          password,
-        });
-        await databaseService.createUser({
-          userId,
-          name,
-          email,
-        });
-        dispatch(login(userData));
-        navigate("/verify", { replace: true });
-      } catch (err) {
-        setState((prev) => ({
-          ...prev,
-          error:
-            err.message ===
-            "A user with the same id, email, or phone already exists in this project."
-              ? "An account with the same email or username already exists."
-              : err?.message,
-        }));
-      } finally {
-        setState((prev) => ({ ...prev, loading: false }));
-      }
-    },
-    [dispatch, navigate]
-  );
+  const sendPasswordResetLink = async (email, setSending) => {
+    setSending(true);
+    try {
+      await authService.sendPasswordResetLink(email);
+      notify({
+        type: "success",
+        message:
+          "Password reset link sent successfully! Please check your email.",
+      });
+    } catch (err) {
+      notify({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  // Reset Password
+
+  const resetPassword = async (userId, secret, password, setResetting) => {
+    setResetting(true);
+    try {
+      await authService.resetPassword({ userId, secret, password });
+      notify({
+        type: "success",
+        message: "Password reset successfully!",
+      });
+      navigate("/login", { replace: true });
+    } catch (err) {
+      notify({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setResetting(false);
+    }
+  };
+
+  // Resend Verification Email
+
+  const resendVerificationEmail = async (setState) => {
+    setState({
+      resending: true,
+      message: "Resending verification email...",
+      error: false,
+    });
+
+    try {
+      await authService.sendVerificationEmail();
+      setState({
+        resending: false,
+        message: "Verification email has been resent successfully!",
+        error: false,
+      });
+    } catch (err) {
+      setState({
+        resending: false,
+        message: err.message,
+        error: true,
+      });
+    }
+  };
+
+  // Verify Email
+
+  const verifyEmail = async (userId, secret, setState) => {
+    try {
+      if (!userId || !secret) throw new Error("Invalid verification link");
+      await authService.Verification(userId, secret);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      dispatch(verify());
+      navigate("/posts");
+    } catch (err) {
+      setState((prev) => ({ ...prev, error: err.message }));
+    } finally {
+      setState((prev) => ({ ...prev, verifying: false }));
+    }
+  };
 
   return {
     isLoggedIn,
-    userData,
     isVerified,
+    userData,
     checkSession,
     checkAuth,
-    loggingOut,
-    logoutUser,
     signupUser,
+    loginUser,
+    logoutUser,
+    sendPasswordResetLink,
+    resetPassword,
+    resendVerificationEmail,
+    verifyEmail,
   };
 };
 

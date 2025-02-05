@@ -3,43 +3,26 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { Button, Input, Loader } from "../components";
-import { authService } from "../appwrite";
+import { useAuth } from "../hooks";
 
 const SendPasswordResetLink = () => {
+  const { userData, sendPasswordResetLink } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: userData?.email || "",
+    },
+  });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
-  const [success, setSuccess] = useState(null);
+  const [sending, setSending] = useState(false);
 
-  const sendLink = async (data) => {
-    setIsLoading(true);
-    setServerError("");
-    setSuccess(null);
-    try {
-      await authService.sendPasswordResetLink(data.email);
-      setSuccess(true);
-    } catch (err) {
-      setServerError(err?.message || "Something went wrong. Please try again.");
-      setSuccess(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const renderErrors = () => {
-    const errorMessages = [errors?.email?.message, serverError]
-      .filter(Boolean)
-      .join(", ");
-
-    return errorMessages.length ? (
-      <p className="text-red text-center pt-0.5 pb-1">{errorMessages}</p>
-    ) : null;
-  };
+  const handleSendPasswordResetLink = handleSubmit(async (data) => {
+    await sendPasswordResetLink(data.email, setSending);
+  });
 
   return (
     <>
@@ -48,13 +31,13 @@ const SendPasswordResetLink = () => {
       </Helmet>
 
       <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
-        <h2 className="text-4xl font-bold leading-tight">
+        <h1 className="text-4xl font-bold leading-none">
           Send Password Reset Link
-        </h2>
+        </h1>
 
         <form
-          id="password-reset-form"
-          onSubmit={handleSubmit(sendLink)}
+          id="sendPasswordResetLinkForm"
+          onSubmit={handleSendPasswordResetLink}
           className="w-full max-w-sm relative flex flex-col gap-4"
         >
           <Input
@@ -74,25 +57,25 @@ const SendPasswordResetLink = () => {
             })}
           />
 
-          {renderErrors()}
-
-          <Button type="submit" style={1} size="lg" disabled={isLoading}>
-            {isLoading ? <Loader size="sm" color="white" /> : "Send"}
-          </Button>
-
-          {success && (
-            <p className="text-lg text-blue text-center pt-4">
-              Password reset link sent successfully!
+          {errors?.email?.message && (
+            <p className="leading-tight text-red text-center">
+              {errors.email.message}
             </p>
           )}
+
+          <Button type="submit" style={1} size="lg" disabled={sending}>
+            {sending ? <Loader size="sm" color="white" /> : "Send"}
+          </Button>
         </form>
 
-        <Link
-          to="/login"
-          className="text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
-        >
-          Go back to login
-        </Link>
+        {!userData?.email && (
+          <Link
+            to="/login"
+            className="text-lg leading-tight text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
+          >
+            Go back to login
+          </Link>
+        )}
       </div>
     </>
   );

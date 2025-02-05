@@ -54,7 +54,7 @@ export class AuthService {
 
   async sendVerificationEmail() {
     try {
-      await this.account.createVerification(config.verifyEmailUrl);
+      await this.account.createVerification(config.VerificationUrl);
       return true;
     } catch (error) {
       console.error("Appwrite :: sendVerificationEmail :: ", error.message);
@@ -62,7 +62,7 @@ export class AuthService {
     }
   }
 
-  async verifyEmail(userId, secret) {
+  async Verification(userId, secret) {
     if (!userId || !secret) {
       throw new Error("User ID and secret are required.");
     }
@@ -71,7 +71,7 @@ export class AuthService {
       await this.account.updateVerification(userId, secret);
       return true;
     } catch (error) {
-      console.error("Appwrite :: verifyEmail :: ", error.message);
+      console.error("Appwrite :: Verification :: ", error.message);
       throw error;
     }
   }

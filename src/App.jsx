@@ -8,10 +8,11 @@ const App = () => {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    checkSession().finally(() => {
+    (async () => {
+      await checkSession();
       setChecking(false);
-    });
-  }, [checkSession]);
+    })();
+  }, []);
 
   return (
     <>

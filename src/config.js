@@ -1,6 +1,6 @@
 const config = {
   appUrl: window.location.origin,
-  verifyEmailUrl: `${window.location.origin}/verify-email`,
+  VerificationUrl: `${window.location.origin}/verification`,
   resetPasswordUrl: `${window.location.origin}/reset-password`,
   appwriteUrl: import.meta.env.VITE_APPWRITE_URL,
   appwriteProjectId: import.meta.env.VITE_APPWRITE_PROJECT_ID,

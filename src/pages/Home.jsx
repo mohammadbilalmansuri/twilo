@@ -7,7 +7,7 @@ const Home = () => {
         <h2 className="text-xl leading-tight border-b border-b-black/20 pb-0.5">
           Start your blogging journey today with Twilo
         </h2>
-        <h1 className="text-4xl font-bold leading-tight">
+        <h1 className="text-4xl font-bold leading-none">
           Write. Share. Explore. Connect.
         </h1>
         <p className="text-lg text-black/60 max-w-screen-sm">

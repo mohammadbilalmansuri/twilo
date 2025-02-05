@@ -1,50 +1,30 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
-import { login } from "../store/authSlice";
 import { Button, Input, Loader } from "../components";
-import { authService } from "../appwrite";
+import { useAuth } from "../hooks";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { loginUser } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors: formErrors },
+    formState: { errors },
   } = useForm();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const loginSubmit = async (data) => {
-    setLoading(true);
-    setError("");
-    try {
-      const userData = await authService.loginUser(data);
-      dispatch(login(userData));
-      userData.emailVerification
-        ? navigate("/posts", { replace: true })
-        : navigate("/varify", { replace: true });
-    } catch (err) {
-      setError(err?.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [loggingIn, setLoggingIn] = useState(false);
+  const handleLogin = handleSubmit(
+    async (data) => await loginUser(data, setLoggingIn)
+  );
 
   const renderErrors = () => {
-    const errorMessages = [
-      formErrors?.email?.message,
-      formErrors?.password?.message,
-      error,
-    ]
+    const errorMessages = [errors?.email?.message, errors?.password?.message]
       .filter(Boolean)
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-red text-center pt-0.5 pb-1">{errorMessages}</p>
+      <p className="leading-tight text-red text-center">{errorMessages}</p>
     ) : null;
   };
 
@@ -54,22 +34,22 @@ const Login = () => {
         <title>Login - Twilo</title>
       </Helmet>
 
-      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-4">
-        <h2 className="text-4xl font-bold leading-tight">
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
+        <h1 className="text-4xl font-bold leading-none">
           Login to your account
-        </h2>
+        </h1>
 
-        <p className="text-lg text-black/60">
-          Don't have any accounts?{" "}
+        <p className="text-lg leading-none text-black/60">
+          Already have an account?{" "}
           <Link to="/login" className="text-blue hover:underline">
-            Sign Up
+            Login
           </Link>
         </p>
 
         <form
           id="loginForm"
-          onSubmit={handleSubmit(loginSubmit)}
-          className="w-full max-w-sm relative flex flex-col gap-4 pt-1"
+          onSubmit={handleLogin}
+          className="w-full max-w-sm relative flex flex-col gap-4"
         >
           <Input
             type="email"
@@ -103,14 +83,14 @@ const Login = () => {
 
           {renderErrors()}
 
-          <Button type="submit" style={1} size="lg" disabled={loading}>
-            {loading ? <Loader size="sm" color="white" /> : "Login"}
+          <Button type="submit" style={1} size="lg" disabled={loggingIn}>
+            {loggingIn ? <Loader size="sm" color="white" /> : "Login"}
           </Button>
         </form>
 
         <Link
           to="/send-password-reset-link"
-          className="text-lg text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
+          className="text-lg leading-tight text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
         >
           Forget your password?
         </Link>
