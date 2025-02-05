@@ -7,24 +7,23 @@ import { useAuth } from "../hooks";
 
 const Signup = () => {
   const { signupUser } = useAuth();
-  const [state, setState] = useState({
-    loading: false,
-    error: null,
-  });
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const renderErrors = () => {
+  const [signingUp, setSigningUp] = useState(false);
+  const handleSignup = handleSubmit(
+    async (data) => await signupUser(data, setSigningUp)
+  );
+
+  const renderFormErrors = () => {
     const errorMessages = [
       errors?.name?.message,
       errors?.userId?.message,
       errors?.email?.message,
       errors?.password?.message,
-      state.error,
     ]
       .filter(Boolean)
       .join(", ");
@@ -33,10 +32,6 @@ const Signup = () => {
       <p className="leading-tight text-red text-center">{errorMessages}</p>
     ) : null;
   };
-
-  const handleSignup = handleSubmit(async (data) => {
-    await signupUser(data, setState);
-  });
 
   return (
     <>
@@ -49,7 +44,7 @@ const Signup = () => {
           Create a new account
         </h1>
 
-        <p className="text-lg leading-none text-black/60 -mt-1">
+        <p className="text-lg leading-none text-black/60">
           Already have an account?{" "}
           <Link to="/login" className="text-blue hover:underline">
             Login
@@ -130,10 +125,10 @@ const Signup = () => {
             })}
           />
 
-          {renderErrors()}
+          {renderFormErrors()}
 
-          <Button type="submit" style={1} size="lg" disabled={state.loading}>
-            {state.loading ? <Loader size="sm" color="white" /> : "Sign Up"}
+          <Button type="submit" style={1} size="lg" disabled={signingUp}>
+            {signingUp ? <Loader size="sm" color="white" /> : "Sign Up"}
           </Button>
         </form>
       </div>

@@ -7,7 +7,7 @@ import {
   Login,
   Signup,
   NotFound,
-  VerifyEmail,
+  Verification,
   Verify,
   Posts,
   SendPasswordResetLink,
@@ -25,12 +25,12 @@ const routes = [
   },
   { path: "reset-password", element: <ResetPassword />, auth: false },
   { path: "verify", element: <Verify />, auth: true },
-  { path: "verify-email", element: <VerifyEmail />, auth: true },
+  { path: "verification", element: <Verification />, auth: true },
   { path: "posts", element: <Posts />, auth: true },
   { path: "create-post", element: <CreatePost />, auth: true },
   { path: "edit-post/:id", element: <EditPost />, auth: true },
   { path: "post/:id", element: <Post />, auth: true },
-  { path: "user/:id", element: <User />, auth: true },
+  { path: "profile/:id", element: <User />, auth: true },
   { path: "*", element: <NotFound />, auth: false },
 ];
 

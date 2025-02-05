@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Button, Loader } from "../components";
 import { useAuth } from "../hooks";
 
 const Header = () => {
-  const { isLoggedIn, isVerified, userData, logoutUser, loggingOut } =
-    useAuth();
+  const { isLoggedIn, isVerified, userData, logoutUser } = useAuth();
+  const [loggingOut, setLoggingOut] = useState(false);
 
   return (
     <header className="w-full fixed top-0 z-40 flex flex-col items-center px-4">
@@ -58,9 +59,9 @@ const Header = () => {
               )}
 
               <button
-                onClick={logoutUser}
-                disabled={loggingOut}
                 className="icon bg-black/5 fill-black hover:fill-red"
+                onClick={() => logoutUser(setLoggingOut)}
+                disabled={loggingOut}
               >
                 {loggingOut ? (
                   <Loader size="xs" color="red" />

@@ -11,12 +11,12 @@ const useNotification = () => {
     if (notification.isOpen) {
       const timer = setTimeout(() => {
         dispatch(close());
-      }, 3000);
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [notification, dispatch]);
 
-  const notify = ({ type = "success", message = "" }) => {
+  const notify = ({ type = "info", message = "" }) => {
     if (notification.isOpen) dispatch(close());
     dispatch(open({ type, message }));
   };

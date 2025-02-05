@@ -12,7 +12,7 @@ const Button = ({
 }) => {
   const styles = {
     1: "bg-blue text-white hover:bg-blue/85",
-    2: "bg-black/5 text-black font-semibold hover:bg-black/10",
+    2: "bg-black/5 text-black font-medium hover:bg-black/10",
   };
 
   const sizes = {

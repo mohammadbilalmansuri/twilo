@@ -14,7 +14,7 @@ const Protect = ({ children, authentication = true }) => {
       await new Promise((resolve) => setTimeout(resolve, 10));
       setChecking(false);
     })();
-  }, [authentication, checkAuth, pathname]);
+  }, [pathname]);
 
   return checking ? <Loading /> : children;
 };
