@@ -95,7 +95,7 @@ const ResetPassword = () => {
 
                 {renderErrors()}
 
-                <Button type="submit" style={1} size="lg" disabled={resetting}>
+                <Button type="submit" style={1} disabled={resetting}>
                   {resetting ? <Loader size="sm" color="white" /> : "Reset"}
                 </Button>
               </form>

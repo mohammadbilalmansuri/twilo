@@ -63,7 +63,7 @@ const SendPasswordResetLink = () => {
             </p>
           )}
 
-          <Button type="submit" style={1} size="lg" disabled={sending}>
+          <Button type="submit" style={1} disabled={sending}>
             {sending ? <Loader size="sm" color="white" /> : "Send"}
           </Button>
         </form>

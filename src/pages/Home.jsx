@@ -16,7 +16,7 @@ const Home = () => {
           you're writing for fun or building an audience, Twilo makes it easy to
           get started and grow.
         </p>
-        <Button style={1} size="lg" as="link" to="/signup" className="mt-2">
+        <Button style={1} as="link" to="/signup" className="mt-2">
           Get Started
         </Button>
       </div>

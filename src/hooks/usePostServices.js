@@ -13,19 +13,17 @@ const usePostState = () => {
   const navigate = useNavigate();
   const { notify } = useNotification();
 
-  const [postsState, setPostsState] = useState({
-    loading: false,
-    error: null,
-    hasMore: true,
-    noPosts: false,
-  });
+  const fetchPosts = async (
+    state,
+    setState,
+    { userId = null, limit = 20 } = {}
+  ) => {
+    if (state.loading || !state.hasMore) return;
 
-  const fetchPosts = async ({ userId = null, limit = 20 } = {}) => {
-    if (postsState.loading || !postsState.hasMore) return;
-
-    setPostsState((prev) => ({ ...prev, loading: true, error: null }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
+      throw new Error("Not implemented");
       const response = await databaseService.getPosts({
         userId,
         limit,
@@ -33,7 +31,7 @@ const usePostState = () => {
       });
 
       if (response.total === 0) {
-        setPostsState((prev) => ({
+        setState((prev) => ({
           ...prev,
           hasMore: false,
           noPosts: true,
@@ -43,22 +41,21 @@ const usePostState = () => {
 
       dispatch(setPosts(response.documents));
 
-      setPostsState((prev) => ({
+      setState((prev) => ({
         ...prev,
         hasMore: posts.length + response.documents.length < response.total,
         noPosts: false,
       }));
     } catch (error) {
-      setPostsState((prev) => ({ ...prev, error: error.message }));
+      setState((prev) => ({ ...prev, error: error.message }));
     } finally {
-      setPostsState((prev) => ({ ...prev, loading: false }));
+      setState((prev) => ({ ...prev, loading: false }));
     }
   };
 
   return {
     posts,
     cursor,
-    postsState,
     fetchPosts,
   };
 };
