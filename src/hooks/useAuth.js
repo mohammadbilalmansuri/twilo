@@ -6,7 +6,7 @@ import {
 } from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { authService, databaseService } from "../appwrite";
-import { login, logout } from "../store/authSlice";
+import { login, logout, verify } from "../store/authSlice";
 import { useNotification } from ".";
 
 const useAuth = () => {
@@ -228,13 +228,18 @@ const useAuth = () => {
     try {
       if (!userId || !secret) throw new Error("Invalid verification link");
       await authService.Verification(userId, secret);
+      setState({
+        verifying: false,
+        error: false,
+      });
       await new Promise((resolve) => setTimeout(resolve, 2000));
       dispatch(verify());
-      navigate("/posts");
+      navigate("/posts", { replace: true });
     } catch (err) {
-      setState((prev) => ({ ...prev, error: err.message }));
-    } finally {
-      setState((prev) => ({ ...prev, verifying: false }));
+      setState({
+        verifying: false,
+        error: err.message,
+      });
     }
   };
 
