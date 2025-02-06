@@ -7,6 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { authService, databaseService } from "../appwrite";
 import { login, logout, verify } from "../store/authSlice";
+import { cleanPosts } from "../store/postsSlice";
 import { useNotification } from ".";
 
 const useAuth = () => {
@@ -140,6 +141,7 @@ const useAuth = () => {
     try {
       await authService.logoutUser();
       dispatch(logout());
+      dispatch(cleanPosts());
       notify({
         type: "success",
         message: "Logged out successfully!",

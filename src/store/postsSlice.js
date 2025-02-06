@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cursor: null,
   posts: [],
+  cursor: null,
 };
 
-const postSlice = createSlice({
-  name: "post",
+const postsSlice = createSlice({
+  name: "posts",
   initialState,
   reducers: {
     setPosts: (state, { payload }) => {
-      state.cursor = payload[payload.length - 1].$id;
       state.posts = [...state.posts, ...payload];
+      state.cursor = payload ? payload[payload.length - 1].$id : null;
     },
     addPost: (state, { payload }) => {
       state.posts = [payload, ...state.posts];
@@ -24,13 +24,13 @@ const postSlice = createSlice({
       if (index !== -1) state.posts[index] = payload;
     },
     cleanPosts: (state) => {
-      state.cursor = null;
       state.posts = [];
+      state.cursor = null;
     },
   },
 });
 
 export const { setPosts, addPost, updatePost, removePost, cleanPosts } =
-  postSlice.actions;
+  postsSlice.actions;
 
-export default postSlice.reducer;
+export default postsSlice.reducer;

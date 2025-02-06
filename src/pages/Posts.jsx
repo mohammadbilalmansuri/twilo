@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { Loader, Button, PostMasonry } from "../components";
-import { usePosts, useIntersectionObserver } from "../hooks";
+import { usePostServices, useIntersectionObserver } from "../hooks";
+import { useEffect } from "react";
 
 const Posts = () => {
-  const { posts, state, fetch } = usePosts();
+  const { posts, postsState: state, fetchPosts } = usePostServices();
   const ref = useIntersectionObserver(() => {
-    if (posts.length === 0 || state.hasMore) fetch();
+    if (posts.length === 0 || state.hasMore) fetchPosts();
   });
 
   return (
@@ -21,7 +22,7 @@ const Posts = () => {
             Please try again or re-login if the issue persists
           </p>
         </div>
-      ) : state.loading && posts.length === 0 ? (
+      ) : state.loading && posts?.length === 0 ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center">
           <Loader />
         </div>

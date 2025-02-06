@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
-import { addPost, updatePost } from "../store/postSlice";
+import { addPost, updatePost } from "../store/postsSlice";
 import { useForm } from "react-hook-form";
-import { useAuth, usePosts } from "../hooks";
+import { useAuth, usePostServices } from "../hooks";
 
 const PostForm = ({ post }) => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const PostForm = ({ post }) => {
     new: null,
     previewUrl: null,
   });
-  const { isPostsFetched } = usePosts();
+  const { isPostsFetched } = usePostServices();
 
   const {
     register,

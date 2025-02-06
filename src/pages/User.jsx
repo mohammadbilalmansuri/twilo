@@ -8,7 +8,7 @@
 // import databaseService from "../appwrite/database";
 // import { updateUser, cleanUsers } from "../store/userSlice";
 // import { login, logout } from "../store/authSlice";
-// import { cleanPosts } from "../store/postSlice";
+// import { cleanPosts } from "../store/postsSlice";
 
 // function User() {
 //   const { slug } = useParams();

@@ -11,7 +11,7 @@ const Protect = ({ children, authentication = true }) => {
   useEffect(() => {
     (async () => {
       await checkAuth(authentication, pathname);
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       setChecking(false);
     })();
   }, [pathname]);

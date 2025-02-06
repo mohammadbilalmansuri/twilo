@@ -4,17 +4,17 @@ import databaseService from "../appwrite/database";
 import storageService from "../appwrite/storage";
 import parse from "html-react-parser";
 import { useDispatch } from "react-redux";
-import { removePost } from "../store/postSlice";
+import { removePost } from "../store/postsSlice";
 import { Helmet } from "react-helmet-async";
 import formatTime from "../utils/formatTime";
-import { usePostsState, useAuth } from "../hooks";
+import { useAuth, usePostServices } from "../hooks";
 import { Loader } from "../components";
 
 const Post = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { posts } = usePostsState();
+  const { posts } = usePostServices();
   const { userData } = useAuth();
   const [post, setPost] = useState({
     data: null,
