@@ -23,7 +23,6 @@ const usePostState = () => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
-      throw new Error("Not implemented");
       const response = await databaseService.getPosts({
         userId,
         limit,
