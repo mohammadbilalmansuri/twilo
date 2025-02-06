@@ -18,7 +18,6 @@ const NotFound = ({ message = "Page Not Found" }) => {
           <h2 className="text-4xl font-bold leading-none">Opps! {message}</h2>
           <Button
             style={2}
-            size="lg"
             as="link"
             to={isLoggedIn ? "/posts" : "/"}
             className="mt-4"

@@ -127,7 +127,7 @@ const Signup = () => {
 
           {renderFormErrors()}
 
-          <Button type="submit" style={1} size="lg" disabled={signingUp}>
+          <Button type="submit" style={1} disabled={signingUp}>
             {signingUp ? <Loader size="sm" color="white" /> : "Sign Up"}
           </Button>
         </form>

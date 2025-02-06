@@ -83,7 +83,7 @@ const Login = () => {
 
           {renderErrors()}
 
-          <Button type="submit" style={1} size="lg" disabled={loggingIn}>
+          <Button type="submit" style={1} disabled={loggingIn}>
             {loggingIn ? <Loader size="sm" color="white" /> : "Login"}
           </Button>
         </form>

@@ -237,7 +237,6 @@ const PostForm = ({ post }) => {
         <Button
           type="submit"
           style={1}
-          size="lg"
           disabled={loading}
           className="w-1/2 h-15"
         >

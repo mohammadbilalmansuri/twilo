@@ -1,12 +1,18 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Loader, Button, PostMasonry } from "../components";
+import { Loading, Loader, Button, PostMasonry } from "../components";
 import { usePostServices, useIntersectionObserver } from "../hooks";
-import { useEffect } from "react";
 
 const Posts = () => {
-  const { posts, postsState: state, fetchPosts } = usePostServices();
+  const { posts, fetchPosts } = usePostServices();
+  const [state, setState] = useState({
+    loading: false,
+    error: null,
+    hasMore: true,
+    noPosts: false,
+  });
   const ref = useIntersectionObserver(() => {
-    if (posts.length === 0 || state.hasMore) fetchPosts();
+    if (posts.length === 0 || state.hasMore) fetchPosts(state, setState);
   });
 
   return (
@@ -16,25 +22,25 @@ const Posts = () => {
       </Helmet>
 
       {state.error ? (
-        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-4 text-center">
-          <h3 className="text-3xl font-bold leading-normal">{state.error}</h3>
-          <p className="text-lg text-black/60">
-            Please try again or re-login if the issue persists
+        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center gap-6 text-center">
+          <h1 className="text-4xl font-bold leading-none">
+            Unable to fetch posts!
+          </h1>
+          <p className="text-lg leading-tight text-black/60 max-w-screen-sm">
+            {state.error}
           </p>
         </div>
       ) : state.loading && posts?.length === 0 ? (
-        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center">
-          <Loader />
-        </div>
-      ) : state.noPosts ? (
-        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center text-center gap-6">
-          <h2 className="text-center text-4xl leading-tight font-bold">
+        <Loading />
+      ) : !state.noPosts ? (
+        <div className="max-w min-h relative py-4 flex flex-col justify-center items-center text-center gap-8">
+          <h1 className="text-4xl font-bold leading-none">
             No posts available at the moment
-          </h2>
-          <h3 className="text-2xl max-w-md leading-tight text-black/60">
+          </h1>
+          <h3 className="text-2xl leading-tight text-black/60">
             Be the first to create one!
           </h3>
-          <Button as="link" to="/create-post" size="lg" className="mt-2">
+          <Button as="link" to="/create-post">
             Create Post
           </Button>
         </div>

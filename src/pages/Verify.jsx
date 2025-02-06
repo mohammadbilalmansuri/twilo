@@ -50,7 +50,6 @@ const Verify = () => {
 
         <Button
           style={2}
-          size="lg"
           onClick={() => resendVerificationEmail(setState)}
           disabled={state.resending}
         >

@@ -6,7 +6,7 @@ const Button = ({
   type = "button",
   to = "",
   style = 1,
-  size = "md",
+  size = "lg",
   className,
   ...props
 }) => {
