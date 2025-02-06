@@ -15,32 +15,34 @@ const PostMasonry = ({ posts }) => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
   }, []);
 
-  const oddPosts = posts.filter((_, index) => index % 2 !== 0);
-  const evenPosts = posts.filter((_, index) => index % 2 === 0);
+  const oddPosts = posts?.filter((_, index) => index % 2 !== 0);
+  const evenPosts = posts?.filter((_, index) => index % 2 === 0);
 
   return (
-    <div className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1">
-      {isWideScreen ? (
-        <>
+    posts && (
+      <div className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1">
+        {isWideScreen ? (
+          <>
+            <div className="flex flex-col gap-4">
+              {evenPosts.map((post) => (
+                <PostCard key={post.$id} {...post} />
+              ))}
+            </div>
+            <div className="flex flex-col gap-4">
+              {oddPosts.map((post) => (
+                <PostCard key={post.$id} {...post} />
+              ))}
+            </div>
+          </>
+        ) : (
           <div className="flex flex-col gap-4">
-            {evenPosts.map((post) => (
+            {posts.map((post) => (
               <PostCard key={post.$id} {...post} />
             ))}
           </div>
-          <div className="flex flex-col gap-4">
-            {oddPosts.map((post) => (
-              <PostCard key={post.$id} {...post} />
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {posts.map((post) => (
-            <PostCard key={post.$id} {...post} />
-          ))}
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    )
   );
 };
 

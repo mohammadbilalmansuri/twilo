@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 const selectAuthState = (state) => state.auth;
-const selectPostState = (state) => state.post;
+const selectPostsState = (state) => state.posts;
 const selectNotificationState = (state) => state.notification;
 
 // Auth Selectors
@@ -22,12 +22,12 @@ export const selectUserData = createSelector(
 // Posts Selectors
 
 export const selectPosts = createSelector(
-  [selectPostState],
+  [selectPostsState],
   (postState) => postState.posts
 );
 
 export const selectCursor = createSelector(
-  [selectPostState],
+  [selectPostsState],
   (postState) => postState.cursor
 );
 

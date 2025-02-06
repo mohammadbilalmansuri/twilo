@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
-import postReducer from "./postSlice";
+import postReducer from "./postsSlice";
 import notificationReducer from "./notificationSlice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    post: postReducer,
+    posts: postReducer,
     notification: notificationReducer,
   },
   devTools: process.env.NODE_ENV !== "production",

@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { PostForm, Loader } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import { usePost } from "../hooks";
+import { usePostServices } from "../hooks";
 
 const EditPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { post, isOwner, loading, fetchPost } = usePost(id);
+  const { post, isOwner, loading, fetchPost } = usePostServices(id);
 
   useEffect(() => {
     if (id)
