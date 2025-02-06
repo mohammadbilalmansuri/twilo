@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   status: localStorage.getItem("isLoggedIn") === "true",
   verified: localStorage.getItem("isVerified") === "true",
-  userData: {},
+  user: {},
 };
 
 const authSlice = createSlice({
@@ -23,7 +23,7 @@ const authSlice = createSlice({
         localStorage.setItem("isVerified", String(emailVerification));
       }
 
-      state.userData = { ...state.userData, ...rest };
+      state.user = { ...state.user, ...rest };
     },
     verify: (state) => {
       state.verified = true;
@@ -34,7 +34,7 @@ const authSlice = createSlice({
       localStorage.removeItem("isVerified");
       state.status = false;
       state.verified = false;
-      state.userData = {};
+      state.user = {};
     },
   },
 });

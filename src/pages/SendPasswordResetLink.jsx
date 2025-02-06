@@ -6,7 +6,7 @@ import { Button, Input, Loader } from "../components";
 import { useAuth } from "../hooks";
 
 const SendPasswordResetLink = () => {
-  const { userData, sendPasswordResetLink } = useAuth();
+  const { user, sendPasswordResetLink } = useAuth();
 
   const {
     register,
@@ -14,7 +14,7 @@ const SendPasswordResetLink = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: userData?.email || "",
+      email: user?.email || "",
     },
   });
 
@@ -68,7 +68,7 @@ const SendPasswordResetLink = () => {
           </Button>
         </form>
 
-        {!userData?.email && (
+        {!user?.email && (
           <Link
             to="/login"
             className="text-lg leading-tight text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"

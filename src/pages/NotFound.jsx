@@ -2,12 +2,12 @@ import { Button } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useAuth } from "../hooks";
 
-const NotFound = ({ message = "Page Not Found" }) => {
+const NotFound = () => {
   const { isLoggedIn } = useAuth();
   return (
     <>
       <Helmet>
-        <title>404 - {message}</title>
+        <title>404 - Page Not Found</title>
       </Helmet>
 
       <div className="max-w min-h relative flex flex-col items-center justify-center">
@@ -15,7 +15,9 @@ const NotFound = ({ message = "Page Not Found" }) => {
           <h1 className=" leading-none text-8xl font-zen-dots text-blue tracking-wider">
             4O4
           </h1>
-          <h2 className="text-4xl font-bold leading-none">Opps! {message}</h2>
+          <h2 className="text-4xl font-bold leading-none">
+            Opps! Page Not Found
+          </h2>
           <Button
             style={2}
             as="link"

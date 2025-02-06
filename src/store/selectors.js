@@ -14,9 +14,9 @@ export const selectIsVerified = createSelector(
   (authState) => authState.verified
 );
 
-export const selectUserData = createSelector(
+export const selectUser = createSelector(
   [selectAuthState],
-  (authState) => authState.userData
+  (authState) => authState.user
 );
 
 // Posts Selectors
