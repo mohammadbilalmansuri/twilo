@@ -32,7 +32,7 @@ const Posts = () => {
         </div>
       ) : state.loading && posts?.length === 0 ? (
         <Loading />
-      ) : !state.noPosts ? (
+      ) : state.noPosts ? (
         <div className="max-w min-h relative py-4 flex flex-col justify-center items-center text-center gap-8">
           <h1 className="text-4xl font-bold leading-none">
             No posts available at the moment
