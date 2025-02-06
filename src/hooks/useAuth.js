@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectIsLoggedIn,
   selectIsVerified,
-  selectUserData,
+  selectUser,
 } from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { authService, databaseService } from "../appwrite";
@@ -13,7 +13,7 @@ import { useNotification } from ".";
 const useAuth = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isVerified = useSelector(selectIsVerified);
-  const userData = useSelector(selectUserData);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notify } = useNotification();
@@ -79,7 +79,7 @@ const useAuth = () => {
   ) => {
     setSigningUp(true);
     try {
-      const userData = await authService.createAccount({
+      const user = await authService.createAccount({
         name,
         userId,
         email,
@@ -90,7 +90,7 @@ const useAuth = () => {
         name,
         email,
       });
-      dispatch(login(userData));
+      dispatch(login(user));
       notify({
         type: "success",
         message: "Account created successfully!",
@@ -248,7 +248,7 @@ const useAuth = () => {
   return {
     isLoggedIn,
     isVerified,
-    userData,
+    user,
     checkSession,
     checkAuth,
     signupUser,

@@ -4,7 +4,7 @@ import { Button, Loader } from "../components";
 import { useAuth } from "../hooks";
 
 const Header = () => {
-  const { isLoggedIn, isVerified, userData, logoutUser } = useAuth();
+  const { isLoggedIn, isVerified, user, logoutUser } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
 
   return (
@@ -78,7 +78,7 @@ const Header = () => {
 
               {isVerified && (
                 <NavLink
-                  to={`/user/${userData?.$id}`}
+                  to={`/user/${user?.$id}`}
                   className={({ isActive }) =>
                     `icon bg-blue hover:bg-blue/85 fill-white${
                       isActive ? " pointer-events-none" : ""

@@ -10,7 +10,7 @@ import { useAuth, usePostServices } from "../hooks";
 const PostForm = ({ post }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userData } = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
@@ -100,7 +100,7 @@ const PostForm = ({ post }) => {
           excerpt: data.excerpt,
           content: data.content,
           thumbnail: file ? file.$id : "",
-          owner: userData.$id,
+          owner: user.$id,
         };
 
         const newPost = await databaseService.createPost(postData);

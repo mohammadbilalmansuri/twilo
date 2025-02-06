@@ -1,10 +1,9 @@
-import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPosts, selectCursor } from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { databaseService } from "../appwrite";
-import { setPosts } from "../store/postsSlice";
-import { useNotification } from ".";
+import { setPosts, removePost, updatePost } from "../store/postsSlice";
+import { useNotification, useAuth } from ".";
 
 const usePostState = () => {
   const posts = useSelector(selectPosts);
@@ -12,6 +11,9 @@ const usePostState = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notify } = useNotification();
+  const { user } = useAuth();
+
+  // Fetch posts
 
   const fetchPosts = async (
     state,
@@ -52,10 +54,63 @@ const usePostState = () => {
     }
   };
 
+  // Fetch Single Post
+
+  const fetchPost = async (id, setState) => {
+    setState((prev) => ({ ...prev, loading: true }));
+    try {
+      let post =
+        posts.find((p) => p.$id === id) || (await databaseService.getPost(id));
+
+      setState({
+        loading: false,
+        post,
+        isOwner: post.owner.$id === user.$id,
+      });
+    } catch (err) {
+      notify({
+        type: "error",
+        message:
+          err.message === "Document with the requested ID could not be found."
+            ? "Post not found!"
+            : err.message,
+      });
+      navigate("/posts", { replace: true });
+      setState((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
+  // Delete Post
+
+  const deletePost = async (post, setDeleting) => {
+    setDeleting(true);
+    try {
+      await databaseService.deletePost(post.$id);
+      if (post.thumbnail) {
+        await storageService.deleteFile(post.thumbnail);
+      }
+      dispatch(removePost(post.$id));
+      notify({
+        type: "success",
+        message: "Post deleted successfully!",
+      });
+      navigate("/posts");
+    } catch (error) {
+      notify({
+        type: "error",
+        message: error.message,
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return {
     posts,
     cursor,
     fetchPosts,
+    fetchPost,
+    deletePost,
   };
 };
 
