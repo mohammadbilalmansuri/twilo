@@ -6,7 +6,7 @@ import {
 } from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { databaseService } from "../appwrite";
-import { setPosts, removePost, updatePost } from "../store/postsSlice";
+import { setPosts, removePost, updatePost } from "../store/feedSlice";
 import { useNotification, useAuthState } from ".";
 
 const usePostState = () => {

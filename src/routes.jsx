@@ -10,7 +10,7 @@ import {
   Verification,
   Verify,
   Posts,
-  SendPasswordResetLink,
+  ForgotPassword,
   ResetPassword,
 } from "./pages";
 
@@ -19,8 +19,8 @@ const routes = [
   { path: "login", element: <Login />, auth: false },
   { path: "signup", element: <Signup />, auth: false },
   {
-    path: "send-password-reset-link",
-    element: <SendPasswordResetLink />,
+    path: "forgot-password",
+    element: <ForgotPassword />,
     auth: false,
   },
   { path: "reset-password", element: <ResetPassword />, auth: false },

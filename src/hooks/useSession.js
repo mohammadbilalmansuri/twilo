@@ -10,11 +10,11 @@ const useSession = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notify } = useNotification();
-  const [loading, setLoading] = useState(true);
+  const [checking, setChecking] = useState(true);
 
   const checkSession = async () => {
     if (!isLoggedIn) {
-      setLoading(false);
+      setChecking(false);
       return;
     }
 
@@ -36,11 +36,11 @@ const useSession = () => {
         });
       }
     } finally {
-      setLoading(false);
+      setChecking(false);
     }
   };
 
-  return { checkSession, loading };
+  return { checkSession, checking };
 };
 
 export default useSession;

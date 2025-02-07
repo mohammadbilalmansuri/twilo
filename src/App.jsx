@@ -4,7 +4,7 @@ import { Header, Footer, Loading, Notification } from "./components";
 import { useSession } from "./hooks";
 
 const App = () => {
-  const { checkSession, loading } = useSession();
+  const { checkSession, checking } = useSession();
 
   useEffect(() => {
     checkSession();
@@ -14,7 +14,7 @@ const App = () => {
     <>
       <Header />
       <main className="w-full min-h relative flex flex-col items-center px-3 mt-16">
-        {loading ? <Loading /> : <Outlet />}
+        {checking ? <Loading /> : <Outlet />}
         <Notification />
       </main>
       <Footer />

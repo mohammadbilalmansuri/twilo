@@ -10,7 +10,7 @@ import NotFound from "./NotFound.jsx";
 import Verification from "./Verification.jsx";
 import Verify from "./Verify.jsx";
 import ResetPassword from "./ResetPassword.jsx";
-import SendPasswordResetLink from "./SendPasswordResetLink.jsx";
+import ForgotPassword from "./ForgotPassword.jsx";
 
 export {
   Home,
@@ -25,5 +25,5 @@ export {
   Verification,
   Verify,
   ResetPassword,
-  SendPasswordResetLink,
+  ForgotPassword,
 };

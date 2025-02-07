@@ -1,5 +1,5 @@
-import { memo } from "react";
-import useNotification from "../hooks/useNotification";
+import { useNotification } from "../hooks";
+import cn from "../utils/cn";
 
 const Notification = () => {
   const { notification, closeNotification } = useNotification();
@@ -7,15 +7,16 @@ const Notification = () => {
 
   return (
     <div
-      className={`fixed z-50 top-20 bg-white rounded-lg border-1.5 border-current py-2 px-3 flex gap-4 items-center ${
-        notification.type === "error"
-          ? "text-red"
-          : notification.type === "success"
-          ? "text-blue"
-          : "text-black"
-      }`}
+      className={cn(
+        "fixed z-50 top-20 backdrop-blur-lg rounded-lg border-1.5 border-current py-2 px-3 flex gap-4 items-center",
+        {
+          "text-red": notification.type === "error",
+          "text-blue": notification.type === "success",
+          "text-black": notification.type === "info",
+        }
+      )}
     >
-      <p className="leading-normal text-lg">{notification.message}</p>
+      <p className="text">{notification.message}</p>
 
       <button
         onClick={closeNotification}
@@ -42,7 +43,7 @@ const Notification = () => {
               attributeName="stroke-dashoffset"
               from="1536"
               to="0"
-              dur="4s"
+              dur="3  s"
               fill="freeze"
             />
           </rect>
@@ -52,4 +53,4 @@ const Notification = () => {
   );
 };
 
-export default memo(Notification);
+export default Notification;
