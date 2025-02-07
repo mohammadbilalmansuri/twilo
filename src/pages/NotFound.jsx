@@ -1,6 +1,6 @@
 import { Button } from "../components";
 import { Helmet } from "react-helmet-async";
-import { useAuth } from "../hooks";
+import { useAuthState } from "../hooks";
 
 const NotFound = () => {
   const { isLoggedIn } = useAuth();

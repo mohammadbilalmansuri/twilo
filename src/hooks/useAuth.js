@@ -6,42 +6,16 @@ import {
 } from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { authService, databaseService } from "../appwrite";
-import { login, logout, verify } from "../store/authSlice";
-import { cleanPosts } from "../store/postsSlice";
+import { setUser, verifyUser } from "../store/authSlice";
 import { useNotification } from ".";
 
-const useAuth = () => {
+const useAuthState = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isVerified = useSelector(selectIsVerified);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notify } = useNotification();
-
-  // Check Session
-
-  const checkSession = async () => {
-    if (!isLoggedIn) return;
-
-    try {
-      const user = await authService.getCurrentUser();
-      dispatch(login(user));
-    } catch (error) {
-      if (error.message === "User (role: guests) missing scope (account)") {
-        dispatch(logout());
-        navigate("/login", { replace: true });
-        notify({
-          type: "error",
-          message: "Session expired. Please login again.",
-        });
-      } else {
-        notify({
-          type: "error",
-          message: error.message,
-        });
-      }
-    }
-  };
 
   // Check Route Authentication
 
@@ -90,7 +64,7 @@ const useAuth = () => {
         name,
         email,
       });
-      dispatch(login(user));
+      dispatch(setUser(user));
       notify({
         type: "success",
         message: "Account created successfully!",
@@ -107,53 +81,6 @@ const useAuth = () => {
       });
     } finally {
       setSigningUp(false);
-    }
-  };
-
-  // Login
-
-  const loginUser = async ({ email, password }, setLoggingIn) => {
-    setLoggingIn(true);
-    try {
-      const user = await authService.loginUser({ email, password });
-      dispatch(login(user));
-      notify({
-        type: "success",
-        message: "Logged in successfully!",
-      });
-      user.emailVerification
-        ? navigate("/posts", { replace: true })
-        : navigate("/verify", { replace: true });
-    } catch (err) {
-      notify({
-        type: "error",
-        message: err.message,
-      });
-    } finally {
-      setLoggingIn(false);
-    }
-  };
-
-  // Logout
-
-  const logoutUser = async (setLoggingOut) => {
-    setLoggingOut(true);
-    try {
-      await authService.logoutUser();
-      dispatch(logout());
-      dispatch(cleanPosts());
-      notify({
-        type: "success",
-        message: "Logged out successfully!",
-      });
-      navigate("/login", { replace: true });
-    } catch (error) {
-      notify({
-        type: "error",
-        message: error.message,
-      });
-    } finally {
-      setLoggingOut(false);
     }
   };
 
@@ -235,7 +162,7 @@ const useAuth = () => {
         error: false,
       });
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      dispatch(verify());
+      dispatch(verifyUser());
       navigate("/posts", { replace: true });
     } catch (err) {
       setState({
@@ -252,8 +179,6 @@ const useAuth = () => {
     checkSession,
     checkAuth,
     signupUser,
-    loginUser,
-    logoutUser,
     sendPasswordResetLink,
     resetPassword,
     resendVerificationEmail,

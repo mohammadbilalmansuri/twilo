@@ -1,17 +1,22 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectPosts, selectCursor } from "../store/selectors";
+import {
+  selectPosts,
+  selectCursor,
+  selectIsPostsFetched,
+} from "../store/selectors";
 import { useNavigate } from "react-router-dom";
 import { databaseService } from "../appwrite";
 import { setPosts, removePost, updatePost } from "../store/postsSlice";
-import { useNotification, useAuth } from ".";
+import { useNotification, useAuthState } from ".";
 
 const usePostState = () => {
   const posts = useSelector(selectPosts);
   const cursor = useSelector(selectCursor);
+  const isPostsFetched = useSelector(selectIsPostsFetched);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notify } = useNotification();
-  const { user } = useAuth();
+  const { user } = useAuthState();
 
   // Fetch posts
 
@@ -56,11 +61,20 @@ const usePostState = () => {
 
   // Fetch Single Post
 
-  const fetchPost = async (id, setState) => {
+  const fetchPost = async (id, setState, editing = false) => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
       let post =
         posts.find((p) => p.$id === id) || (await databaseService.getPost(id));
+
+      if (editing && post.owner.$id !== user.$id) {
+        notify({
+          type: "error",
+          message: "You are not authorized to edit this post!",
+        });
+        navigate(`/posts/${id}`);
+        setState((prev) => ({ ...prev, loading: false }));
+      }
 
       setState({
         loading: false,
@@ -108,6 +122,7 @@ const usePostState = () => {
   return {
     posts,
     cursor,
+    isPostsFetched,
     fetchPosts,
     fetchPost,
     deletePost,

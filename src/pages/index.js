@@ -3,7 +3,7 @@ import Posts from "./Posts";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
 import EditPost from "./EditPost";
-import User from "./User";
+import Profile from "./Profile";
 import Login from "./Login";
 import Signup from "./Signup";
 import NotFound from "./NotFound.jsx";
@@ -18,7 +18,7 @@ export {
   CreatePost,
   Post,
   EditPost,
-  User,
+  Profile,
   Login,
   Signup,
   NotFound,

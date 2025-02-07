@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loading } from "../components";
 import { Helmet } from "react-helmet-async";
-import { useAuth } from "../hooks";
+import { useAuthState } from "../hooks";
 
 const Verification = () => {
   const { verifyEmail } = useAuth();

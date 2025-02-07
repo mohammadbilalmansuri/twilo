@@ -1,57 +1,49 @@
+import { memo } from "react";
 import { Link, NavLink } from "react-router-dom";
+import cn from "../utils/cn";
 
 const Button = ({
   children,
   as = "button",
   type = "button",
   to = "",
-  style = 1,
+  style = "primary",
   size = "lg",
   className,
   ...props
 }) => {
-  const styles = {
-    1: "bg-blue text-white hover:bg-blue/85",
-    2: "bg-black/5 text-black font-medium hover:bg-black/10",
-  };
+  const classes = cn(
+    "text-lg leading-none transition-all rounded-lg active:scale-[0.98] flex items-center justify-center",
+    size === "sm" ? "h-10 px-3.5" : "h-12 px-4",
+    style === "secondary"
+      ? "bg-black/5 text-black font-medium hover:bg-black/10"
+      : "bg-blue text-white hover:bg-blue/85",
+    className
+  );
 
-  const sizes = {
-    sm: "h-10 px-4 text-base",
-    md: "h-[46px] px-4 text-lg",
-    lg: "h-13 px-5 text-lg",
-  };
-
-  const classes = `leading-tight transition-all rounded-lg active:scale-[0.98] flex items-center justify-center ${
-    styles[style] || styles[1]
-  } ${sizes[size] || sizes.md}${className ? ` ${className}` : ""}`;
-
-  if (as === "link") {
-    return (
-      <Link to={to} className={classes} {...props}>
-        {children}
-      </Link>
+  if ((as === "link" || as === "navlink") && !to) {
+    console.warn(
+      "Button component with 'link' or 'navlink' as 'as' requires a 'to' prop."
     );
   }
 
-  if (as === "navlink") {
-    return (
-      <NavLink
-        to={to}
-        className={({ isActive }) =>
-          `${classes}${isActive ? " pointer-events-none" : ""}`
-        }
-        {...props}
-      >
-        {children}
-      </NavLink>
-    );
-  }
+  const Component =
+    as === "link" ? Link : as === "navlink" ? NavLink : "button";
 
   return (
-    <button type={type} className={classes} {...props}>
+    <Component
+      {...(as !== "button" && { to })}
+      {...(as === "button" && { type })}
+      className={
+        as === "navlink"
+          ? ({ isActive }) => cn(classes, isActive && "pointer-events-none")
+          : classes
+      }
+      {...props}
+    >
       {children}
-    </button>
+    </Component>
   );
 };
 
-export default Button;
+export default memo(Button);

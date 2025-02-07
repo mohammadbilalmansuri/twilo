@@ -3,7 +3,7 @@ import {
   CreatePost,
   Post,
   EditPost,
-  User,
+  Profile,
   Login,
   Signup,
   NotFound,
@@ -29,8 +29,8 @@ const routes = [
   { path: "posts", element: <Posts />, auth: true },
   { path: "create-post", element: <CreatePost />, auth: true },
   { path: "edit-post/:id", element: <EditPost />, auth: true },
-  { path: "post/:id", element: <Post />, auth: true },
-  { path: "profile/:id", element: <User />, auth: true },
+  { path: "posts/:id", element: <Post />, auth: true },
+  { path: "profile/:id", element: <Profile />, auth: true },
   { path: "*", element: <NotFound />, auth: false },
 ];
 
