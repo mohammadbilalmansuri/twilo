@@ -1,22 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
-import { Button, Input, Loader } from "../components";
-import { useAuthState } from "../hooks";
+import { Button, Input, PasswordInput, Loader } from "../components";
+import { useSignup } from "../hooks";
 
 const Signup = () => {
-  const { signupUser } = useAuth();
+  const { signup, signingUp } = useSignup();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const [signingUp, setSigningUp] = useState(false);
-  const handleSignup = handleSubmit(
-    async (data) => await signupUser(data, setSigningUp)
-  );
 
   const renderFormErrors = () => {
     const errorMessages = [
@@ -29,7 +23,7 @@ const Signup = () => {
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="leading-tight text-red text-center">{errorMessages}</p>
+      <p className="text text-red text-center">{errorMessages}</p>
     ) : null;
   };
 
@@ -37,14 +31,12 @@ const Signup = () => {
     <>
       <Helmet>
         <title>Sign up - Twilo</title>
+        <meta name="description" content="Create a new account on Twilo." />
       </Helmet>
 
-      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
-        <h1 className="text-4xl font-bold leading-none">
-          Create a new account
-        </h1>
-
-        <p className="text-lg leading-none text-black/60">
+      <div className="wrapper-center gap-4 py-8 text-center">
+        <h1 className="h1">Create a new account</h1>
+        <p className="text">
           Already have an account?{" "}
           <Link to="/login" className="text-blue hover:underline">
             Login
@@ -52,13 +44,11 @@ const Signup = () => {
         </p>
 
         <form
-          id="signupForm"
-          onSubmit={handleSignup}
-          className="w-full max-w-sm relative flex flex-col gap-4"
+          onSubmit={handleSubmit(signup)}
+          className="w-full max-w-sm relative flex flex-col gap-4 pt-1"
         >
           <Input
             type="text"
-            id="name"
             placeholder="Enter your full name"
             {...register("name", {
               required: true,
@@ -75,7 +65,6 @@ const Signup = () => {
 
           <Input
             type="text"
-            id="userId"
             placeholder="Enter your username"
             {...register("userId", {
               required: true,
@@ -97,7 +86,6 @@ const Signup = () => {
 
           <Input
             type="email"
-            id="email"
             placeholder="Enter your email"
             {...register("email", {
               required: true,
@@ -112,10 +100,7 @@ const Signup = () => {
             })}
           />
 
-          <Input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
+          <PasswordInput
             {...register("password", {
               required: true,
               minLength: {
@@ -127,7 +112,7 @@ const Signup = () => {
 
           {renderFormErrors()}
 
-          <Button type="submit" style={1} disabled={signingUp}>
+          <Button type="submit" disabled={signingUp}>
             {signingUp ? <Loader size="sm" color="white" /> : "Sign Up"}
           </Button>
         </form>

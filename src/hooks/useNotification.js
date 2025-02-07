@@ -11,20 +11,18 @@ const useNotification = () => {
     if (notification.isOpen) {
       const timer = setTimeout(() => {
         dispatch(close());
-      }, 4000);
+      }, 3000);
+
       return () => clearTimeout(timer);
     }
-  }, [notification, dispatch]);
+  }, [notification.isOpen]);
 
   const notify = ({ type = "info", message = "" }) => {
-    if (notification.isOpen) dispatch(close());
+    notification.isOpen && dispatch(close());
     dispatch(open({ type, message }));
   };
 
-  const closeNotification = () => {
-    if (notification.isOpen) dispatch(close());
-  };
-
+  const closeNotification = () => dispatch(close());
   return { notification, notify, closeNotification };
 };
 

@@ -1,3 +1,5 @@
+import cn from "../utils/cn";
+
 const Loader = ({ size = "md", color = "blue" }) => {
   const colors = {
     blue: "fill-blue",
@@ -10,15 +12,16 @@ const Loader = ({ size = "md", color = "blue" }) => {
     xs: "size-4",
     sm: "size-6",
     md: "size-12",
-    lg: "size-16",
   };
 
   return (
     <svg
       viewBox="0 0 24 24"
-      className={`animate-spin ${sizes[size] || sizes.sm} ${
+      className={cn(
+        "animate-spin",
+        sizes[size] || sizes.sm,
         colors[color] || colors.blue
-      }`}
+      )}
     >
       <path
         opacity="0.25"

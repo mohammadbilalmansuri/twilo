@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../appwrite";
 import { removeUser } from "../store/authSlice";
-import { cleanPosts } from "../store/postsSlice";
+import { cleanPosts } from "../store/feedSlice";
 import { cleanProfiles } from "../store/profilesSlice";
 import { useNotification } from ".";
 

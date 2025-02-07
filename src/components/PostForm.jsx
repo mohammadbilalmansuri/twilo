@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
-import { addPost, updatePost } from "../store/postsSlice";
+import { addPost, updatePost } from "../store/feedSlice";
 import { useForm } from "react-hook-form";
 import { useAuthState, usePostServices } from "../hooks";
 
@@ -185,7 +185,7 @@ const PostForm = ({ post }) => {
             className={`size-full text-lg cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-3 ${
               thumbnail.new || thumbnail.old
                 ? "text-black fill-black"
-                : "text-black/50 fill-black/50"
+                : "text-black/60 fill-black/60"
             }`}
           >
             {!thumbnail.new && !thumbnail.old ? (

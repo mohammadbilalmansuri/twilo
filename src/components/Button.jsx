@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Link, NavLink } from "react-router-dom";
 import cn from "../utils/cn";
 
@@ -46,4 +45,4 @@ const Button = ({
   );
 };
 
-export default memo(Button);
+export default Button;

@@ -1,27 +1,29 @@
 import Loader from "./Loader";
+import Loading from "./Loading";
 import Button from "./Button";
 import Header from "./Header";
 import Footer from "./Footer";
-import PostCard from "./PostCard";
+import Notification from "./Notification";
 import Input from "./Input";
-import PostForm from "./PostForm";
+import PasswordInput from "./PasswordInput";
 import RTE from "./RTE";
 import Textarea from "./Textarea";
+import PostForm from "./PostForm";
 import PostMasonry from "./PostMasonry";
-import Notification from "./Notification";
-import Loading from "./Loading";
+import PostCard from "./PostCard";
 
 export {
   Loader,
+  Loading,
   Button,
   Header,
   Footer,
-  PostCard,
+  Notification,
   Input,
-  PostForm,
+  PasswordInput,
   RTE,
   Textarea,
+  PostForm,
   PostMasonry,
-  Notification,
-  Loading,
+  PostCard,
 };

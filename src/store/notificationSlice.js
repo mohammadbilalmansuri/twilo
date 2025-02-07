@@ -15,10 +15,7 @@ const notificationSlice = createSlice({
       state.type = payload.type;
       state.message = payload.message;
     },
-    close: (state) => {
-      state.isOpen = false;
-      state.message = "";
-    },
+    close: (state) => (state = initialState),
   },
 });
 
