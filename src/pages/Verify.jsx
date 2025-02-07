@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Button, Loader } from "../components";
-import { useAuth } from "../hooks";
+import { useAuthState } from "../hooks";
 
 const Verify = () => {
   const { resendVerificationEmail } = useAuth();

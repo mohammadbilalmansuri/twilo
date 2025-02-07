@@ -21,6 +21,11 @@ export const selectUser = createSelector(
 
 // Posts Selectors
 
+export const selectIsPostsFetched = createSelector(
+  [selectPostsState],
+  (postState) => postState.posts.length > 0
+);
+
 export const selectPosts = createSelector(
   [selectPostsState],
   (postState) => postState.posts
@@ -29,6 +34,16 @@ export const selectPosts = createSelector(
 export const selectCursor = createSelector(
   [selectPostsState],
   (postState) => postState.cursor
+);
+
+export const selectHasMore = createSelector(
+  [selectPostsState],
+  (postState) => postState.hasMore
+);
+
+export const selectTotalPosts = createSelector(
+  [selectPostsState],
+  (postState) => postState.total
 );
 
 // Notification Selectors

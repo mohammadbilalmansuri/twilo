@@ -1,42 +1,34 @@
-import React, { useEffect } from "react";
-import { PostForm, Loader } from "../components";
+import { useEffect, useState } from "react";
+import { PostForm, Loading } from "../components";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { usePostServices } from "../hooks";
 
 const EditPost = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { post, isOwner, loading, fetchPost } = usePostServices(id);
+  const { fetchPost } = usePostServices();
+  const [state, setState] = useState({
+    loading: true,
+    post: null,
+    isOwner: false,
+  });
 
   useEffect(() => {
-    if (id)
-      fetchPost(id).then(() => {
-        if (!post && loading !== null) {
-          navigate("/posts");
-        } else if (!isOwner) {
-          navigate(`/post/${id}`);
-        }
-      });
-  }, [id, fetchPost, post, loading, navigate]);
+    if (!id) return;
+    fetchPost(id, setState, true);
+  }, [id]);
 
-  if (loading) {
-    return (
-      <div className="max-w min-h relative flex flex-col items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
-
-  return post && isOwner ? (
+  return state.loading ? (
+    <Loading />
+  ) : state.post && state.isOwner ? (
     <>
       <Helmet>
-        <title>Edit Post - {String(post?.title)} - Twilo</title>
+        <title>Edit Post - {state.post.title} - Twilo</title>
       </Helmet>
 
       <div className="max-w relative py-8 flex flex-col items-center gap-8">
-        <h2 className="text-4xl font-bold leading-tight">Edit post</h2>
-        <PostForm post={post} />
+        <h2 className="text-4xl font-bold leading-none">Edit post</h2>
+        <PostForm post={state.post} />
       </div>
     </>
   ) : null;

@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Header, Footer, Loading, Notification } from "./components";
-import { useAuth } from "./hooks";
+import { useSession } from "./hooks";
 
 const App = () => {
-  const { checkSession } = useAuth();
-  const [checking, setChecking] = useState(true);
+  const { checkSession, loading } = useSession();
 
   useEffect(() => {
-    (async () => {
-      await checkSession();
-      setChecking(false);
-    })();
+    checkSession();
   }, []);
 
   return (
     <>
       <Header />
-      <main className="w-full min-h relative flex flex-col items-center px-4 mt-16">
-        {checking ? <Loading /> : <Outlet />}
+      <main className="w-full min-h relative flex flex-col items-center px-3 mt-16">
+        {loading ? <Loading /> : <Outlet />}
         <Notification />
       </main>
       <Footer />

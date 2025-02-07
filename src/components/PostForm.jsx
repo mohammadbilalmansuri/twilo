@@ -5,12 +5,12 @@ import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
 import { addPost, updatePost } from "../store/postsSlice";
 import { useForm } from "react-hook-form";
-import { useAuth, usePostServices } from "../hooks";
+import { useAuthState, usePostServices } from "../hooks";
 
 const PostForm = ({ post }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useAuthState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
@@ -93,7 +93,7 @@ const PostForm = ({ post }) => {
         );
 
         if (isPostsFetched) dispatch(updatePost(updatedPost));
-        navigate(`/post/${updatedPost.$id}`);
+        navigate(`/posts/${updatedPost.$id}`);
       } else {
         const postData = {
           title: data.title,
@@ -105,7 +105,7 @@ const PostForm = ({ post }) => {
 
         const newPost = await databaseService.createPost(postData);
         if (isPostsFetched) dispatch(addPost(newPost));
-        navigate(`/post/${newPost.$id}`);
+        navigate(`/posts/${newPost.$id}`);
       }
     } catch (error) {
       setError(error?.message || "Something went wrong. Please try again.");

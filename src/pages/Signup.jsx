@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { Button, Input, Loader } from "../components";
-import { useAuth } from "../hooks";
+import { useAuthState } from "../hooks";
 
 const Signup = () => {
   const { signupUser } = useAuth();

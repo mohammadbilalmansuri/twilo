@@ -1,22 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Loading } from "./components";
-import { useAuth } from "./hooks";
+import { useValidateRoutes } from "./hooks";
 
 const Protect = ({ children, authentication = true }) => {
   const { pathname } = useLocation();
-  const { checkAuth } = useAuth();
-  const [checking, setChecking] = useState(true);
+  const { validateRoute, validating } = useValidateRoutes();
 
   useEffect(() => {
-    (async () => {
-      await checkAuth(authentication, pathname);
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      setChecking(false);
-    })();
+    validateRoute(authentication, pathname);
   }, [pathname]);
 
-  return checking ? <Loading /> : children;
+  return validating ? <Loading /> : children;
 };
 
 export default Protect;

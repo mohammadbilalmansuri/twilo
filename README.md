@@ -1,18 +1,18 @@
-# Twilo: Write. Share. Explore. Connect.
+# Twilo: Bring Your Stories and Ideas to Life
 
-Twilo is your go-to platform for seamless blogging. Share your stories, ideas, and creativity with a vibrant community of readers and writers. Whether you're writing for fun, exploring fresh perspectives, or building your audience, Twilo makes it simple to grow and connect.
+Twilo is your go-to platform for easy blogging. Share your stories, ideas, and creativity with a lively community of readers. Whether you're writing for fun, exploring new ideas, or growing your audience, Twilo makes it easy to succeed.
 
 ## Features
 
-- **User Authentication**: Secure sign-up and login functionality.
-- **Profile Management**: Update profile details like name, email, and password.
+- **User Authentication**: Users can sign up, log in, verify accounts, and reset passwords.
+- **Profile Management**: Update profile details such as name and password.
 - **Blog Management**: Create, read, update, and delete blog posts.
-- **Explore Users**: View other users' profiles and their published posts.
+- **Explore Users**: View other users' profiles and published posts.
 - **Responsive Design**: Optimized for various devices using Tailwind CSS.
 
 ## Technologies Used
 
-- **Frontend**: React with Vite and its ecosystem
+- **Frontend**: React with Vite
 - **State Management**: Redux Toolkit
 - **Styling**: Tailwind CSS
-- **Backend**: Appwrite (Backend-as-a-Service)
+- **Backend**: Appwrite

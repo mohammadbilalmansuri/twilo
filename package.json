@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Twilo is your go-to platform for seamless blogging. Share your stories, ideas, and creativity with a vibrant community of readers and writers. Whether you're writing for fun, exploring fresh perspectives, or building your audience, Twilo makes it simple to grow and connect.",
-  "keywords": [
+  "description": "Twilo is your go-to platform for easy blogging. Share your stories, ideas, and creativity with a lively community of readers. Whether you're writing for fun, exploring new ideas, or growing your audience, Twilo makes it easy to succeed.",
+  "hashtags": [
     "twilo",
     "twilo blogs",
     "twilo posts",
@@ -14,7 +14,12 @@
     "appwrite",
     "react",
     "social media",
-    "social"
+    "social",
+    "writers",
+    "content creation",
+    "online community",
+    "publish",
+    "creative writing"
   ],
   "author": {
     "name": "Mohammad Bilal Mansuri",

@@ -1,22 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { Button, Input, Loader } from "../components";
-import { useAuth } from "../hooks";
+import { useLogin } from "../hooks";
 
 const Login = () => {
-  const { loginUser } = useAuth();
+  const { loggingIn, login } = useLogin();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const [loggingIn, setLoggingIn] = useState(false);
-  const handleLogin = handleSubmit(
-    async (data) => await loginUser(data, setLoggingIn)
-  );
 
   const renderErrors = () => {
     const errorMessages = [errors?.email?.message, errors?.password?.message]
@@ -24,32 +18,31 @@ const Login = () => {
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="leading-tight text-red text-center">{errorMessages}</p>
+      <p className="text-red text-center leading-normal">{errorMessages}</p>
     ) : null;
   };
 
   return (
     <>
-      <Helmet>
-        <title>Login - Twilo</title>
-      </Helmet>
+      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-4">
+        <Helmet>
+          <title>Login - Twilo</title>
+          <meta name="description" content="Login to your Twilo account." />
+        </Helmet>
 
-      <div className="max-w min-h relative py-8 flex flex-col items-center justify-center gap-6">
-        <h1 className="text-4xl font-bold leading-none">
-          Login to your account
-        </h1>
+        <h1 className="text-4xl font-bold">Login to your account</h1>
 
-        <p className="text-lg leading-none text-black/60">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue hover:underline">
-            Login
+        <p className="text-lg text-black/60">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue hover:underline">
+            Sign up
           </Link>
         </p>
 
         <form
           id="loginForm"
-          onSubmit={handleLogin}
-          className="w-full max-w-sm relative flex flex-col gap-4"
+          onSubmit={handleSubmit(login)}
+          className="w-full max-w-sm relative flex flex-col gap-4 pt-1"
         >
           <Input
             type="email"
@@ -92,7 +85,7 @@ const Login = () => {
           to="/send-password-reset-link"
           className="text-lg leading-tight text-black/60 border-b border-black/20 transition-all hover:border-blue hover:text-blue"
         >
-          Forget your password?
+          Forgot your password?
         </Link>
       </div>
     </>

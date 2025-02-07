@@ -10,7 +10,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, { payload }) => {
+    setUser: (state, { payload }) => {
       const { emailVerification, ...rest } = payload;
 
       if (!state.status) {
@@ -25,11 +25,11 @@ const authSlice = createSlice({
 
       state.user = { ...state.user, ...rest };
     },
-    verify: (state) => {
+    verifyUser: (state) => {
       state.verified = true;
       localStorage.setItem("isVerified", "true");
     },
-    logout: (state) => {
+    removeUser: (state) => {
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("isVerified");
       state.status = false;
@@ -39,5 +39,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, verify, logout } = authSlice.actions;
+export const { setUser, verifyUser, removeUser } = authSlice.actions;
 export default authSlice.reducer;

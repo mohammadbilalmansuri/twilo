@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { Button, Input, Loader } from "../components";
 import { authService } from "../appwrite";
-import { useAuth } from "../hooks";
+import { useAuthState } from "../hooks";
 
 const ResetPassword = () => {
   const { resetPassword } = useAuth();

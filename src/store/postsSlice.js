@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   posts: [],
   cursor: null,
+  hasMore: true,
+  total: 0,
 };
 
 const postsSlice = createSlice({
@@ -10,8 +12,14 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, { payload }) => {
-      state.posts = [...state.posts, ...payload];
-      state.cursor = payload ? payload[payload.length - 1].$id : null;
+      if (!payload) return;
+      const { documents, total } = payload;
+      state.posts = [...state.posts, ...documents];
+      state.cursor = documents.length
+        ? documents[documents.length - 1].$id
+        : null;
+      state.hasMore = state.posts.length < total;
+      state.total = total;
     },
     addPost: (state, { payload }) => {
       state.posts = [payload, ...state.posts];
@@ -26,6 +34,8 @@ const postsSlice = createSlice({
     cleanPosts: (state) => {
       state.posts = [];
       state.cursor = null;
+      state.hasMore = true;
+      state.total = 0;
     },
   },
 });

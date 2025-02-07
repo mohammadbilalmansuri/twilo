@@ -8,8 +8,6 @@ const Posts = () => {
   const [state, setState] = useState({
     loading: false,
     error: null,
-    hasMore: true,
-    noPosts: false,
   });
   const ref = useIntersectionObserver(() => {
     if (posts.length === 0 || state.hasMore) fetchPosts(state, setState);

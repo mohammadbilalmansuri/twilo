@@ -1,26 +1,35 @@
 import { Button } from "../components";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   return (
-    <div className="max-w min-h flex flex-col items-center justify-center">
-      <div className="w-full relative py-8 flex flex-col items-center gap-6 text-center">
-        <h2 className="text-xl leading-tight border-b border-b-black/20 pb-0.5">
-          Start your blogging journey today with Twilo
-        </h2>
-        <h1 className="text-4xl font-bold leading-none">
-          Write. Share. Explore. Connect.
-        </h1>
-        <p className="text-lg text-black/60 max-w-screen-sm">
-          Twilo is your go-to platform for effortless blogging. Share your
-          thoughts, ideas, and stories with a community of readers. Whether
-          you're writing for fun or building an audience, Twilo makes it easy to
-          get started and grow.
-        </p>
-        <Button style={1} as="link" to="/signup" className="mt-2">
-          Get Started
-        </Button>
+    <>
+      <Helmet>
+        <title>Twilo: Bring Your Stories and Ideas to Life</title>
+        <meta
+          name="description"
+          content="Twilo is your go-to platform for easy blogging. Share your stories, ideas, and creativity with a lively community of readers. Whether you're writing for fun, exploring new ideas, or growing your audience, Twilo makes it easy to succeed."
+        />
+      </Helmet>
+
+      <div className="wrapper-center">
+        <div className="w-full max-w-xl relative py-8 flex flex-col items-center gap-4 text-center">
+          <h4 className="h4 border-b-1.5 border-b-black/10 pb-0.5">
+            Start your blogging journey today with Twilo
+          </h4>
+          <h1 className="h1">Bring Your Stories and Ideas to Life</h1>
+          <p className="p">
+            Twilo is your go-to platform for easy blogging. Share your stories,
+            ideas, and creativity with a lively community of readers. Whether
+            you're writing for fun, exploring new ideas, or growing your
+            audience, Twilo makes it easy to succeed.
+          </p>
+          <Button as="link" to="/signup" className="mt-2">
+            Get Started
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

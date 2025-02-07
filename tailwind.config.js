@@ -3,10 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     screens: {
-      xs: "480px",
-      sm: "660px",
-      md: "840px",
-      lg: "1024px",
+      xs: "460px",
+      sm: "640px",
+      md: "820px",
+      lg: "1000px",
     },
     colors: {
       transparent: "transparent",
@@ -30,6 +30,9 @@ export default {
       borderWidth: {
         1.5: "1.5px",
         3: "3px",
+      },
+      maxWidth: {
+        xl: "37.5rem",
       },
     },
   },
