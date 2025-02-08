@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { databaseService, storageService } from "../appwrite";
-import { addPost, updatePost } from "../store/feedSlice";
 import { useForm } from "react-hook-form";
-import { useAuthState, usePostServices } from "../hooks";
+import { useAuthState } from "../hooks";
 
 const PostForm = ({ post }) => {
   const dispatch = useDispatch();
@@ -19,7 +18,6 @@ const PostForm = ({ post }) => {
     new: null,
     previewUrl: null,
   });
-  const { isPostsFetched } = usePostServices();
 
   const {
     register,
@@ -86,14 +84,7 @@ const PostForm = ({ post }) => {
         }
 
         if (file) postData.thumbnail = file.$id;
-
-        const updatedPost = await databaseService.updatePost(
-          post.$id,
-          postData
-        );
-
-        if (isPostsFetched) dispatch(updatePost(updatedPost));
-        navigate(`/posts/${updatedPost.$id}`);
+        await databaseService.updatePost(post.$id, postData);
       } else {
         const postData = {
           title: data.title,
@@ -103,9 +94,8 @@ const PostForm = ({ post }) => {
           owner: user.$id,
         };
 
-        const newPost = await databaseService.createPost(postData);
-        if (isPostsFetched) dispatch(addPost(newPost));
-        navigate(`/posts/${newPost.$id}`);
+        await databaseService.createPost(postData);
+        // navigate(`/post/${newPost.$id}`);
       }
     } catch (error) {
       setError(error?.message || "Something went wrong. Please try again.");

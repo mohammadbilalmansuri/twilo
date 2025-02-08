@@ -14,8 +14,15 @@ const feedSlice = createSlice({
     setPosts: (state, { payload }) => {
       if (!payload) return;
       const { documents, total } = payload;
-      state.posts = [...state.posts, ...documents];
-      state.cursor = state.posts[state.posts.length - 1].$id;
+      state.posts = [
+        ...new Map(
+          [...state.posts, ...documents].map((p) => [p.$id, p])
+        ).values(),
+      ];
+
+      state.cursor = state.posts.length
+        ? state.posts[state.posts.length - 1].$id
+        : null;
       state.hasMore = state.posts.length < total;
       state.total = total;
     },
@@ -23,7 +30,6 @@ const feedSlice = createSlice({
   },
 });
 
-export const { setPosts, addPost, updatePost, removePost, cleanPosts } =
-  feedSlice.actions;
+export const { setPosts, cleanPosts } = feedSlice.actions;
 
 export default feedSlice.reducer;

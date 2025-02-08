@@ -9,10 +9,10 @@ const Header = () => {
 
   return (
     <header className="w-full fixed top-0 z-40 flex flex-col items-center px-3">
-      <div className="max-w relative h-16 p-3 flex justify-between items-center border-1.5 border-t-0 border-black/10 backdrop-blur-lg rounded-b-lg">
+      <div className="max-w relative h-16 p-3 flex justify-between items-center border-1.5 border-t-0 border-black/10 bg-white rounded-b-lg">
         {isLoggedIn ? (
           isVerified ? (
-            <Link to="/posts" className="logo">
+            <Link to="/feed" className="logo">
               twilo
             </Link>
           ) : (
@@ -30,7 +30,7 @@ const Header = () => {
               {isVerified && (
                 <>
                   <NavLink
-                    to="/posts"
+                    to="/feed"
                     className={({ isActive }) =>
                       cn(
                         "icon bg-black/5 hover:bg-black/10",
@@ -46,7 +46,7 @@ const Header = () => {
                   </NavLink>
 
                   <NavLink
-                    to="/create-post"
+                    to="/create"
                     className={({ isActive }) =>
                       cn(
                         "icon bg-black/5 hover:bg-black/10",

@@ -15,11 +15,11 @@ const useValidateRoutes = () => {
           return navigate("/verify", { replace: true });
         }
         if (isVerified && ["/verify", "/verification"].includes(pathname)) {
-          return navigate("/posts", { replace: true });
+          return navigate("/feed", { replace: true });
         }
       } else {
         if (isLoggedIn && ["/", "/login", "/register"].includes(pathname)) {
-          return navigate("/posts", { replace: true });
+          return navigate("/feed", { replace: true });
         }
       }
     } finally {

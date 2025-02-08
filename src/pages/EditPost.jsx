@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { PostForm, Loading } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
-import { usePostServices } from "../hooks";
+import { useFeedState } from "../hooks";
 
 const EditPost = () => {
   const { id } = useParams();
-  const { fetchPost } = usePostServices();
+  const { fetchPost } = useFeedState();
   const [state, setState] = useState({
     loading: true,
     post: null,

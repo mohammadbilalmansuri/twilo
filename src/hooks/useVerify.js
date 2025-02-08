@@ -32,13 +32,13 @@ const useVerify = () => {
   const verify = async (userId, secret) => {
     try {
       if (!userId || !secret) throw new Error("Invalid verification link");
-      await authService.Verification(userId, secret);
+      await authService.verification(userId, secret);
       dispatch(verifyUser());
       notify({
         type: "success",
         message: "Email verified successfully!",
       });
-      navigate("/posts", { replace: true });
+      navigate("/feed", { replace: true });
     } catch (err) {
       notify({
         type: "error",

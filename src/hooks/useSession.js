@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../appwrite";
-import { setUser } from "../store/authSlice";
+import { setUser, removeUser } from "../store/authSlice";
 import { useNotification, useAuthState } from ".";
 
 const useSession = () => {
@@ -23,7 +23,7 @@ const useSession = () => {
       dispatch(setUser(user));
     } catch (error) {
       if (error.message === "User (role: guests) missing scope (account)") {
-        dispatch(logout());
+        dispatch(removeUser());
         notify({
           type: "error",
           message: "Session expired. Please login again.",
