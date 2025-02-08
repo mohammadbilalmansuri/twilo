@@ -18,7 +18,7 @@ const useFeed = () => {
     try {
       const postsData = await databaseService.getFeed({
         userId: user?.$id,
-        limit: 15,
+        limit: 20,
         cursor,
       });
       dispatch(setPosts(postsData));

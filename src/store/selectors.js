@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 const selectNotificationState = (state) => state.notification;
 const selectAuthState = (state) => state.auth;
 const selectFeedState = (state) => state.feed;
-const selectProfileState = (state) => state.profiles;
+const selectProfilesState = (state) => state.profiles;
 
 // Notification Selectors
 
@@ -55,17 +55,7 @@ export const selectTotalPosts = createSelector(
 
 // Profile State Selectors
 
-export const selectIsCurrentUserPostsFetched = createSelector(
-  [selectProfileState],
-  (profileState) => profileState.currentUserPosts.length > 0
-);
-
-export const selectCurrentUserPosts = createSelector(
-  [selectProfileState],
-  (profileState) => profileState.currentUserPosts
-);
-
 export const selectProfiles = createSelector(
-  [selectProfileState],
-  (profileState) => profileState.profiles
+  [selectProfilesState],
+  (profilesState) => profilesState.profiles
 );

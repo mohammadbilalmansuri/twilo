@@ -13,8 +13,6 @@ export class DatabaseService {
     this.databases = new Databases(this.client);
   }
 
-  // Profile methods
-
   async createProfile({ userId, name, email }) {
     if (!userId || !name || !email) {
       throw new Error("User ID, name and email are required.");
@@ -34,45 +32,22 @@ export class DatabaseService {
     }
   }
 
-  async updateProfileName(userId, name) {
-    if (!userId || !name) {
-      throw new Error("User ID and name are required.");
-    }
-
-    try {
-      await this.databases.updateDocument(
-        config.appwriteDatabaseId,
-        config.appwriteProfilesCollectionId,
-        userId,
-        { name }
-      );
-      return true;
-    } catch (error) {
-      console.error("Appwrite :: updateProfileName :: ", error.message);
-      throw error;
-    }
-  }
-
   async getProfile(userId) {
     if (!userId) {
       throw new Error("User ID is required.");
     }
 
     try {
-      const profile = await this.databases.getDocument(
+      return await this.databases.getDocument(
         config.appwriteDatabaseId,
         config.appwriteProfilesCollectionId,
         userId
       );
-      const profilePosts = await this.getPostByUser(userId);
-      return { ...profile, posts: profilePosts };
     } catch (error) {
       console.error("Appwrite :: getProfile :: ", error.message);
       throw error;
     }
   }
-
-  // Post related methods
 
   async createPost({ title, excerpt, content, thumbnail, owner }) {
     if (!title || !excerpt || !owner) {
@@ -165,16 +140,22 @@ export class DatabaseService {
     }
   }
 
-  async getPostByUser(userId) {
+  async getUserPosts({ userId, limit, cursor }) {
     try {
-      const response = await this.databases.listDocuments(
+      const queries = [
+        Query.orderDesc("$createdAt"),
+        Query.equal("owner", userId),
+      ];
+      if (limit) queries.push(Query.limit(limit));
+      if (cursor) queries.push(Query.cursorAfter(cursor));
+
+      return await this.databases.listDocuments(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
-        [Query.equal("owner", userId)]
+        queries
       );
-      return response.documents;
     } catch (error) {
-      console.error("Appwrite :: getPostByUser :: ", error.message);
+      console.error("Appwrite :: getUserPosts :: ", error.message);
       throw error;
     }
   }

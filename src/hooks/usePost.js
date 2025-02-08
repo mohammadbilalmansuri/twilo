@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { databaseService } from "../appwrite";
 import { useFeedState, useAuthState, useNotification } from ".";
+import { selectProfiles } from "../store/selectors";
 
-const useFeed = () => {
+const usePost = () => {
   const { user } = useAuthState();
   const { posts } = useFeedState();
+  const profilesPosts = useSelector(selectProfiles)
+    ?.map((profile) => profile.posts)
+    .flat();
   const navigate = useNavigate();
   const { notify } = useNotification();
   const [loading, setLoading] = useState(true);
@@ -19,9 +24,10 @@ const useFeed = () => {
 
     setLoading(true);
     try {
-      let fetchedPost = Array.isArray(posts)
-        ? posts.find((p) => p.$id === id)
-        : null;
+      let fetchedPost =
+        posts.find((p) => p.$id === id) ||
+        profilesPosts.find((p) => p.$id === id);
+
       if (!fetchedPost) {
         fetchedPost = await databaseService.getPost(id);
       }
@@ -58,4 +64,4 @@ const useFeed = () => {
   return { fetchPost, loading, post };
 };
 
-export default useFeed;
+export default usePost;

@@ -180,7 +180,7 @@ const PostForm = ({ post }) => {
           type="submit"
           style={1}
           disabled={loading}
-          className="w-1/2 h-15"
+          className="w-1/2 md:h-15"
         >
           {loading ? (
             <Loader size="sm" color="white" />
