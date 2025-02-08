@@ -11,7 +11,7 @@ const Feed = () => {
     fetchFeed();
   }, []);
 
-  const ref = useIntersectionObserver(() => {
+  const lastPostRef = useIntersectionObserver(() => {
     if (hasMore) fetchFeed();
   });
 
@@ -41,23 +41,18 @@ const Feed = () => {
           </Button>
         </div>
       ) : (
-        <div className="wrapper py-4">
-          <PostMasonry posts={Array.isArray(posts) ? posts : []} />
-          {loading && hasMore && (
-            <div className="flex flex-col items-center pt-4">
-              <Loader />
-            </div>
-          )}
+        <div className="wrapper py-4 gap-4">
+          <PostMasonry
+            posts={Array.isArray(posts) ? posts : []}
+            lastPostRef={lastPostRef}
+          />
+
+          {loading && hasMore && <Loader />}
+
           {!hasMore && total !== 0 && (
-            <p className="text text-center pt-4">
+            <p className="text text-center">
               You've reached the end of the posts. Stay tuned for more updates!
             </p>
-          )}
-          {hasMore && (
-            <div
-              ref={ref}
-              className="w-full 0 h-1 opacity- pointer-events-none"
-            ></div>
           )}
         </div>
       )}

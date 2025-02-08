@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { PostCard } from "../components";
 
-const PostMasonry = ({ posts }) => {
+const PostMasonry = ({ posts, lastPostRef }) => {
   const [isWideScreen, setIsWideScreen] = useState(
     window.matchMedia("(min-width: 640px)").matches
   );
+  const lastPost = posts?.[posts.length - 1];
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 640px)");
@@ -25,19 +26,31 @@ const PostMasonry = ({ posts }) => {
           <>
             <div className="flex flex-col gap-4">
               {evenPosts.map((post) => (
-                <PostCard key={post.$id} {...post} />
+                <PostCard
+                  key={post.$id}
+                  {...post}
+                  ref={post.$id === lastPost.$id ? lastPostRef : null}
+                />
               ))}
             </div>
             <div className="flex flex-col gap-4">
               {oddPosts.map((post) => (
-                <PostCard key={post.$id} {...post} />
+                <PostCard
+                  key={post.$id}
+                  {...post}
+                  ref={post.$id === lastPost.$id ? lastPostRef : null}
+                />
               ))}
             </div>
           </>
         ) : (
           <div className="flex flex-col gap-4">
             {posts.map((post) => (
-              <PostCard key={post.$id} {...post} />
+              <PostCard
+                key={post.$id}
+                {...post}
+                ref={post.$id === lastPost.$id ? lastPostRef : null}
+              />
             ))}
           </div>
         )}
