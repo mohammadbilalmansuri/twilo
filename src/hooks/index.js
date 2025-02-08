@@ -15,6 +15,7 @@ import useFeedState from "./useFeedState";
 import useFeed from "./useFeed";
 import usePost from "./usePost";
 import usePostActions from "./usePostActions";
+import useProfile from "./useProfile";
 
 export {
   useNotification,
@@ -32,4 +33,5 @@ export {
   useFeed,
   usePost,
   usePostActions,
+  useProfile,
 };

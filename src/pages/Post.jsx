@@ -40,13 +40,15 @@ const Post = () => {
                 <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
               </svg>
             </span>
-            <span className="text-lg font-medium group-hover:text-blue group-hover:underline">
+            <span className="md:text-lg text-base font-medium group-hover:text-blue group-hover:underline">
               {post.owner.name}
             </span>
           </Link>
 
           <div className="flex items-center gap-4">
-            <p className="text-lg">{formatTime(post.$createdAt)}</p>
+            <p className="md:text-lg text-base">
+              {formatTime(post.$createdAt)}
+            </p>
 
             {post.isOwner && (
               <>
@@ -93,10 +95,10 @@ const Post = () => {
         )}
 
         <h1 className="text-3xl font-bold leading-snug">{post.title}</h1>
-        <p className="text-lg leading-snug text-black/60 pl-4 border-l-3 border-black/10">
+        <p className="md:text-lg text-base leading-snug text-black/60 pl-4 border-l-3 border-black/10">
           {post.excerpt}
         </p>
-        <div className="text-lg leading-snug text-black/60 pt-2">
+        <div className="md:text-lg text-base leading-snug text-black/60 pt-2">
           {parse(post.content)}
         </div>
       </div>

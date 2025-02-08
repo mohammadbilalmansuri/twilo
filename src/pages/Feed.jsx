@@ -41,15 +41,15 @@ const Feed = () => {
           </Button>
         </div>
       ) : (
-        <div className="wrapper pt-4">
-          <PostMasonry posts={posts} />
+        <div className="wrapper py-4">
+          <PostMasonry posts={Array.isArray(posts) ? posts : []} />
           {loading && hasMore && (
-            <div className="flex flex-col items-center py-6">
+            <div className="flex flex-col items-center pt-4">
               <Loader />
             </div>
           )}
           {!hasMore && total !== 0 && (
-            <p className="text text-center py-6">
+            <p className="text text-center pt-4">
               You've reached the end of the posts. Stay tuned for more updates!
             </p>
           )}

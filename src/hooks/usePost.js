@@ -19,8 +19,12 @@ const useFeed = () => {
 
     setLoading(true);
     try {
-      let fetchedPost =
-        posts.find((p) => p.$id === id) || (await databaseService.getPost(id));
+      let fetchedPost = Array.isArray(posts)
+        ? posts.find((p) => p.$id === id)
+        : null;
+      if (!fetchedPost) {
+        fetchedPost = await databaseService.getPost(id);
+      }
 
       const postWithOwner = {
         ...fetchedPost,

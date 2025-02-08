@@ -9,7 +9,7 @@ const profilesSlice = createSlice({
   name: "profiles",
   initialState,
   reducers: {
-    setUserPosts: (state, { payload }) => {
+    setCurrentUserPosts: (state, { payload }) => {
       state.currentUserPosts = payload;
     },
     addPost: (state, { payload }) => {
@@ -33,7 +33,7 @@ const profilesSlice = createSlice({
 });
 
 export const {
-  setUserPosts,
+  setCurrentUserPosts,
   addPost,
   updatePost,
   removePost,
