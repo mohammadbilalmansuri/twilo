@@ -12,7 +12,7 @@ const usePasswordReset = () => {
   const sendLink = async (email) => {
     setSending(true);
     try {
-      await authService.ForgotPassword(email);
+      await authService.sendPasswordResetLink(email);
       notify({
         type: "success",
         message:

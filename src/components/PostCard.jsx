@@ -8,7 +8,7 @@ const PostCard = ({ $id, title, excerpt, thumbnail, owner, $createdAt }) => {
   return (
     <div
       id={$id}
-      onClick={() => navigate(`/posts/${$id}`)}
+      onClick={() => navigate(`/post/${$id}`)}
       className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer p-4 gap-4 break-inside-avoid overflow-hidden break-words"
     >
       <div className="w-full flex justify-between items-center gap-4">

@@ -1,5 +1,5 @@
 import Home from "./Home";
-import Posts from "./Posts";
+import Feed from "./Feed";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
 import EditPost from "./EditPost";
@@ -14,7 +14,7 @@ import ForgotPassword from "./ForgotPassword.jsx";
 
 export {
   Home,
-  Posts,
+  Feed,
   CreatePost,
   Post,
   EditPost,

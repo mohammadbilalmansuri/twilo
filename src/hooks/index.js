@@ -9,7 +9,8 @@ import useLogout from "./useLogout";
 import useSignup from "./useSignup";
 import usePasswordReset from "./usePasswordReset";
 import useVerify from "./useVerify";
-import usePostServices from "./usePostServices";
+import useFeedState from "./useFeedState";
+import useFeed from "./useFeed";
 
 export {
   useNotification,
@@ -23,5 +24,6 @@ export {
   useSignup,
   usePasswordReset,
   useVerify,
-  usePostServices,
+  useFeedState,
+  useFeed,
 };

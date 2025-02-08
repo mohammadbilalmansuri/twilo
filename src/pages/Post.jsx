@@ -4,12 +4,12 @@ import storageService from "../appwrite/storage";
 import parse from "html-react-parser";
 import { Helmet } from "react-helmet-async";
 import formatTime from "../utils/formatTime";
-import { usePostServices } from "../hooks";
+import { useFeedState } from "../hooks";
 import { Loader, Loading } from "../components";
 
 const Post = () => {
   const { id } = useParams();
-  const { fetchPost, deletePost } = usePostServices();
+  const { fetchPost, deletePost } = useFeedState();
   const [state, setState] = useState({
     loading: true,
     post: null,

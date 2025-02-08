@@ -1,9 +1,20 @@
 import { createSelector } from "reselect";
-const selectAuthState = (state) => state.auth;
-const selectPostsState = (state) => state.posts;
 const selectNotificationState = (state) => state.notification;
+const selectAuthState = (state) => state.auth;
+const selectFeedState = (state) => state.feed;
 
-// Auth Selectors
+// Notification Selectors
+
+export const selectNotification = createSelector(
+  [selectNotificationState],
+  (notificationState) => ({
+    isOpen: notificationState.isOpen,
+    type: notificationState.type,
+    message: notificationState.message,
+  })
+);
+
+// Auth State Selectors
 export const selectIsLoggedIn = createSelector(
   [selectAuthState],
   (authState) => authState.status
@@ -19,40 +30,29 @@ export const selectUser = createSelector(
   (authState) => authState.user
 );
 
-// Posts Selectors
+// Feed State Selectors
 
 export const selectIsPostsFetched = createSelector(
-  [selectPostsState],
-  (postState) => postState.posts.length > 0
+  [selectFeedState],
+  (feedState) => feedState.posts.length > 0
 );
 
 export const selectPosts = createSelector(
-  [selectPostsState],
-  (postState) => postState.posts
+  [selectFeedState],
+  (feedState) => feedState.posts
 );
 
 export const selectCursor = createSelector(
-  [selectPostsState],
-  (postState) => postState.cursor
+  [selectFeedState],
+  (feedState) => feedState.cursor
 );
 
 export const selectHasMore = createSelector(
-  [selectPostsState],
-  (postState) => postState.hasMore
+  [selectFeedState],
+  (feedState) => feedState.hasMore
 );
 
 export const selectTotalPosts = createSelector(
-  [selectPostsState],
-  (postState) => postState.total
-);
-
-// Notification Selectors
-
-export const selectNotification = createSelector(
-  [selectNotificationState],
-  (notificationState) => ({
-    isOpen: notificationState.isOpen,
-    type: notificationState.type,
-    message: notificationState.message,
-  })
+  [selectFeedState],
+  (feedState) => feedState.total
 );

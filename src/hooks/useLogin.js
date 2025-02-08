@@ -21,7 +21,7 @@ const useLogin = () => {
         message: "Logged in successfully!",
       });
       user.emailVerification
-        ? navigate("/posts", { replace: true })
+        ? navigate("/feed", { replace: true })
         : navigate("/verify", { replace: true });
     } catch (err) {
       notify({

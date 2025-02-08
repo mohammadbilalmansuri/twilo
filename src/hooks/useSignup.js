@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authService } from "../appwrite";
+import { authService, databaseService } from "../appwrite";
 import { setUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

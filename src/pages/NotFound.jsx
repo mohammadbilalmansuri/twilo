@@ -15,7 +15,7 @@ const NotFound = () => {
           4O4
         </h1>
         <h2 className="h1">Opps! Page Not Found</h2>
-        <Button as="link" to={isLoggedIn ? "/posts" : "/"}>
+        <Button as="link" to={isLoggedIn ? "/feed" : "/"}>
           Go To Home
         </Button>
       </div>

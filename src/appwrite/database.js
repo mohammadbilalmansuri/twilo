@@ -34,9 +34,9 @@ export class DatabaseService {
     }
   }
 
-  async updateProfile(userId, updatedProfileData) {
-    if (!userId || !updatedProfileData) {
-      throw new Error("User ID and updated data are required.");
+  async updateProfileName(userId, name) {
+    if (!userId || !name) {
+      throw new Error("User ID and name are required.");
     }
 
     try {
@@ -44,11 +44,11 @@ export class DatabaseService {
         config.appwriteDatabaseId,
         config.appwriteProfilesCollectionId,
         userId,
-        updatedProfileData
+        { name }
       );
       return true;
     } catch (error) {
-      console.error("Appwrite :: updateProfile :: ", error.message);
+      console.error("Appwrite :: updateProfileName :: ", error.message);
       throw error;
     }
   }
@@ -143,11 +143,12 @@ export class DatabaseService {
     }
   }
 
-  async getPosts({ userId = null, limit, cursor }) {
+  async getFeed({ userId, limit, cursor }) {
     try {
-      const queries = [Query.orderDesc("$createdAt")];
-
-      if (userId) queries.push(Query.equal("owner", userId));
+      const queries = [
+        Query.orderDesc("$createdAt"),
+        Query.notEqual("owner", userId),
+      ];
       if (limit) queries.push(Query.limit(limit));
       if (cursor) queries.push(Query.cursorAfter(cursor));
 
@@ -157,7 +158,7 @@ export class DatabaseService {
         queries
       );
     } catch (error) {
-      console.error("Appwrite :: getPosts :: ", error.message);
+      console.error("Appwrite :: getFeed :: ", error.message);
       throw error;
     }
   }

@@ -72,7 +72,7 @@ const usePostState = () => {
           type: "error",
           message: "You are not authorized to edit this post!",
         });
-        navigate(`/posts/${id}`);
+        navigate(`/post/${id}`);
         setState((prev) => ({ ...prev, loading: false }));
       }
 
@@ -89,7 +89,7 @@ const usePostState = () => {
             ? "Post not found!"
             : err.message,
       });
-      navigate("/posts", { replace: true });
+      navigate("/feed", { replace: true });
       setState((prev) => ({ ...prev, loading: false }));
     }
   };
@@ -108,7 +108,7 @@ const usePostState = () => {
         type: "success",
         message: "Post deleted successfully!",
       });
-      navigate("/posts");
+      navigate("/feed");
     } catch (error) {
       notify({
         type: "error",
