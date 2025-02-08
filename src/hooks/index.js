@@ -11,6 +11,8 @@ import usePasswordReset from "./usePasswordReset";
 import useVerify from "./useVerify";
 import useFeedState from "./useFeedState";
 import useFeed from "./useFeed";
+import usePost from "./usePost";
+import usePostDelete from "./usePostDelete";
 
 export {
   useNotification,
@@ -26,4 +28,6 @@ export {
   useVerify,
   useFeedState,
   useFeed,
+  usePost,
+  usePostDelete,
 };

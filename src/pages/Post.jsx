@@ -1,39 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import storageService from "../appwrite/storage";
 import parse from "html-react-parser";
 import { Helmet } from "react-helmet-async";
 import formatTime from "../utils/formatTime";
-import { useFeedState } from "../hooks";
 import { Loader, Loading } from "../components";
+import { usePost, usePostDelete } from "../hooks";
 
 const Post = () => {
   const { id } = useParams();
-  const { fetchPost, deletePost } = useFeedState();
-  const [state, setState] = useState({
-    loading: true,
-    post: null,
-    isOwner: false,
-  });
-  const [deleting, setDeleting] = useState(false);
+  const { fetchPost, loading, post } = usePost();
+  const { deletePost, deleting } = usePostDelete();
 
   useEffect(() => {
-    if (!id) return;
-    fetchPost(id, setState);
+    fetchPost(id);
   }, [id]);
 
-  return state.loading ? (
+  return loading ? (
     <Loading />
-  ) : state.post ? (
+  ) : post ? (
     <>
       <Helmet>
-        <title>{state.post.title} - Twilo</title>
+        <title>{post.title} - Twilo</title>
+        <meta name="description" content={post.excerpt} />
       </Helmet>
 
       <div className="max-w relative py-8 flex flex-col gap-6">
         <div className="w-full flex justify-between items-center">
           <Link
-            to={`/profile/${state.post.owner.$id}`}
+            to={`/profile/${post.owner.$id}`}
             className="flex gap-2 items-center group"
           >
             <span className="icon bg-blue hover:bg-blue/85 fill-white">
@@ -46,17 +41,17 @@ const Post = () => {
               </svg>
             </span>
             <span className="text-lg font-medium group-hover:text-blue group-hover:underline">
-              {state.post.owner.name}
+              {post.owner.name}
             </span>
           </Link>
 
           <div className="flex items-center gap-4">
-            <p className="text-lg">{formatTime(state.post.$createdAt)}</p>
+            <p className="text-lg">{formatTime(post.$createdAt)}</p>
 
-            {state.isOwner && (
+            {post.isOwner && (
               <>
                 <Link
-                  to={`/edit-post/${state.post.$id}`}
+                  to={`/edit-post/${post.$id}`}
                   className="icon bg-black/5 fill-black hover:bg-black/10"
                 >
                   <svg
@@ -69,7 +64,7 @@ const Post = () => {
                 </Link>
                 <button
                   className="icon bg-black/5 fill-black hover:fill-red"
-                  onClick={() => deletePost(state.post, setDeleting)}
+                  onClick={() => deletePost(post)}
                   disabled={deleting}
                 >
                   {deleting ? (
@@ -89,20 +84,20 @@ const Post = () => {
           </div>
         </div>
 
-        {state.post.thumbnail && (
+        {post.thumbnail && (
           <img
-            src={storageService.getFilePreview(state.post.thumbnail)}
-            alt={state.post.title}
+            src={storageService.getFilePreview(post.thumbnail)}
+            alt={post.title}
             className="w-full aspect-video object-cover object-center rounded-lg"
           />
         )}
 
-        <h1 className="text-3xl font-bold leading-snug">{state.post.title}</h1>
+        <h1 className="text-3xl font-bold leading-snug">{post.title}</h1>
         <p className="text-lg leading-snug text-black/60 pl-4 border-l-3 border-black/10">
-          {state.post.excerpt}
+          {post.excerpt}
         </p>
         <div className="text-lg leading-snug text-black/60 pt-2">
-          {parse(state.post.content)}
+          {parse(post.content)}
         </div>
       </div>
     </>

@@ -6,7 +6,6 @@ const Profile = () => {
   const { id } = useParams();
   const { user } = useAuthState();
   const isCurrentUser = user.$id === id;
-  console.log(isCurrentUser);
 
   return (
     <div>
