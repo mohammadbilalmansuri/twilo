@@ -5,12 +5,12 @@ import parse from "html-react-parser";
 import { Helmet } from "react-helmet-async";
 import formatTime from "../utils/formatTime";
 import { Loader, Loading } from "../components";
-import { usePost, usePostDelete } from "../hooks";
+import { usePost, usePostActions } from "../hooks";
 
 const Post = () => {
   const { id } = useParams();
   const { fetchPost, loading, post } = usePost();
-  const { deletePost, deleting } = usePostDelete();
+  const { deletePost, loading: deleting } = usePostActions();
 
   useEffect(() => {
     fetchPost(id);
@@ -25,7 +25,7 @@ const Post = () => {
         <meta name="description" content={post.excerpt} />
       </Helmet>
 
-      <div className="max-w relative py-8 flex flex-col gap-6">
+      <div className="wrapper-left gap-6 py-8">
         <div className="w-full flex justify-between items-center">
           <Link
             to={`/profile/${post.owner.$id}`}

@@ -19,7 +19,6 @@ const feedSlice = createSlice({
           [...state.posts, ...documents].map((p) => [p.$id, p])
         ).values(),
       ];
-
       state.cursor = state.posts.length
         ? state.posts[state.posts.length - 1].$id
         : null;

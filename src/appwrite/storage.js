@@ -29,18 +29,6 @@ export class StorageService {
     }
   }
 
-  async updateFile(file) {
-    if (!file) {
-      throw new Error("File is required");
-    }
-    try {
-      return await this.storage.updateFile(config.appwriteBucketId, file);
-    } catch (error) {
-      console.log("Appwrite Service :: updateFile :: ERROR:", error);
-      throw error;
-    }
-  }
-
   async deleteFile(fileId) {
     if (!fileId) {
       throw new Error("File ID is required");

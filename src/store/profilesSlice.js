@@ -1,8 +1,8 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   profiles: [],
-  currentUserPosts: {},
+  currentUserPosts: [],
 };
 
 const profilesSlice = createSlice({
@@ -13,24 +13,17 @@ const profilesSlice = createSlice({
       state.currentUserPosts = payload;
     },
     addPost: (state, { payload }) => {
-      state.currentProfile = {
-        ...state.currentProfile,
-        posts: [...payload, ...state.currentProfile.posts],
-      };
-    },
-    removePost: (state, { payload }) => {
-      state.currentProfile = {
-        ...state.currentProfile,
-        posts: state.currentProfile.posts.filter(({ $id }) => $id !== payload),
-      };
+      state.currentUserPosts = [payload, ...state.currentUserPosts];
     },
     updatePost: (state, { payload }) => {
-      state.currentProfile = {
-        ...state.currentProfile,
-        posts: state.currentProfile.posts.map((post) =>
-          post.$id === payload.$id ? payload : post
-        ),
-      };
+      state.currentUserPosts = state.currentUserPosts.map((post) =>
+        post.$id === payload.$id ? payload : post
+      );
+    },
+    removePost: (state, { payload }) => {
+      state.currentUserPosts = state.currentUserPosts.filter(
+        ({ $id }) => $id !== payload
+      );
     },
     addProfile: (state, { payload }) => {
       state.profiles.push(payload);
@@ -39,6 +32,12 @@ const profilesSlice = createSlice({
   },
 });
 
-export const { setCurrentProfile, addProfile, cleanProfiles } =
-  profilesSlice.actions;
+export const {
+  setUserPosts,
+  addPost,
+  updatePost,
+  removePost,
+  addProfile,
+  cleanProfiles,
+} = profilesSlice.actions;
 export default profilesSlice.reducer;

@@ -1,24 +1,10 @@
-import { useState, useRef, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useState, useRef } from "react";
 import { Input, Textarea, Button, RTE, Loader } from "./index";
-import { databaseService, storageService } from "../appwrite";
+import { storageService } from "../appwrite";
 import { useForm } from "react-hook-form";
-import { useAuthState } from "../hooks";
+import { usePostActions, useNotification } from "../hooks";
 
 const PostForm = ({ post }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { user } = useAuthState();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const fileInputRef = useRef(null);
-  const [thumbnail, setThumbnail] = useState({
-    old: post?.thumbnail || null,
-    new: null,
-    previewUrl: null,
-  });
-
   const {
     register,
     handleSubmit,
@@ -32,24 +18,28 @@ const PostForm = ({ post }) => {
       content: post?.content || "",
     },
   });
+  const { notify } = useNotification();
+  const { createPost, updatePostData, loading } = usePostActions();
+  const fileInputRef = useRef(null);
+  const [thumbnail, setThumbnail] = useState({
+    old: post?.thumbnail || null,
+    new: null,
+    previewUrl: null,
+  });
 
-  const handleFileChange = useCallback(
-    (file) => {
-      if (!file) return;
-      if (file.size > 10 * 1024 * 1024) {
-        setError("File size exceeds the 10MB limit.");
-        return;
-      }
-      if (error === "File size exceeds the 10MB limit.") setError("");
-      if (thumbnail.previewUrl) URL.revokeObjectURL(thumbnail.previewUrl);
-      setThumbnail((prev) => ({
-        ...prev,
-        new: file,
-        previewUrl: URL.createObjectURL(file),
-      }));
-    },
-    [thumbnail.new, error]
-  );
+  const handleFileChange = (file) => {
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      notify({ type: "error", message: "File size exceeds the 10MB limit." });
+      return;
+    }
+    if (thumbnail.previewUrl) URL.revokeObjectURL(thumbnail.previewUrl);
+    setThumbnail((prev) => ({
+      ...prev,
+      new: file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+  };
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -64,70 +54,33 @@ const PostForm = ({ post }) => {
     fileInputRef.current.value = "";
   };
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setError("");
-    try {
-      const file = thumbnail.new
-        ? await storageService.uploadFile(thumbnail.new)
-        : null;
-
-      if (post) {
-        const postData = {};
-        if (data.title !== post.title) postData.title = data.title;
-        if (data.excerpt !== post.excerpt) postData.excerpt = data.excerpt;
-        if (data.content !== post.content) postData.content = data.content;
-
-        if (thumbnail.old === null && post.thumbnail) {
-          await storageService.deleteFile(post.thumbnail);
-          postData.thumbnail = "";
-        }
-
-        if (file) postData.thumbnail = file.$id;
-        await databaseService.updatePost(post.$id, postData);
-      } else {
-        const postData = {
-          title: data.title,
-          excerpt: data.excerpt,
-          content: data.content,
-          thumbnail: file ? file.$id : "",
-          owner: user.$id,
-        };
-
-        await databaseService.createPost(postData);
-        // navigate(`/post/${newPost.$id}`);
-      }
-    } catch (error) {
-      setError(error?.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = ({ title, excerpt, content }) => {
+    post
+      ? updatePostData(post, { title, excerpt, content, thumbnail })
+      : createPost({ title, excerpt, content, thumbnail });
   };
 
-  const renderErrors = useMemo(() => {
+  const renderFormErrors = () => {
     const errorMessages = [
       errors?.title?.message,
       errors?.excerpt?.message,
       errors?.content?.message,
-      error,
     ]
       .filter(Boolean)
       .join(", ");
 
     return errorMessages.length ? (
-      <p className="text-red text-center pt-2">{errorMessages}</p>
+      <p className="text text-red text-center">{errorMessages}</p>
     ) : null;
-  }, [errors, error]);
+  };
 
   return (
     <form
-      id="postForm"
       onSubmit={handleSubmit(onSubmit)}
       className="w-full relative flex flex-col gap-4"
     >
       <Input
         type="text"
-        id="title"
         placeholder="Enter post title"
         {...register("title", {
           required: true,
@@ -139,7 +92,6 @@ const PostForm = ({ post }) => {
       />
 
       <Textarea
-        id="excerpt"
         placeholder="Enter post excerpt"
         {...register("excerpt", {
           required: true,
@@ -240,7 +192,7 @@ const PostForm = ({ post }) => {
         </Button>
       </div>
 
-      {renderErrors}
+      {renderFormErrors()}
     </form>
   );
 };
