@@ -90,7 +90,7 @@ const Post = () => {
           <img
             src={storageService.getFilePreview(post.thumbnail)}
             alt={post.title}
-            className="w-full aspect-video object-cover object-center rounded-lg"
+            className="w-full aspect-video object-cover object-center rounded-lg bg-black/5"
           />
         )}
 

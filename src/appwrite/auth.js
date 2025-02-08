@@ -86,34 +86,6 @@ export class AuthService {
     }
   }
 
-  async updateName(name) {
-    if (!name) {
-      throw new Error("Name is required.");
-    }
-
-    try {
-      await this.account.updateName(name);
-      return true;
-    } catch (error) {
-      console.error("Appwrite :: updateUserName :: ", error.message);
-      throw error;
-    }
-  }
-
-  async updatePassword(newPassword, currentPassword) {
-    if (!newPassword || !currentPassword) {
-      throw new Error("New password and current password are required.");
-    }
-
-    try {
-      await this.account.updatePassword(newPassword, currentPassword);
-      return true;
-    } catch (error) {
-      console.error("Appwrite :: updatePassword :: ", error.message);
-      throw error;
-    }
-  }
-
   async sendPasswordResetLink(email) {
     if (!email) {
       throw new Error("Email is required.");

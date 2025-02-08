@@ -25,6 +25,7 @@ export default {
       size: {
         4.5: "1.125rem",
         14: "3.5rem",
+        15: "3.75rem",
         18: "4.5rem",
       },
       borderWidth: {

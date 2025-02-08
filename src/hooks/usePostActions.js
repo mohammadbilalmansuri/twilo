@@ -3,7 +3,6 @@ import { databaseService, storageService } from "../appwrite";
 import { useNotification, useAuthState } from ".";
 import { useNavigate } from "react-router-dom";
 import { addPost, updatePost, removePost } from "../store/profilesSlice";
-import { selectIsCurrentUserPostsFetched } from "../store/selectors";
 import { useDispatch, useSelector } from "react-redux";
 
 const usePostActions = () => {
@@ -11,9 +10,6 @@ const usePostActions = () => {
   const navigate = useNavigate();
   const { notify } = useNotification();
   const { user } = useAuthState();
-  const isCurrentUserPostsFetched = useSelector(
-    selectIsCurrentUserPostsFetched
-  );
   const [loading, setLoading] = useState(false);
 
   const createPost = async ({ title, excerpt, content, thumbnail }) => {
@@ -34,7 +30,7 @@ const usePostActions = () => {
       const newPost = await databaseService.createPost(postData);
 
       notify({ type: "success", message: "Post created successfully!" });
-      isCurrentUserPostsFetched && dispatch(addPost(newPost));
+      dispatch(addPost(newPost));
       navigate(`/post/${newPost.$id}`, { replace: true });
     } catch (error) {
       notify({ type: "error", message: error.message });
@@ -56,7 +52,7 @@ const usePostActions = () => {
       const postData = {};
       if (title !== post.title) postData.title = title;
       if (excerpt !== post.excerpt) postData.excerpt = excerpt;
-      if (content !== post.content) postData.content = data.content;
+      if (content !== post.content) postData.content = content;
 
       if (thumbnail.old === null && post.thumbnail) {
         await storageService.deleteFile(post.thumbnail);
@@ -68,7 +64,7 @@ const usePostActions = () => {
       const updatedPost = await databaseService.updatePost(post.$id, postData);
 
       notify({ type: "success", message: "Post updated successfully!" });
-      isCurrentUserPostsFetched && dispatch(updatePost(updatedPost));
+      dispatch(updatePost(updatedPost));
       navigate(`/post/${updatedPost.$id}`, { replace: true });
     } catch (error) {
       notify({ type: "error", message: error.message });
@@ -84,8 +80,8 @@ const usePostActions = () => {
       if (post.thumbnail) await storageService.deleteFile(post.thumbnail);
 
       notify({ type: "success", message: "Post deleted successfully!" });
-      isCurrentUserPostsFetched && dispatch(removePost(post.$id));
-      navigate("/feed", { replace: true });
+      dispatch(removePost(post));
+      navigate(`/profile/${user.$id}`, { replace: true });
     } catch (error) {
       notify({ type: "error", message: error.message });
     } finally {

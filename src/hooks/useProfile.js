@@ -1,66 +1,81 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { databaseService } from "../appwrite";
-import { addProfile, setCurrentUserPosts } from "../store/profilesSlice";
-import {
-  selectIsCurrentUserPostsFetched,
-  selectCurrentUserPosts,
-  selectProfiles,
-} from "../store/selectors";
+import { addProfile, updateProfile } from "../store/profilesSlice";
+import { selectProfiles } from "../store/selectors";
 import { useAuthState, useNotification } from ".";
 
-const useProfile = () => {
+const useProfile = (userId) => {
   const dispatch = useDispatch();
   const { user } = useAuthState();
-  const profiles = useSelector(selectProfiles);
-  const currentUserPosts = useSelector(selectCurrentUserPosts);
-  const isCurrentUserPostsFetched = useSelector(
-    selectIsCurrentUserPostsFetched
-  );
   const { notify } = useNotification();
-  const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState(null);
+  const profiles = useSelector(selectProfiles);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const fetchProfile = async (userId) => {
-    if (!userId) return;
+  const profile = profiles.find((p) => p.$id === userId) || null;
 
+  const fetchProfile = async () => {
+    if (!userId || profile) return;
     setLoading(true);
     try {
-      let profileData;
+      const newProfile = await databaseService.getProfile(userId);
+      const posts = await databaseService.getUserPosts({
+        userId,
+        limit: 20,
+        cursor: null,
+      });
 
-      if (userId === user.$id) {
-        if (isCurrentUserPostsFetched && currentUserPosts?.length) {
-          profileData = {
-            ...user,
-            isCurrentUser: true,
-            posts: currentUserPosts,
-          };
-        } else {
-          const posts = await databaseService.getPostByUser(userId);
-          dispatch(setCurrentUserPosts(posts));
-          profileData = { ...user, isCurrentUser: true, posts };
-        }
-      } else {
-        let profile = profiles.find((p) => p.$id === userId);
+      const profileWithPosts = {
+        ...newProfile,
+        isCurrentUser: user.$id === newProfile.$id,
+        posts: posts.documents,
+        total: posts.total,
+        hasMore: posts.documents.length < posts.total,
+        cursor:
+          posts.documents.length > 0
+            ? posts.documents[posts.documents.length - 1].$id
+            : null,
+      };
 
-        if (!profile) {
-          profile = await databaseService.getProfile(userId);
-          dispatch(addProfile(profile));
-        }
-
-        profileData = { ...profile, isCurrentUser: false };
-      }
-
-      setProfile(profileData);
+      dispatch(addProfile(profileWithPosts));
     } catch (err) {
       notify({ type: "error", message: err.message });
-      console.error("Error fetching profile:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  return { fetchProfile, loading, profile };
+  const fetchMorePosts = async () => {
+    if (!profile || !profile.hasMore || !profile.cursor || loadingMore) return;
+
+    setLoadingMore(true);
+    try {
+      const posts = await databaseService.getUserPosts({
+        userId,
+        limit: 20,
+        cursor: profile.cursor,
+      });
+
+      const updatedProfile = {
+        ...profile,
+        posts: [...profile.posts, ...posts.documents],
+        cursor:
+          posts.documents.length > 0
+            ? posts.documents[posts.documents.length - 1].$id
+            : profile.cursor,
+        hasMore: profile.posts.length + posts.documents.length < profile.total,
+      };
+
+      dispatch(updateProfile(updatedProfile));
+    } catch (err) {
+      notify({ type: "error", message: err.message });
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  return { fetchProfile, fetchMorePosts, loading, loadingMore, profile };
 };
 
 export default useProfile;
