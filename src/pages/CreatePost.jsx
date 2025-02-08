@@ -8,8 +8,8 @@ const CreatePost = () => {
         <title>Create New Post - Twilo</title>
       </Helmet>
 
-      <div className="max-w relative py-8 flex flex-col items-center gap-8">
-        <h2 className="text-4xl font-bold leading-tight">Create new post</h2>
+      <div className="wrapper gap-7 py-8">
+        <h2 className="h1">Create new post</h2>
         <PostForm />
       </div>
     </>

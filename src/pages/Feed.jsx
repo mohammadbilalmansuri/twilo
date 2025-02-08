@@ -41,7 +41,7 @@ const Feed = () => {
           </Button>
         </div>
       ) : (
-        <div className="max-w relative pt-4">
+        <div className="wrapper pt-4">
           <PostMasonry posts={posts} />
           {loading && hasMore && (
             <div className="flex flex-col items-center py-6">

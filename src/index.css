@@ -47,6 +47,10 @@
     @apply max-w min-h relative flex flex-col items-center;
   }
 
+  .wrapper-left {
+    @apply max-w min-h relative flex flex-col;
+  }
+
   .wrapper-center {
     @apply wrapper justify-center;
   }

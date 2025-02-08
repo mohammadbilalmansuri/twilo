@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { databaseService } from "../appwrite";
-import { useFeedState, useAuthState } from ".";
+import { useFeedState, useAuthState, useNotification } from ".";
 
 const useFeed = () => {
   const { user } = useAuthState();
   const { posts } = useFeedState();
+  const navigate = useNavigate();
+  const { notify } = useNotification();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
 
@@ -16,10 +19,17 @@ const useFeed = () => {
 
     setLoading(true);
     try {
-      let post =
+      let fetchedPost =
         posts.find((p) => p.$id === id) || (await databaseService.getPost(id));
 
-      if (editing && post.owner.$id !== user.$id) {
+      const postWithOwner = {
+        ...fetchedPost,
+        isOwner: user.$id === fetchedPost.owner.$id,
+      };
+
+      setPost(postWithOwner);
+
+      if (editing && !postWithOwner.isOwner) {
         notify({
           type: "error",
           message: "You are not authorized to edit this post!",
@@ -27,11 +37,6 @@ const useFeed = () => {
         navigate(`/post/${id}`);
         return;
       }
-
-      setPost({
-        ...post,
-        isOwner: true,
-      });
     } catch (err) {
       notify({
         type: "error",

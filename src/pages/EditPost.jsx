@@ -1,34 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { PostForm, Loading } from "../components";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
-import { useFeedState } from "../hooks";
+import { usePost } from "../hooks";
 
 const EditPost = () => {
   const { id } = useParams();
-  const { fetchPost } = useFeedState();
-  const [state, setState] = useState({
-    loading: true,
-    post: null,
-    isOwner: false,
-  });
+  const { fetchPost, loading, post } = usePost();
 
   useEffect(() => {
-    if (!id) return;
-    fetchPost(id, setState, true);
+    fetchPost(id, true);
   }, [id]);
 
-  return state.loading ? (
+  return loading ? (
     <Loading />
-  ) : state.post && state.isOwner ? (
+  ) : post && post.isOwner ? (
     <>
       <Helmet>
-        <title>Edit Post - {state.post.title} - Twilo</title>
+        <title>Edit Post - {post.title} - Twilo</title>
+        <meta name="description" content={post.excerpt} />
       </Helmet>
 
-      <div className="max-w relative py-8 flex flex-col items-center gap-8">
-        <h2 className="text-4xl font-bold leading-none">Edit post</h2>
-        <PostForm post={state.post} />
+      <div className="wrapper gap-8 py-8">
+        <h2 className="h1">Edit post</h2>
+        <PostForm post={post} />
       </div>
     </>
   ) : null;
