@@ -59,11 +59,13 @@ export class DatabaseService {
     }
 
     try {
-      return await this.databases.getDocument(
+      const profile = await this.databases.getDocument(
         config.appwriteDatabaseId,
         config.appwriteProfilesCollectionId,
         userId
       );
+      const profilePosts = await this.getPostByUser(userId);
+      return { ...profile, posts: profilePosts };
     } catch (error) {
       console.error("Appwrite :: getProfile :: ", error.message);
       throw error;
@@ -159,6 +161,20 @@ export class DatabaseService {
       );
     } catch (error) {
       console.error("Appwrite :: getFeed :: ", error.message);
+      throw error;
+    }
+  }
+
+  async getPostByUser(userId) {
+    try {
+      const response = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        [Query.equal("owner", userId)]
+      );
+      return response.documents;
+    } catch (error) {
+      console.error("Appwrite :: getPostByUser :: ", error.message);
       throw error;
     }
   }

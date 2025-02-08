@@ -56,12 +56,12 @@
   }
 
   .logo {
-    @apply text-2xl tracking-widest uppercase font-bold leading-6 -mb-1.5 text-blue;
+    @apply md:text-2xl xs:text-xl text-lg tracking-widest uppercase font-bold leading-6 md:-mb-1.5 -mb-1 text-blue;
     font-family: var(--zen-dots) !important;
   }
 
   .icon {
-    @apply transition-all active:scale-90 rounded-lg size-8 flex flex-col items-center justify-center;
+    @apply transition-all active:scale-90 rounded-lg md:size-8 size-7 flex flex-col items-center justify-center;
   }
 
   .h1 {
@@ -81,11 +81,11 @@
   }
 
   .text {
-    @apply text-lg text-black/60 leading-snug;
+    @apply md:text-lg text-base text-black/60 leading-snug;
   }
 
   .input {
-    @apply w-full text-lg leading-snug outline-none rounded-lg p-3 h-12 placeholder:text-black/60 bg-transparent border-1.5 border-black/10 focus:border-blue;
+    @apply w-full md:text-lg text-base leading-snug outline-none rounded-lg p-3 h-12 placeholder:text-black/60 bg-transparent border-1.5 border-black/10 focus:border-blue;
   }
 }
 
