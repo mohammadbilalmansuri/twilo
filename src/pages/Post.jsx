@@ -31,7 +31,7 @@ const Post = () => {
             to={`/profile/${post.owner.$id}`}
             className="group text-lg leading-none text-blue font-medium transition-all flex gap-2 items-center"
           >
-            <span className="sm:size-8 size-7 flex flex-col items-center justify-center sm:rounded-lg rounded-md sm:text-base text-sm leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots">
+            <span className="min-w-fit sm:size-8 size-7 flex flex-col items-center justify-center sm:rounded-lg rounded-md sm:text-base text-sm leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots">
               {post.owner.name[0].toUpperCase()}
             </span>
             <span className="group-hover:underline mt-0.5">
@@ -39,7 +39,7 @@ const Post = () => {
             </span>
           </Link>
 
-          <div className="flex items-center sm:gap-4 gap-3">
+          <div className=" min-w-fit flex items-center sm:gap-4 gap-3">
             <p className="text">{formatTime(post.$createdAt)}</p>
 
             {post.isOwner && (
