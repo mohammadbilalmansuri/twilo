@@ -124,7 +124,7 @@ const PostForm = ({ post }) => {
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current.click()}
-            className={`size-full sm:text-lg text-base cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-3 ${
+            className={`size-full sm:text-lg text-base leading-none cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-3 ${
               thumbnail.new || thumbnail.old
                 ? "text-black fill-black"
                 : "text-black/60 fill-black/60"

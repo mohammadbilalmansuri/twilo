@@ -4,8 +4,6 @@ const Loader = ({ size = "lg", color = "blue" }) => {
   const colors = {
     blue: "fill-blue",
     white: "fill-white",
-    black: "fill-black",
-    red: "fill-red",
   };
 
   const sizes = {
