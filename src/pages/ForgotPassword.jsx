@@ -27,12 +27,12 @@ const ForgotPassword = () => {
         />
       </Helmet>
 
-      <div className="wrapper-center gap-4 py-8 text-center">
+      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center py-8 sm:gap-4 gap-3 text-center">
         <h1 className="h1">Send Password Reset Link</h1>
         <form
           id="ForgotPasswordForm"
           onSubmit={handleSubmit(sendLink)}
-          className="w-full max-w-sm relative flex flex-col gap-4 pt-1"
+          className="w-full max-w-sm relative flex flex-col sm:gap-4 gap-3 pt-1"
         >
           <Input
             type="email"
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
         {!user?.email && (
           <Link
             to="/login"
-            className="text border-b-1.5 border-black/10 hover:border-blue hover:text-blue transition-all"
+            className="text text-black/60 border-b-1.5 border-black/10 hover:border-blue hover:text-blue transition-all sm:mt-0 mt-1"
           >
             Go back to login
           </Link>

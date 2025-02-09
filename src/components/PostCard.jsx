@@ -37,7 +37,7 @@ const PostCard = forwardRef(
           </p>
         </div>
 
-        <h3 className="md:text-lg text-base font-semibold leading-snug">
+        <h3 className="sm:text-lg text-base font-semibold leading-snug">
           {title}
         </h3>
         <p className="text -mt-2">{excerpt}</p>

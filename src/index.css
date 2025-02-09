@@ -36,7 +36,7 @@
 @tailwind components;
 @layer components {
   .min-h {
-    @apply md:min-h-[calc(100dvh-116px)] xs:min-h-[calc(100dvh-108px)] min-h-[calc(100dvh-142px)];
+    @apply sm:min-h-[calc(100dvh-116px)] xs:min-h-[calc(100dvh-108px)] min-h-[calc(100dvh-142px)];
   }
 
   .max-w {
@@ -56,24 +56,24 @@
   }
 
   .logo {
-    @apply leading-none md:text-2xl xs:text-xl text-lg tracking-widest uppercase font-bold text-blue mt-1;
+    @apply leading-none sm:text-2xl xs:text-xl text-lg tracking-widest uppercase font-bold text-blue mt-1;
     font-family: var(--zen-dots) !important;
   }
 
   .icon {
-    @apply transition-all active:scale-90 md:rounded-lg rounded-md md:size-8 size-7 flex flex-col items-center justify-center;
+    @apply transition-all active:scale-90 sm:rounded-lg rounded-md sm:size-8 size-7 flex flex-col items-center justify-center;
   }
 
   .h1 {
-    @apply md:text-4xl text-3xl font-bold leading-tight;
+    @apply sm:text-4xl text-3xl font-bold leading-[1.1];
   }
 
   .text {
-    @apply md:text-lg text-base leading-snug;
+    @apply sm:text-lg text-base leading-snug;
   }
 
   .input {
-    @apply w-full md:text-lg text-base leading-none outline-none rounded-lg p-3 md:h-13 h-12 placeholder:text-black/60 bg-transparent border-1.5 border-black/10 focus:border-blue;
+    @apply w-full sm:text-lg text-base leading-none outline-none rounded-lg p-3 sm:h-13 h-12 placeholder:text-black/60 bg-transparent border-1.5 border-black/10 focus:border-blue;
   }
 }
 

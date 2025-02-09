@@ -11,7 +11,7 @@ const Loader = ({ size = "md", color = "blue" }) => {
   const sizes = {
     xs: "size-4",
     sm: "size-6",
-    md: "size-12",
+    md: "sm:size-12 size-10",
   };
 
   return (
@@ -19,7 +19,7 @@ const Loader = ({ size = "md", color = "blue" }) => {
       viewBox="0 0 24 24"
       className={cn(
         "animate-spin",
-        sizes[size] || sizes.sm,
+        sizes[size] || sizes.md,
         colors[color] || colors.blue
       )}
     >
