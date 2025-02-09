@@ -8,11 +8,11 @@ const Notification = () => {
   return (
     <div
       className={cn(
-        "fixed z-50 top-20 bg-white rounded-lg border-1.5 border-current py-2 px-3 flex gap-4 items-center",
+        "fixed z-50 sm:top-19 top-18 bg-white rounded-lg border-1.5 border-current px-3 py-2.5 flex gap-4 items-center mx-3",
         notification.type === "success" ? "text-blue" : "text-red"
       )}
     >
-      <p className="text text-current">{notification.message}</p>
+      <p className="text font-medium text-current">{notification.message}</p>
 
       <button
         onClick={closeNotification}
