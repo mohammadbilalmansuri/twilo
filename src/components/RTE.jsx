@@ -45,7 +45,7 @@ export default function RTE({
               apiKey={config.tinyMceApiKey}
               initialValue={defaultValue}
               init={{
-                placeholder: placeholder,
+                placeholder,
                 height: 500,
                 menubar: true,
                 plugins: [
@@ -59,20 +59,18 @@ export default function RTE({
                   "anchor",
                   "searchreplace",
                   "visualblocks",
+                  "codesample",
                   "code",
                   "fullscreen",
                   "insertdatetime",
                   "media",
                   "table",
-                  "code",
                   "help",
+                  "emoticons",
                   "wordcount",
                 ],
                 toolbar:
-                  "undo redo | blocks | " +
-                  "bold italic forecolor | alignleft aligncenter " +
-                  "alignright alignjustify | bullist numlist outdent indent | " +
-                  "removeformat | help",
+                  "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | searchreplace | code | fullscreen | help",
                 content_style:
                   "body { font-size:18px; } * { margin: 0; box-sizing: border-box;}",
               }}
