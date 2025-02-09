@@ -26,15 +26,15 @@ const Post = () => {
       </Helmet>
 
       <div className="max-w min-h-inherit relative flex flex-col gap-4 lg:py-4 py-3">
-        <div className="w-full flex justify-between items-center border-1.5 border-black/10 rounded-lg lg:p-4 p-3">
+        <div className="w-full flex justify-between items-center border-1.5 border-black/10 rounded-lg lg:p-4 p-3 gap-3">
           <Link
             to={`/profile/${post.owner.$id}`}
-            className="group text-lg leading-none text-blue font-medium transition-all flex gap-2 items-center"
+            className="group flex gap-2 items-center"
           >
-            <span className="min-w-fit sm:size-8 size-7 flex flex-col items-center justify-center sm:rounded-lg rounded-md sm:text-base text-sm leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots">
+            <span className="min-w-fit sm:size-8 size-7 flex flex-col items-center justify-center sm:rounded-lg rounded-md sm:text-base text-sm leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots transition-all">
               {post.owner.name[0].toUpperCase()}
             </span>
-            <span className="group-hover:underline mt-0.5">
+            <span className="sm:text-lg text-base leading-none text-blue font-medium group-hover:underline mt-0.5 transition-all">
               {post.owner.name}
             </span>
           </Link>
