@@ -34,7 +34,7 @@ const Signup = () => {
         <meta name="description" content="Create a new account on Twilo." />
       </Helmet>
 
-      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-4 text-center">
+      <div className="max-w my-auto relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-4 text-center">
         <h1 className="h1">Create a new account</h1>
         <p className="text text-black/60 -mt-1">
           Already have an account?{" "}

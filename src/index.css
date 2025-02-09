@@ -35,24 +35,8 @@
 
 @tailwind components;
 @layer components {
-  .min-h {
-    @apply sm:min-h-[calc(100dvh-116px)] xs:min-h-[calc(100dvh-108px)] min-h-[calc(100dvh-142px)];
-  }
-
   .max-w {
     @apply w-full max-w-screen-lg;
-  }
-
-  .wrapper {
-    @apply max-w min-h relative flex flex-col items-center;
-  }
-
-  .wrapper-left {
-    @apply max-w min-h relative flex flex-col;
-  }
-
-  .wrapper-center {
-    @apply wrapper justify-center;
   }
 
   .logo {
@@ -62,6 +46,14 @@
 
   .icon {
     @apply transition-all active:scale-90 sm:rounded-lg rounded-md sm:size-8 size-7 flex flex-col items-center justify-center;
+  }
+
+  .icon-black {
+    @apply icon bg-black/10 text-black/60 fill-black;
+  }
+
+  .icon-svg {
+    @apply sm:size-4 size-3.5;
   }
 
   .h1 {

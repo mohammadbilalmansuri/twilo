@@ -53,7 +53,7 @@ const ResetPassword = () => {
         <meta name="description" content="Reset your Twilo account password" />
       </Helmet>
 
-      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-4 text-center">
+      <div className="max-w my-auto relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-4 text-center">
         <h1 className="h1">Reset Password</h1>
         <form
           onSubmit={handleSubmit(resetPassword)}
