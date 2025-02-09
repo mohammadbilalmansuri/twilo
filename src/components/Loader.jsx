@@ -1,6 +1,6 @@
 import cn from "../utils/cn";
 
-const Loader = ({ size = "md", color = "blue" }) => {
+const Loader = ({ size = "lg", color = "blue" }) => {
   const colors = {
     blue: "fill-blue",
     white: "fill-white",
@@ -11,7 +11,8 @@ const Loader = ({ size = "md", color = "blue" }) => {
   const sizes = {
     xs: "size-4",
     sm: "size-6",
-    md: "sm:size-12 size-10",
+    md: "size-8",
+    lg: "size-10",
   };
 
   return (
@@ -19,7 +20,7 @@ const Loader = ({ size = "md", color = "blue" }) => {
       viewBox="0 0 24 24"
       className={cn(
         "animate-spin",
-        sizes[size] || sizes.md,
+        sizes[size] || sizes.lg,
         colors[color] || colors.blue
       )}
     >

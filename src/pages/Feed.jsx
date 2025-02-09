@@ -1,11 +1,10 @@
 import { Helmet } from "react-helmet-async";
 import { Loading, Loader, Button, PostMasonry } from "../components";
-import { useIntersectionObserver, useFeedState, useFeed } from "../hooks";
+import { useIntersectionObserver, useFeed } from "../hooks";
 import { useEffect } from "react";
 
 const Feed = () => {
-  const { posts, hasMore, total } = useFeedState();
-  const { fetchFeed, loading, error } = useFeed();
+  const { posts, hasMore, total, fetchFeed, loading, error } = useFeed();
 
   useEffect(() => {
     fetchFeed();
@@ -47,7 +46,7 @@ const Feed = () => {
             lastPostRef={lastPostRef}
           />
 
-          {loading && hasMore && <Loader />}
+          {loading && hasMore && <Loader size="md" />}
 
           {!hasMore && total !== 0 && (
             <p className="text text-center">
