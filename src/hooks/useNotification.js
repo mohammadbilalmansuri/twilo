@@ -17,7 +17,7 @@ const useNotification = () => {
     }
   }, [notification.isOpen]);
 
-  const notify = ({ type = "info", message = "" }) => {
+  const notify = ({ type = "success", message = "" }) => {
     notification.isOpen && dispatch(close());
     dispatch(open({ type, message }));
   };
