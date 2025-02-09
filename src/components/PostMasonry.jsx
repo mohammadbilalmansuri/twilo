@@ -21,10 +21,10 @@ const PostMasonry = ({ posts, lastPostRef }) => {
 
   return (
     posts && (
-      <div className="w-full relative grid gap-4 sm:grid-cols-2 grid-cols-1">
+      <div className="w-full relative grid lg:gap-4 gap-3 sm:grid-cols-2 grid-cols-1">
         {isWideScreen ? (
           <>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col lg:gap-4 gap-3">
               {evenPosts.map((post) => (
                 <PostCard
                   key={post.$id}
@@ -33,7 +33,7 @@ const PostMasonry = ({ posts, lastPostRef }) => {
                 />
               ))}
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col lg:gap-4 gap-3">
               {oddPosts.map((post) => (
                 <PostCard
                   key={post.$id}
@@ -44,15 +44,13 @@ const PostMasonry = ({ posts, lastPostRef }) => {
             </div>
           </>
         ) : (
-          <div className="flex flex-col gap-4">
-            {posts.map((post) => (
-              <PostCard
-                key={post.$id}
-                {...post}
-                ref={post.$id === lastPost.$id ? lastPostRef : null}
-              />
-            ))}
-          </div>
+          posts.map((post) => (
+            <PostCard
+              key={post.$id}
+              {...post}
+              ref={post.$id === lastPost.$id ? lastPostRef : null}
+            />
+          ))
         )}
       </div>
     )

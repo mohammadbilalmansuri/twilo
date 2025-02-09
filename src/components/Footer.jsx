@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="w-full relative flex flex-col items-center px-3">
+    <footer className="w-full relative flex flex-col items-center lg:px-4 px-3">
       <div className="max-w relative sm:h-14 xs:h-13 h-[86px] p-3 flex xs:flex-row flex-col-reverse gap-3 justify-between items-center border-1.5 border-black/10 border-b-0 rounded-t-lg">
         <p className="sm:leading-none leading-none sm:text-lg text-base xs:mt-0.5">
           ©2025 Twilo | All Rights Reserved.
