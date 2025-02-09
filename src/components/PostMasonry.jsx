@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { PostCard } from "../components";
 
-const PostMasonry = ({ posts, lastPostRef }) => {
+const PostMasonry = ({ posts, page = "feed", lastPostRef }) => {
   const [isWideScreen, setIsWideScreen] = useState(
     window.matchMedia("(min-width: 640px)").matches
   );
-  const lastPost = posts?.[posts.length - 1];
+  const lastPostId = posts?.[posts.length - 1].$id;
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 640px)");
@@ -29,7 +29,8 @@ const PostMasonry = ({ posts, lastPostRef }) => {
                 <PostCard
                   key={post.$id}
                   {...post}
-                  ref={post.$id === lastPost.$id ? lastPostRef : null}
+                  page={page}
+                  ref={post.$id === lastPostId ? lastPostRef : null}
                 />
               ))}
             </div>
@@ -38,7 +39,8 @@ const PostMasonry = ({ posts, lastPostRef }) => {
                 <PostCard
                   key={post.$id}
                   {...post}
-                  ref={post.$id === lastPost.$id ? lastPostRef : null}
+                  page={page}
+                  ref={post.$id === lastPostId ? lastPostRef : null}
                 />
               ))}
             </div>
@@ -48,7 +50,8 @@ const PostMasonry = ({ posts, lastPostRef }) => {
             <PostCard
               key={post.$id}
               {...post}
-              ref={post.$id === lastPost.$id ? lastPostRef : null}
+              page={page}
+              ref={post.$id === lastPostId ? lastPostRef : null}
             />
           ))
         )}

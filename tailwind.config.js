@@ -21,6 +21,7 @@ export default {
         13: "3.25rem",
         14: "3.5rem",
         15: "3.75rem",
+        17: "4.25rem",
         18: "4.5rem",
         19: "4.75rem",
       },
@@ -38,9 +39,13 @@ export default {
         xl: "37.5rem",
       },
       fontSize: {
-        lg: "1.125rem",
-        base: "1rem",
         sm: "0.875rem",
+        base: "1rem",
+        lg: "1.125rem",
+        xl: "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
+        "4xl": "2.25rem",
       },
       minHeight: {
         inherit: "inherit",

@@ -27,12 +27,12 @@ const Feed = () => {
       {loading && posts.length === 0 ? (
         <Loading />
       ) : error ? (
-        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-8 gap-4">
+        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-4 gap-4">
           <h1 className="h1">Unable to fetch posts</h1>
           <p className="text text-black/60 sm:max-w-xl max-w-lg">{error}</p>
         </div>
       ) : !loading && total === 0 ? (
-        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-8 gap-4">
+        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-4 gap-4">
           <h1 className="h1">No posts available at the moment</h1>
           <h3 className="sm:text-2xl text-xl text-black/60 pb-1">
             Be the first to create one!
@@ -45,6 +45,7 @@ const Feed = () => {
         <div className="max-w min-h-inherit relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
           <PostMasonry
             posts={Array.isArray(posts) ? posts : []}
+            page="feed"
             lastPostRef={lastPostRef}
           />
 
