@@ -1,13 +1,23 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPosts,
+  selectCursor,
+  selectHasMore,
+  selectTotalPosts,
+} from "../store/selectors";
 import { databaseService } from "../appwrite";
 import { setPosts } from "../store/feedSlice";
-import { useFeedState, useAuthState } from ".";
+import { useAuthState } from ".";
 
 const useFeed = () => {
   const { user } = useAuthState();
-  const { cursor, hasMore, total } = useFeedState();
+  const posts = useSelector(selectPosts);
+  const cursor = useSelector(selectCursor);
+  const hasMore = useSelector(selectHasMore);
+  const total = useSelector(selectTotalPosts);
   const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -29,7 +39,7 @@ const useFeed = () => {
     }
   };
 
-  return { fetchFeed, loading, error };
+  return { posts, hasMore, total, fetchFeed, loading, error };
 };
 
 export default useFeed;

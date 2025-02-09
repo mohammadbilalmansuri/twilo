@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { databaseService } from "../appwrite";
-import { useFeedState, useAuthState, useNotification } from ".";
+import { useFeed, useAuthState, useNotification } from ".";
 import { selectProfiles } from "../store/selectors";
 
 const usePost = () => {
   const { user } = useAuthState();
-  const { posts } = useFeedState();
+  const { posts } = useFeed();
   const profilesPosts = useSelector(selectProfiles)
     ?.map((profile) => profile.posts)
     .flat();
