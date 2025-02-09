@@ -3,25 +3,18 @@ import { useDebounce } from ".";
 
 const useIntersectionObserver = (callback, options) => {
   const ref = useRef();
-
   const debouncedCallback = useDebounce(callback, 100);
 
   useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        debouncedCallback();
-      }
+      if (entry.isIntersecting) debouncedCallback();
     }, options);
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
+    observer.observe(element);
+    return () => observer.unobserve(element);
   }, [debouncedCallback, options]);
 
   return ref;
