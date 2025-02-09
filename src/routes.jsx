@@ -28,7 +28,7 @@ const routes = [
   { path: "verification", element: <Verification />, auth: true },
   { path: "feed", element: <Feed />, auth: true },
   { path: "create", element: <CreatePost />, auth: true },
-  { path: "edit-post/:id", element: <EditPost />, auth: true },
+  { path: "edit/:id", element: <EditPost />, auth: true },
   { path: "post/:id", element: <Post />, auth: true },
   { path: "profile/:id", element: <Profile />, auth: true },
   { path: "*", element: <NotFound />, auth: false },

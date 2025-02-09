@@ -45,7 +45,7 @@ const Post = () => {
             {post.isOwner && (
               <>
                 <Link
-                  to={`/edit-post/${post.$id}`}
+                  to={`/edit/${post.$id}`}
                   className="icon bg-black/5 fill-black hover:bg-black/10"
                 >
                   <svg viewBox="0 0 512 512" className="sm:size-4 size-3.5">
