@@ -29,7 +29,7 @@ const Login = () => {
         <meta name="description" content="Login to your Twilo account." />
       </Helmet>
 
-      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-8 text-center">
+      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-4 text-center">
         <h1 className="h1">Login to your account</h1>
         <p className="text text-black/60 -mt-0.5">
           Don't have an account?{" "}
@@ -40,7 +40,7 @@ const Login = () => {
 
         <form
           onSubmit={handleSubmit(login)}
-          className="w-full max-w-sm relative flex flex-col sm:gap-4 gap-3 pt-1"
+          className="w-full max-w-sm relative flex flex-col lg:gap-4 gap-3 pt-1"
         >
           <Input
             type="email"
@@ -77,7 +77,7 @@ const Login = () => {
 
         <Link
           to="/forgot-password"
-          className="text text-black/60 border-b-1.5 border-black/10 hover:border-blue hover:text-blue transition-all sm:mt-0 mt-1"
+          className="text text-black/60 border-b-1.5 border-black/10 hover:border-blue hover:text-blue transition-all"
         >
           Forgot your password?
         </Link>

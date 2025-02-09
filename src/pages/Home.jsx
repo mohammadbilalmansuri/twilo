@@ -12,7 +12,7 @@ const Home = () => {
         />
       </Helmet>
 
-      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center gap-4 text-center py-8">
+      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center gap-4 text-center py-4">
         <h4 className="sm:text-lg xs:text-base text-sm leading-tight border-b-1.5 border-b-black/10 pb-0.5">
           Start your blogging journey today with Twilo
         </h4>

@@ -8,7 +8,7 @@ const Notification = () => {
   return (
     <div
       className={cn(
-        "fixed z-50 sm:top-19 top-18 bg-white rounded-lg border-1.5 border-current px-3 py-2.5 flex gap-4 items-center mx-3",
+        "fixed z-50 lg:top-19 sm:top-18 top-17 bg-white rounded-lg border-1.5 border-current px-3 py-2.5 flex gap-4 items-center mx-3",
         notification.type === "success" ? "text-blue" : "text-red"
       )}
     >

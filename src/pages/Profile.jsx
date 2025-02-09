@@ -27,43 +27,52 @@ const Profile = () => {
         <title>{profile?.name || "Profile"} - Twilo</title>
       </Helmet>
 
-      <div className="wrapper py-4 gap-4">
-        <div className="w-full border-1.5 border-black/10 rounded-lg p-4 flex gap-8 justify-between items-center">
-          <div className="flex gap-4 items-center">
-            <div className="size-24 rounded-lg bg-blue text-white font-zen-dots text-4xl flex items-center justify-center">
+      <div className="wrapper lg:py-4 py-3 lg:gap-4 gap-3">
+        <div className="w-full border-1.5 border-black/10 rounded-lg lg:p-4 p-3 flex sm:flex-row flex-col gap-4 sm:justify-between items-center">
+          <div className="w-full flex sm:flex-row flex-col lg:gap-4 gap-3 sm:items-center">
+            <div className="aspect-square sm:min-w-fit sm:size-24 size-16 rounded-lg bg-blue text-white font-zen-dots sm:text-4xl text-2xl leading-none flex items-center justify-center">
               {profile?.name
                 ?.split(" ")
+                .filter((n) => n)
                 .map((n) => n[0])
                 .join("")
                 .substring(0, 2)
                 .toUpperCase() || "U"}
             </div>
-            <div className="flex flex-col items-start gap-1">
-              <h1 className="text-2xl font-bold leading-tight">
-                {profile?.name}
-              </h1>
-              <p className="text">@{profile?.$id}</p>
-              {profile?.isCurrentUser && (
-                <p className="text">{profile?.email}</p>
-              )}
+
+            <div className="sm:w-full flex sm:flex-row flex-col sm:justify-between sm:items-center sm:gap-4 gap-2">
+              <div className="flex flex-col gap-2">
+                <h1 className="sm:text-2xl text-xl font-bold leading-tight">
+                  {profile?.name}
+                </h1>
+                <p className="sm:text-lg text-base leading-none text-blue">
+                  @{profile?.$id}
+                </p>
+                {profile?.isCurrentUser && (
+                  <p className="sm:text-lg text-base leading-none">
+                    {profile?.email}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex sm:gap-4 gap-3 items-center">
+                {profile?.total > 0 && (
+                  <p className="sm:text-lg text-base leading-none sm:pr-4 pr-3 border-r-2 border-blue">
+                    {profile?.total} posts
+                  </p>
+                )}
+                <p className="sm:text-lg text-base leading-none">
+                  Joined {formatTime(profile?.$createdAt)}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex gap-4 items-center">
-            {profile?.total > 0 && (
-              <p className="text-lg leading-none pr-4 border-r-2 border-black/20">
-                {profile?.total} Posts
-              </p>
-            )}
-            <p className="text-lg leading-none">
-              Joined {formatTime(profile?.$createdAt)}
-            </p>
           </div>
         </div>
 
         {profile?.total === 0 ? (
           profile?.isCurrentUser ? (
             <div className="max-w relative flex flex-col items-center text-center py-4 gap-6">
-              <h1 className="text-2xl font-semibold leading-tight">
+              <h1 className="sm:text-2xl text-xl font-semibold leading-tight text-black/60">
                 You haven't created any post
               </h1>
               <Button as="link" to="/create" style="secondary">
@@ -71,24 +80,19 @@ const Profile = () => {
               </Button>
             </div>
           ) : (
-            <p className="text-2xl font-semibold leading-tight text-center pt-4 pb-8">
+            <p className="sm:text-2xl text-xl font-semibold leading-tight text-center py-4 text-black/60">
               User hasn't created any post
             </p>
           )
         ) : (
-          <div className="max-w relative flex flex-col items-center gap-4">
+          <div className="max-w relative flex flex-col items-center lg:gap-4 gap-3">
             <PostMasonry
               posts={profile?.posts || []}
+              page="profile"
               lastPostRef={lastPostRef}
             />
 
             {loadingMore && profile?.hasMore && <Loader />}
-
-            {!profile?.hasMore && profile?.total > 0 && (
-              <p className="text text-center">
-                You've reached the end of the posts.
-              </p>
-            )}
           </div>
         )}
       </div>

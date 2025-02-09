@@ -1,52 +1,56 @@
-import React, { forwardRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { forwardRef } from "react";
+import { useNavigate } from "react-router-dom";
 import storageService from "../appwrite/storage";
 import formatTime from "../utils/formatTime";
-import cn from "../utils/cn";
 
 const PostCard = forwardRef(
-  ({ $id, title, excerpt, thumbnail, owner, $createdAt }, ref) => {
+  ({ $id, title, excerpt, thumbnail, owner, $createdAt, page }, ref) => {
     const navigate = useNavigate();
-    const location = useLocation();
 
     return (
       <div
         id={$id}
-        ref={ref}
+        {...(ref && { ref })}
         onClick={() => navigate(`/post/${$id}`)}
-        className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer p-4 gap-4 break-inside-avoid overflow-hidden break-words"
+        className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer lg:p-4 p-3 gap-3 break-words"
       >
-        <div className="w-full flex justify-between items-center gap-4">
+        <div className="w-full flex justify-between gap-4">
           <button
-            className={cn(
-              "text-lg leading-none pl-2 border-l-2 border-blue text-blue font-medium",
-              !location.pathname.includes("/profile") && "hover:underline"
-            )}
-            {...(!location.pathname.includes("/profile") && {
+            className="group sm:text-lg text-base leading-none text-blue font-medium transition-all flex gap-2 items-center"
+            {...(page === "feed" && {
               onClick: (e) => {
                 e.stopPropagation();
                 navigate(`/profile/${owner.$id}`);
               },
             })}
           >
-            {owner.name}
+            <span className="size-6 flex flex-col items-center justify-center rounded-md text-sm leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots">
+              {owner.name[0].toUpperCase()}
+            </span>
+            <span
+              className={`mt-0.5${
+                page === "feed" ? " group-hover:underline" : ""
+              }`}
+            >
+              {owner.name}
+            </span>
           </button>
 
-          <p className="bg-black/5 px-2 py-1 rounded-lg">
+          <p className="text text-black/60 leading-none">
             {formatTime($createdAt)}
           </p>
         </div>
 
-        <h3 className="sm:text-lg text-base font-semibold leading-snug">
+        <h3 className="sm:text-xl text-lg font-semibold leading-snug">
           {title}
         </h3>
-        <p className="text -mt-2">{excerpt}</p>
+        <p className="text text-black/60 -mt-2">{excerpt}</p>
 
         {thumbnail && (
           <img
             src={storageService.getFilePreview(thumbnail)}
             alt={title}
-            className="w-full object-cover object-center rounded-lg"
+            className="w-full bg-black/5 aspect-video object-cover object-center rounded-lg"
           />
         )}
       </div>

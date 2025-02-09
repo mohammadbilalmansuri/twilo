@@ -77,7 +77,7 @@ const PostForm = ({ post }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full relative flex flex-col gap-4"
+      className="w-full relative flex flex-col lg:gap-4 gap-3"
     >
       <Input
         type="text"
@@ -110,12 +110,12 @@ const PostForm = ({ post }) => {
         defaultValue={getValues("content")}
       />
 
-      <div className="w-full relative flex gap-4">
-        <div className="w-1/2 h-15 relative">
+      <div className="w-full relative flex sm:flex-row flex-col lg:gap-4 gap-3">
+        <div className="sm:w-1/2 h-16 relative">
           <input
             type="file"
             ref={fileInputRef}
-            accept="image/png, image/jpg, image/jpeg, image/gif, image/webp, image/svg+xml"
+            accept="image/png, image/jpg, image/jpeg, image/gif"
             onChange={(e) => handleFileChange(e.target.files[0])}
             className="hidden opacity-0 relative z-0"
           />
@@ -133,8 +133,7 @@ const PostForm = ({ post }) => {
             {!thumbnail.new && !thumbnail.old ? (
               <svg
                 viewBox="0 0 512 512"
-                className="size-7 min-w-fit pl-3"
-                aria-label="Upload file Icon"
+                className="md:size-8 sm:size-7 size-6 min-w-fit pl-3"
               >
                 <path d="M288 109.3L288 352c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-242.7-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352l128 0c0 35.3 28.7 64 64 64s64-28.7 64-64l128 0c35.3 0 64 28.7 64 64l0 32c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64l0-32c0-35.3 28.7-64 64-64zM432 456a24 24 0 1 0 0-48 24 24 0 1 0 0 48z" />
               </svg>
@@ -146,7 +145,7 @@ const PostForm = ({ post }) => {
                     : storageService.getFilePreview(thumbnail.old)
                 }
                 alt="Post Thumbnail"
-                className="h-full w-auto object-cover rounded-lg"
+                className="h-full w-auto object-cover rounded-lg bg-black/5"
               />
             )}
 
@@ -164,11 +163,7 @@ const PostForm = ({ post }) => {
                 className="min-w-fit p-1 rounded-md z-10 bg-black/5 hover:bg-black/10 active:scale-90 mr-3"
                 onClick={removeThumbnail}
               >
-                <svg
-                  viewBox="0 0 384 512"
-                  className="size-4"
-                  aria-label="Remove file Icon"
-                >
+                <svg viewBox="0 0 384 512" className="size-4">
                   <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
                 </svg>
               </button>
@@ -180,7 +175,7 @@ const PostForm = ({ post }) => {
           type="submit"
           style={1}
           disabled={loading}
-          className="w-1/2 sm:h-15"
+          className="sm:w-1/2 sm:h-16"
         >
           {loading ? (
             <Loader size="sm" color="white" />

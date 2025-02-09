@@ -6,10 +6,10 @@ const CreatePost = () => {
     <>
       <Helmet>
         <title>Create New Post - Twilo</title>
+        <meta name="description" content="Create a new post on Twilo" />
       </Helmet>
 
-      <div className="wrapper gap-7 py-8">
-        <h2 className="h1">Create new post</h2>
+      <div className="max-w min-h-inherit relative flex flex-col items-center lg:py-4 py-3">
         <PostForm />
       </div>
     </>
