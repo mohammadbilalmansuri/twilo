@@ -1,13 +1,13 @@
 import Loader from "./Loader";
 import Loading from "./Loading";
+import Notification from "./Notification";
 import Button from "./Button";
 import Header from "./Header";
 import Footer from "./Footer";
-import Notification from "./Notification";
 import Input from "./Input";
 import PasswordInput from "./PasswordInput";
-import RTE from "./RTE";
 import Textarea from "./Textarea";
+import RTE from "./RTE";
 import PostForm from "./PostForm";
 import PostMasonry from "./PostMasonry";
 import PostCard from "./PostCard";
@@ -15,14 +15,14 @@ import PostCard from "./PostCard";
 export {
   Loader,
   Loading,
+  Notification,
   Button,
   Header,
   Footer,
-  Notification,
   Input,
   PasswordInput,
-  RTE,
   Textarea,
+  RTE,
   PostForm,
   PostMasonry,
   PostCard,
