@@ -20,9 +20,9 @@ export class AuthService {
 
     try {
       await this.account.create(userId, email, password, name);
-      await this.loginUser({ email, password });
+      const user = await this.loginUser({ email, password });
       await this.sendVerificationEmail();
-      return true;
+      return user;
     } catch (error) {
       console.error("Appwrite :: createAccount :: ", error.message);
       throw error;
