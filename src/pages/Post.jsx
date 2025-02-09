@@ -39,7 +39,7 @@ const Post = () => {
             </span>
           </Link>
 
-          <div className=" min-w-fit flex items-center sm:gap-4 gap-3">
+          <div className="min-w-fit flex items-center sm:gap-4 gap-3">
             <p className="text">{formatTime(post.$createdAt)}</p>
 
             {post.isOwner && (
