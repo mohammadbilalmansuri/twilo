@@ -8,7 +8,7 @@ const Header = () => {
   const { logout, loggingOut } = useLogout();
 
   return (
-    <header className="w-full fixed top-0 z-40 flex flex-col items-center px-3">
+    <header className="w-full fixed top-0 z-40 flex flex-col items-center lg:px-4 px-3">
       <div className="max-w relative sm:h-15 h-14 p-3 flex justify-between items-center border-1.5 border-t-0 border-black/10 bg-white rounded-b-lg">
         {isLoggedIn ? (
           isVerified ? (

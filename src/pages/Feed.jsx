@@ -27,20 +27,22 @@ const Feed = () => {
       {loading && posts.length === 0 ? (
         <Loading />
       ) : error ? (
-        <div className="wrapper-center text-center py-8 gap-4">
+        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-8 gap-4">
           <h1 className="h1">Unable to fetch posts</h1>
-          <p className="text max-w-xl">{error}</p>
+          <p className="text text-black/60 sm:max-w-xl max-w-lg">{error}</p>
         </div>
       ) : !loading && total === 0 ? (
-        <div className="wrapper-center text-center py-8 gap-4">
+        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-8 gap-4">
           <h1 className="h1">No posts available at the moment</h1>
-          <h3 className="text text-2xl pb-2">Be the first to create one!</h3>
+          <h3 className="sm:text-2xl text-xl text-black/60 pb-1">
+            Be the first to create one!
+          </h3>
           <Button as="link" to="/create">
             Create Post
           </Button>
         </div>
       ) : (
-        <div className="wrapper py-4 gap-4">
+        <div className="max-w min-h-inherit relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
           <PostMasonry
             posts={Array.isArray(posts) ? posts : []}
             lastPostRef={lastPostRef}
@@ -49,7 +51,7 @@ const Feed = () => {
           {loading && hasMore && <Loader size="md" />}
 
           {!hasMore && total !== 0 && (
-            <p className="text text-center">
+            <p className="text text-black/60 text-center">
               You've reached the end of the posts. Stay tuned for more updates!
             </p>
           )}
