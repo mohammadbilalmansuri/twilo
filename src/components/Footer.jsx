@@ -1,12 +1,12 @@
 const Footer = () => {
   return (
     <footer className="w-full relative flex flex-col items-center px-3">
-      <div className="max-w relative xs:h-14 p-3 flex justify-between items-center border-1.5 border-black/10 border-b-0 rounded-t-lg">
-        <p className="md:text-lg text-base leading-normal">
+      <div className="max-w relative md:h-14 xs:h-13 h-[86px] p-3 flex xs:flex-row flex-col-reverse gap-3 justify-between items-center border-1.5 border-black/10 border-b-0 rounded-t-lg">
+        <p className="md:leading-none leading-none md:text-lg text-base xs:mt-0.5">
           ©2025 Twilo | All Rights Reserved.
         </p>
 
-        <div className="flex md:gap-4 gap-3 items-center">
+        <div className="flex gap-4 items-center">
           <a
             href="https://www.linkedin.com/in/mohammadbilalmansuri"
             className="icon bg-black/5 hover:bg-black/10 fill-black"
