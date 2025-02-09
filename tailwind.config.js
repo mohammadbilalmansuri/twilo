@@ -35,6 +35,11 @@ export default {
       maxWidth: {
         xl: "37.5rem",
       },
+      fontSize: {
+        lg: "1.125rem",
+        base: "1rem",
+        sm: "0.875rem",
+      },
     },
   },
   plugins: [],
