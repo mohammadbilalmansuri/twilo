@@ -7,16 +7,14 @@ const Button = ({
   type = "button",
   to = "",
   style = "primary",
-  size = "lg",
   className,
   ...props
 }) => {
   const classes = cn(
-    "sm:text-lg text-base leading-none transition-all rounded-lg active:scale-[0.98] flex items-center justify-center",
-    size === "sm" ? "sm:h-9 h-8 sm:px-3 px-2.5" : "sm:h-13 h-12 sm:px-5 px-4",
-    style === "secondary"
-      ? "bg-black/5 text-black font-medium hover:bg-black/10"
-      : "bg-blue text-white hover:bg-blue/85",
+    "sm:text-lg text-base leading-none transition-all rounded-lg active:scale-[0.98] flex items-center justify-center sm:h-13 h-12 sm:px-5 px-4",
+    style === "primary"
+      ? "bg-blue text-white hover:bg-blue/85"
+      : "bg-black/5 text-black font-medium hover:bg-black/10",
     className
   );
 

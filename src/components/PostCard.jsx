@@ -16,7 +16,7 @@ const PostCard = forwardRef(
       >
         <div className="w-full flex justify-between items-center gap-4">
           <button
-            className="group sm:text-lg text-base leading-none text-blue font-medium transition-all flex gap-2 items-center"
+            className="group sm:text-lg text-base leading-none text-left text-blue font-medium transition-all flex xs:gap-2 gap-1.5 items-center"
             {...(page === "feed" && {
               onClick: (e) => {
                 e.stopPropagation();
@@ -24,7 +24,7 @@ const PostCard = forwardRef(
               },
             })}
           >
-            <span className="size-6 flex flex-col items-center justify-center rounded-md text-sm leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots">
+            <span className="size-6 flex flex-col items-center justify-center rounded-md xs:text-sm text-xs leading-none bg-blue text-white group-hover:bg-blue/85 font-zen-dots">
               {owner.name[0].toUpperCase()}
             </span>
             <span
@@ -36,7 +36,7 @@ const PostCard = forwardRef(
             </span>
           </button>
 
-          <p className="text text-black/60 leading-none">
+          <p className="text text-black/60 leading-none min-w-fit">
             {formatTime($createdAt)}
           </p>
         </div>
