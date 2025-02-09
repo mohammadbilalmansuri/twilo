@@ -13,7 +13,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className="w-full min-h relative flex flex-col items-center px-3 md:mt-15 mt-14">
+      <main className="w-full min-h relative flex flex-col items-center px-3 sm:mt-15 mt-14">
         {checking ? <Loading /> : <Outlet />}
         <Notification />
       </main>

@@ -9,7 +9,7 @@ const Textarea = forwardRef(
         maxLength={maxLength}
         ref={ref}
         className={cn(
-          "w-full md:text-lg text-base leading-snug outline-none rounded-lg p-3 placeholder:text-black/60 bg-transparent border-1.5 border-black/10 focus:border-blue",
+          "w-full text outline-none rounded-lg p-3 placeholder:text-black/60 bg-transparent border-1.5 border-black/10 focus:border-blue",
           className
         )}
         {...props}
