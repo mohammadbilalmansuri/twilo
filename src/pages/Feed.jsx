@@ -36,7 +36,7 @@ const Feed = () => {
           No posts available in the feed at the moment.
         </p>
       ) : (
-        <div className="max-w my-auto relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
+        <div className="max-w relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
           <PostMasonry
             posts={Array.isArray(posts) ? posts : []}
             page="feed"
@@ -44,12 +44,6 @@ const Feed = () => {
           />
 
           {loading && hasMore && <Loader size="md" />}
-
-          {!hasMore && total !== 0 && (
-            <p className="text text-black/60 text-center">
-              You've reached the end of the feed. Stay tuned for more updates!
-            </p>
-          )}
         </div>
       )}
     </>

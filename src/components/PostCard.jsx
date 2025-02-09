@@ -12,7 +12,7 @@ const PostCard = forwardRef(
         id={$id}
         {...(ref && { ref })}
         onClick={() => navigate(`/post/${$id}`)}
-        className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer lg:p-4 p-3 gap-3 break-words"
+        className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer lg:p-4 p-3 sm:gap-4 gap-3 break-words"
       >
         <div className="w-full flex justify-between items-center gap-4">
           <button
