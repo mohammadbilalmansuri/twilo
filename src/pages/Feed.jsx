@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { Loading, Loader, Button, PostMasonry } from "../components";
+import { Loading, Loader, PostMasonry } from "../components";
 import { useIntersectionObserver, useFeed } from "../hooks";
 import { useEffect } from "react";
 
@@ -27,22 +27,16 @@ const Feed = () => {
       {loading && posts.length === 0 ? (
         <Loading />
       ) : error ? (
-        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-4 gap-4">
+        <div className="max-w my-auto relative flex flex-col items-center text-center py-4 gap-4">
           <h1 className="h1">Unable to fetch posts</h1>
-          <p className="text text-black/60 sm:max-w-xl max-w-lg">{error}</p>
+          <p className="text text-black/60 sm:max-w-xl max-w-sm">{error}</p>
         </div>
       ) : !loading && total === 0 ? (
-        <div className="max-w min-h-inherit relative flex flex-col items-center justify-center text-center py-4 gap-4">
-          <h1 className="h1">No posts available at the moment</h1>
-          <h3 className="sm:text-2xl text-xl text-black/60 pb-1">
-            Be the first to create one!
-          </h3>
-          <Button as="link" to="/create">
-            Create Post
-          </Button>
-        </div>
+        <p className="max-w my-auto sm:text-2xl text-xl font-semibold leading-tight text-center py-4 text-black/60">
+          No posts available in the feed at the moment.
+        </p>
       ) : (
-        <div className="max-w min-h-inherit relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
+        <div className="max-w my-auto relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
           <PostMasonry
             posts={Array.isArray(posts) ? posts : []}
             page="feed"
@@ -53,7 +47,7 @@ const Feed = () => {
 
           {!hasMore && total !== 0 && (
             <p className="text text-black/60 text-center">
-              You've reached the end of the posts. Stay tuned for more updates!
+              You've reached the end of the feed. Stay tuned for more updates!
             </p>
           )}
         </div>

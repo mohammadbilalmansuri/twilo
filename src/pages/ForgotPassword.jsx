@@ -27,7 +27,7 @@ const ForgotPassword = () => {
         />
       </Helmet>
 
-      <div className="max-w min-h-inherit relative flex flex-col items-center justify-center py-4 sm:gap-4 gap-3 text-center">
+      <div className="max-w my-auto relative flex flex-col items-center justify-center py-4 sm:gap-4 gap-3 text-center">
         <h1 className="h1">Send Password Reset Link</h1>
         <form
           id="ForgotPasswordForm"
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
         {!user?.email && (
           <Link
             to="/login"
-            className="text text-black/60 border-b-1.5 border-black/10 hover:border-blue hover:text-blue transition-all"
+            className="text text-black/60 border-b-1.5 border-black/10 hover:border-blue hover:text-blue transition-all pt-1"
           >
             Go back to login
           </Link>
