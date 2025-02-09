@@ -15,28 +15,29 @@ const profilesSlice = createSlice({
       if (!exists) state.profiles.push(payload);
     },
     updateProfile: (state, { payload }) => {
-      state.profiles = state.profiles.map((profile) =>
-        profile.$id === payload.$id ? payload : profile
-      );
+      const index = state.profiles.findIndex((p) => p.$id === payload.$id);
+      if (index !== -1) state.profiles[index] = payload;
     },
-    cleanProfiles: (state) => (state = initialState),
+    cleanProfiles: () => initialState,
     addPost: (state, { payload }) => {
+      if (!state.profiles.length) return;
       state.profiles = state.profiles.map((profile) =>
         profile.$id === payload.owner.$id
           ? {
               ...profile,
-              posts: [payload, ...profile.posts],
-              total: profile.total + 1,
+              posts: [...(profile.posts || []), payload],
+              total: (profile.total || 0) + 1,
             }
           : profile
       );
     },
     updatePost: (state, { payload }) => {
+      if (!state.profiles.length) return;
       state.profiles = state.profiles.map((profile) =>
         profile.$id === payload.owner.$id
           ? {
               ...profile,
-              posts: profile.posts.map((post) =>
+              posts: profile.posts?.map((post) =>
                 post.$id === payload.$id ? payload : post
               ),
             }
@@ -44,12 +45,13 @@ const profilesSlice = createSlice({
       );
     },
     removePost: (state, { payload }) => {
+      if (!state.profiles.length) return;
       state.profiles = state.profiles.map((profile) =>
         profile.$id === payload.owner.$id
           ? {
               ...profile,
-              posts: profile.posts.filter((post) => post.$id !== payload.$id),
-              total: profile.total - 1,
+              posts: profile.posts?.filter((post) => post.$id !== payload.$id),
+              total: Math.max((profile.total || 0) - 1, 0),
             }
           : profile
       );

@@ -21,8 +21,8 @@ const useSession = () => {
     try {
       const user = await authService.getCurrentUser();
       dispatch(setUser(user));
-    } catch (error) {
-      if (error.message === "User (role: guests) missing scope (account)") {
+    } catch (err) {
+      if (err.message === "User (role: guests) missing scope (account)") {
         dispatch(removeUser());
         notify({
           type: "error",
@@ -32,7 +32,7 @@ const useSession = () => {
       } else {
         notify({
           type: "error",
-          message: error.message,
+          message: err.message,
         });
       }
     } finally {
