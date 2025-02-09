@@ -86,7 +86,7 @@ const Header = () => {
                   {user?.name ? (
                     user.name[0].toUpperCase()
                   ) : (
-                    <Loader size="xs" color="white" />
+                    <Loader size="xs" />
                   )}
                 </NavLink>
               )}
