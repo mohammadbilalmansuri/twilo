@@ -5,7 +5,6 @@ Twilo is your go-to platform for easy blogging. Share your stories, ideas, and c
 ## Features
 
 - **User Authentication**: Users can sign up, log in, verify accounts, and reset passwords.
-- **Profile Management**: Update profile details such as name and password.
 - **Blog Management**: Create, read, update, and delete blog posts.
 - **Explore Users**: View other users' profiles and published posts.
 - **Responsive Design**: Optimized for various devices using Tailwind CSS.
