@@ -12,7 +12,7 @@ const feedSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, { payload }) => {
-      if (payload) return;
+      if (!payload) return;
       const posts = new Map(
         [...state.posts, ...payload.documents].map((p) => [p.$id, p])
       );
