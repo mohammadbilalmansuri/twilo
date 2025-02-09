@@ -171,12 +171,7 @@ const PostForm = ({ post }) => {
           </div>
         </div>
 
-        <Button
-          type="submit"
-          style={1}
-          disabled={loading}
-          className="sm:w-1/2 sm:h-16"
-        >
+        <Button type="submit" disabled={loading} className="sm:w-1/2 sm:h-16">
           {loading ? (
             <Loader size="sm" color="white" />
           ) : post ? (
