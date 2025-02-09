@@ -8,9 +8,9 @@ import { selectProfiles } from "../store/selectors";
 const usePost = () => {
   const { user } = useAuthState();
   const { posts } = useFeed();
-  const profilesPosts = useSelector(selectProfiles)
-    ?.map((profile) => profile.posts)
-    .flat();
+  const profilesPosts = useSelector(selectProfiles)?.flatMap(
+    (profile) => profile.posts
+  );
   const navigate = useNavigate();
   const { notify } = useNotification();
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ const usePost = () => {
 
       const postWithOwner = {
         ...fetchedPost,
-        isOwner: user.$id === fetchedPost.owner.$id,
+        isOwner: user?.$id === fetchedPost?.owner?.$id,
       };
 
       setPost(postWithOwner);

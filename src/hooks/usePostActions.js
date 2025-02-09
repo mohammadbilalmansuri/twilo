@@ -3,7 +3,7 @@ import { databaseService, storageService } from "../appwrite";
 import { useNotification, useAuthState } from ".";
 import { useNavigate } from "react-router-dom";
 import { addPost, updatePost, removePost } from "../store/profilesSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const usePostActions = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,6 @@ const usePostActions = () => {
       };
 
       const newPost = await databaseService.createPost(postData);
-
       notify({ type: "success", message: "Post created successfully!" });
       dispatch(addPost(newPost));
       navigate(`/post/${newPost.$id}`, { replace: true });
@@ -60,9 +59,7 @@ const usePostActions = () => {
       }
 
       if (file) postData.thumbnail = file.$id;
-
       const updatedPost = await databaseService.updatePost(post.$id, postData);
-
       notify({ type: "success", message: "Post updated successfully!" });
       dispatch(updatePost(updatedPost));
       navigate(`/post/${updatedPost.$id}`, { replace: true });
@@ -78,7 +75,6 @@ const usePostActions = () => {
     try {
       await databaseService.deletePost(post.$id);
       if (post.thumbnail) await storageService.deleteFile(post.thumbnail);
-
       notify({ type: "success", message: "Post deleted successfully!" });
       dispatch(removePost(post));
       navigate(`/profile/${user.$id}`, { replace: true });

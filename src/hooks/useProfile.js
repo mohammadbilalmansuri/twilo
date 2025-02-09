@@ -12,19 +12,20 @@ const useProfile = (userId) => {
   const profiles = useSelector(selectProfiles);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-
   const profile = profiles.find((p) => p.$id === userId) || null;
 
   const fetchProfile = async () => {
     if (!userId || profile) return;
     setLoading(true);
     try {
-      const newProfile = await databaseService.getProfile(userId);
-      const posts = await databaseService.getUserPosts({
-        userId,
-        limit: 20,
-        cursor: null,
-      });
+      const [newProfile, posts] = await Promise.all([
+        databaseService.getProfile(userId),
+        databaseService.getUserPosts({
+          userId,
+          limit: 20,
+          cursor: null,
+        }),
+      ]);
 
       const profileWithPosts = {
         ...newProfile,
@@ -32,10 +33,9 @@ const useProfile = (userId) => {
         posts: posts.documents,
         total: posts.total,
         hasMore: posts.documents.length < posts.total,
-        cursor:
-          posts.documents.length > 0
-            ? posts.documents[posts.documents.length - 1].$id
-            : null,
+        cursor: posts.documents.length
+          ? posts.documents[posts.documents.length - 1].$id
+          : null,
       };
 
       dispatch(addProfile(profileWithPosts));
@@ -60,11 +60,11 @@ const useProfile = (userId) => {
       const updatedProfile = {
         ...profile,
         posts: [...profile.posts, ...posts.documents],
-        cursor:
-          posts.documents.length > 0
-            ? posts.documents[posts.documents.length - 1].$id
-            : profile.cursor,
-        hasMore: profile.posts.length + posts.documents.length < profile.total,
+        total: posts.total,
+        cursor: posts.documents.length
+          ? posts.documents[posts.documents.length - 1].$id
+          : profile.cursor,
+        hasMore: profile.posts.length + posts.documents.length < posts.total,
       };
 
       dispatch(updateProfile(updatedProfile));
