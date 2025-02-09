@@ -8,7 +8,7 @@ import {
 } from "../store/selectors";
 import { databaseService } from "../appwrite";
 import { setPosts } from "../store/feedSlice";
-import { useAuthState } from ".";
+import { useAuthState, useNotification } from ".";
 
 const useFeed = () => {
   const { user } = useAuthState();
@@ -17,14 +17,15 @@ const useFeed = () => {
   const hasMore = useSelector(selectHasMore);
   const total = useSelector(selectTotalPosts);
   const dispatch = useDispatch();
-
+  const { notify } = useNotification();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   const fetchFeed = async () => {
-    if (!hasMore && total !== 0) return;
+    if (!hasMore || isFetching) return;
+    setIsFetching(true);
     setLoading(true);
-    setError(null);
+
     try {
       const postsData = await databaseService.getFeed({
         userId: user?.$id,
@@ -33,13 +34,14 @@ const useFeed = () => {
       });
       dispatch(setPosts(postsData));
     } catch (err) {
-      setError(err.message);
+      notify({ type: "error", message: err.message });
     } finally {
       setLoading(false);
+      setIsFetching(false);
     }
   };
 
-  return { posts, hasMore, total, fetchFeed, loading, error };
+  return { posts, hasMore, total, fetchFeed, loading };
 };
 
 export default useFeed;

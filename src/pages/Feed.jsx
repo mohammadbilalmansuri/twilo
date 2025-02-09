@@ -4,7 +4,7 @@ import { useIntersectionObserver, useFeed } from "../hooks";
 import { useEffect } from "react";
 
 const Feed = () => {
-  const { posts, hasMore, total, fetchFeed, loading, error } = useFeed();
+  const { posts, hasMore, total, fetchFeed, loading } = useFeed();
 
   useEffect(() => {
     fetchFeed();
@@ -24,27 +24,20 @@ const Feed = () => {
         />
       </Helmet>
 
-      {loading && posts.length === 0 ? (
+      {loading && total === 0 ? (
         <Loading />
-      ) : error ? (
-        <div className="max-w my-auto relative flex flex-col items-center text-center py-4 gap-4">
-          <h1 className="h1">Unable to fetch posts</h1>
-          <p className="text text-black/60 sm:max-w-xl max-w-sm">{error}</p>
-        </div>
       ) : !loading && total === 0 ? (
         <p className="max-w my-auto sm:text-2xl text-xl font-semibold leading-tight text-center py-4 text-black/60">
           No posts available in the feed at the moment.
         </p>
       ) : (
-        <div className="max-w relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
-          <PostMasonry
-            posts={Array.isArray(posts) ? posts : []}
-            page="feed"
-            lastPostRef={lastPostRef}
-          />
+        posts && (
+          <div className="max-w relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
+            <PostMasonry posts={posts} page="feed" lastPostRef={lastPostRef} />
 
-          {loading && hasMore && <Loader size="md" />}
-        </div>
+            {loading && hasMore && <Loader size="md" />}
+          </div>
+        )
       )}
     </>
   );

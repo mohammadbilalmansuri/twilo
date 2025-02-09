@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { Loader } from "../components";
+import { Loader } from ".";
 import { useAuthState, useLogout } from "../hooks";
 import cn from "../utils/cn";
 

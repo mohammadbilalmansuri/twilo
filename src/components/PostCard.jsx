@@ -10,9 +10,9 @@ const PostCard = forwardRef(
     return (
       <div
         id={$id}
-        {...(ref && { ref })}
+        ref={ref}
         onClick={() => navigate(`/post/${$id}`)}
-        className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer lg:p-4 p-3 sm:gap-4 gap-3 break-words"
+        className="w-full relative border-1.5 border-black/10 rounded-lg transition-all hover:border-black/60 flex flex-col cursor-pointer lg:p-4 p-3 gap-3 break-words"
       >
         <div className="w-full flex justify-between items-center gap-4">
           <button
@@ -44,7 +44,7 @@ const PostCard = forwardRef(
         <h3 className="sm:text-xl text-lg font-semibold leading-snug">
           {title}
         </h3>
-        <p className="text text-black/60 -mt-2">{excerpt}</p>
+        <p className="text text-black/60 -mt-1.5">{excerpt}</p>
 
         {thumbnail && (
           <img
