@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   posts: [],
   cursor: null,
-  hasMore: true,
   total: 0,
+  hasMore: true,
 };
 
 const feedSlice = createSlice({
@@ -12,20 +12,18 @@ const feedSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, { payload }) => {
-      if (!payload) return;
-      const { documents, total } = payload;
-      state.posts = [
-        ...new Map(
-          [...state.posts, ...documents].map((p) => [p.$id, p])
-        ).values(),
-      ];
+      if (payload) return;
+      const posts = new Map(
+        [...state.posts, ...payload.documents].map((p) => [p.$id, p])
+      );
+      state.posts = Array.from(posts.values());
       state.cursor = state.posts.length
         ? state.posts[state.posts.length - 1].$id
         : null;
-      state.hasMore = state.posts.length < total;
-      state.total = total;
+      state.total = payload.total;
+      state.hasMore = state.posts.length < state.total;
     },
-    cleanPosts: (state) => (state = initialState),
+    cleanPosts: () => initialState,
   },
 });
 

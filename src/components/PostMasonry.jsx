@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { PostCard } from "../components";
+import { PostCard } from ".";
 
 const PostMasonry = ({ posts, page = "feed", lastPostRef }) => {
   const [isWideScreen, setIsWideScreen] = useState(
     window.matchMedia("(min-width: 640px)").matches
   );
-  const lastPostId = posts?.[posts.length - 1].$id;
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 640px)");
     const handleMediaQueryChange = (event) => setIsWideScreen(event.matches);
 
     mediaQuery.addEventListener("change", handleMediaQueryChange);
-    return () =>
+    return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
+    };
   }, []);
 
+  const lastPostId = posts?.[posts.length - 1]?.$id;
   const oddPosts = posts?.filter((_, index) => index % 2 !== 0);
   const evenPosts = posts?.filter((_, index) => index % 2 === 0);
 
