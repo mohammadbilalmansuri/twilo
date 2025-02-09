@@ -40,6 +40,9 @@ export default {
         base: "1rem",
         sm: "0.875rem",
       },
+      minHeight: {
+        inherit: "inherit",
+      },
     },
   },
   plugins: [],
