@@ -58,7 +58,7 @@ const Profile = () => {
 
                 <div className="flex sm:gap-4 gap-3 items-center">
                   {profile.total > 0 && (
-                    <p className="sm:text-lg text-base leading-none sm:pr-4 pr-3 border-r-2 border-blue">
+                    <p className="sm:text-lg text-base leading-none sm:pr-4 pr-3 border-r-1.5 border-blue">
                       {profile.total} posts
                     </p>
                   )}
