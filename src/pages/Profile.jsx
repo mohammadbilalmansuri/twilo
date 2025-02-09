@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProfile, useIntersectionObserver } from "../hooks";
-import { Loading, Loader, PostMasonry, Button, Input } from "../components";
+import { Loading, Loader, PostMasonry, Button } from "../components";
 import formatTime from "../utils/formatTime";
 import { Helmet } from "react-helmet-async";
-import { useForm } from "react-hook-form";
 
 const Profile = () => {
   const { id } = useParams();
@@ -25,10 +24,11 @@ const Profile = () => {
     profile && (
       <>
         <Helmet>
-          <title>{profile.name || "Profile"} - Twilo</title>
+          <title>{profile.name} - Twilo</title>
+          <meta name="description" content={`Profile of ${profile.name}`} />
         </Helmet>
 
-        <div className="wrapper lg:py-4 py-3 lg:gap-4 gap-3">
+        <div className="max-w relative flex flex-col lg:py-4 py-3 lg:gap-4 gap-3">
           <div className="w-full border-1.5 border-black/10 rounded-lg lg:p-4 p-3 flex sm:flex-row flex-col gap-4 sm:justify-between items-center">
             <div className="w-full flex sm:flex-row flex-col lg:gap-4 gap-3 sm:items-center">
               <div className="aspect-square sm:min-w-fit sm:size-24 size-16 rounded-lg bg-blue text-white font-zen-dots sm:text-4xl text-2xl leading-none flex items-center justify-center">
@@ -56,9 +56,9 @@ const Profile = () => {
                   )}
                 </div>
 
-                <div className="flex sm:gap-4 gap-3 items-center">
+                <div className="min-w-fit flex lg:gap-4 gap-3 items-center sm:mt-0 mt-1">
                   {profile.total > 0 && (
-                    <p className="sm:text-lg text-base leading-none sm:pr-4 pr-3 border-r-1.5 border-blue">
+                    <p className="sm:text-lg text-base leading-none lg:pr-4 pr-3 border-r-1.5 border-blue">
                       {profile.total} posts
                     </p>
                   )}

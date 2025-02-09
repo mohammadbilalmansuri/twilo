@@ -45,11 +45,11 @@
   }
 
   .icon {
-    @apply transition-all active:scale-90 sm:rounded-lg rounded-md sm:size-8 size-7 flex flex-col items-center justify-center;
+    @apply transition-all active:scale-90 sm:rounded-lg rounded-md sm:size-8 size-7 flex flex-col items-center justify-center sm:text-base text-sm leading-none;
   }
 
   .icon-black {
-    @apply icon bg-black/10 text-black/60 fill-black;
+    @apply icon bg-black/5 hover:bg-black/10 fill-black text-black;
   }
 
   .icon-svg {

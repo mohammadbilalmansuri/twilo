@@ -8,9 +8,10 @@ const NotFound = () => {
     <>
       <Helmet>
         <title>404 - Page Not Found</title>
+        <meta name="description" content="Page not found" />
       </Helmet>
 
-      <div className="wrapper-center py-4 gap-8">
+      <div className="max-w my-auto flex flex-col items-center py-4 gap-8">
         <h1 className="leading-[0.8] text-8xl font-zen-dots text-blue tracking-wider">
           4O4
         </h1>

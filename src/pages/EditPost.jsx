@@ -21,7 +21,7 @@ const EditPost = () => {
         <meta name="description" content={post.excerpt} />
       </Helmet>
 
-      <div className="max-w my-auto relative flex flex-col items-center lg:py-4 py-3">
+      <div className="max-w relative flex flex-col items-center lg:py-4 py-3">
         <PostForm post={post} />
       </div>
     </>
