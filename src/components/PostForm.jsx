@@ -76,7 +76,7 @@ const PostForm = ({ post }) => {
       className="w-full relative flex flex-col lg:gap-4 gap-3"
     >
       <Textarea
-        placeholder="Write post summary"
+        placeholder="Write a post summary"
         maxLength={500}
         {...register("summary", {
           required: true,
@@ -90,7 +90,7 @@ const PostForm = ({ post }) => {
       <RTE
         name="content"
         control={control}
-        placeholder="Write full post content (optional)"
+        placeholder="Write full content (optional)"
         defaultValue={getValues("content")}
       />
 
