@@ -25,7 +25,7 @@ const profilesSlice = createSlice({
         profile.$id === payload.owner.$id
           ? {
               ...profile,
-              posts: [...(profile.posts || []), payload],
+              posts: [payload, ...(profile.posts || [])],
               total: (profile.total || 0) + 1,
             }
           : profile
