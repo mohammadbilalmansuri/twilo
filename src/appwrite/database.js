@@ -1,5 +1,5 @@
 import config from "../config";
-import client from "./appwriteClient";
+import client from "./client";
 import { Databases, ID, Query } from "appwrite";
 
 const databases = new Databases(client);
@@ -84,6 +84,21 @@ export const deletePost = async (postId) => {
     );
   } catch (error) {
     console.error("Appwrite Error [deletePost]: ", error.message);
+    throw error;
+  }
+};
+
+export const getPost = async (postId) => {
+  if (!postId) throw new Error("Post ID is required.");
+
+  try {
+    return await databases.getDocument(
+      config.appwriteDatabaseId,
+      config.appwritePostsCollectionId,
+      postId
+    );
+  } catch (error) {
+    console.error("Appwrite Error [getPost]: ", error.message);
     throw error;
   }
 };
