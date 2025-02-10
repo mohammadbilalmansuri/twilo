@@ -72,11 +72,11 @@ const Post = () => {
           <img
             src={getFilePreview(post.thumbnail)}
             alt="Post thumbnail"
-            className="w-full aspect-auto object-cover object-center rounded-lg bg-black/5 lg:mt-0 -mt-1"
+            className="w-full object-cover object-center rounded-lg bg-black/5 lg:min-h-[500px] md:min-h-[400px] sm:min-h-[350px] xs:min-h-[300px] min-h-[250px] lg:mt-0 -mt-1"
           />
         )}
 
-        <p className="text text-black pl-3 border-l-2 border-blue">
+        <p className="text text-black pl-3 border-l-2 border-blue sm:mt-2">
           {post.summary}
         </p>
         <div className="text text-black/60">{parse(post.content)}</div>

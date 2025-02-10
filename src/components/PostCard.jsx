@@ -7,7 +7,7 @@ import cn from "../utils/cn";
 const PostCard = forwardRef(
   ({ $id, summary, thumbnail, owner, $createdAt, page }, ref) => {
     const navigate = useNavigate();
-    const [isShowingMore, setIsShowingMore] = useState(false);
+    const [seeMore, setSeeMore] = useState(false);
 
     return (
       <div
@@ -49,33 +49,37 @@ const PostCard = forwardRef(
           </p>
         </div>
 
-        <p className="text text-black/60">
-          {isShowingMore ? (
-            <>
-              {summary}{" "}
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsShowingMore(false);
-                }}
-                className="text-blue hover:underline"
-              >
-                see less
-              </span>
-            </>
+        <p className="text-black/60">
+          {summary.length > 150 ? (
+            seeMore ? (
+              <>
+                {summary}{" "}
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSeeMore(false);
+                  }}
+                  className="text-blue hover:underline cursor-pointer"
+                >
+                  See less
+                </span>
+              </>
+            ) : (
+              <>
+                {summary.slice(0, 150)}...
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSeeMore(true);
+                  }}
+                  className="text-blue hover:underline cursor-pointer"
+                >
+                  See more
+                </span>
+              </>
+            )
           ) : (
-            <>
-              {summary.slice(0, 150) + "..."}{" "}
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsShowingMore(true);
-                }}
-                className="text-blue hover:underline"
-              >
-                see more
-              </span>
-            </>
+            summary
           )}
         </p>
 
