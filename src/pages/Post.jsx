@@ -10,7 +10,7 @@ import { usePost, usePostActions } from "../hooks";
 const Post = () => {
   const { id } = useParams();
   const { fetchPost, loading, post } = usePost();
-  const { deletePost, loading: deleting } = usePostActions();
+  const { remove, loading: removing } = usePostActions();
 
   useEffect(() => {
     fetchPost(id);
@@ -52,10 +52,10 @@ const Post = () => {
 
                 <button
                   className="icon-black"
-                  onClick={() => deletePost(post)}
-                  disabled={deleting}
+                  onClick={() => remove(post)}
+                  disabled={removing}
                 >
-                  {deleting ? (
+                  {removing ? (
                     <Loader size="xs" color="blue" />
                   ) : (
                     <svg viewBox="0 0 448 512" className="icon-svg">
