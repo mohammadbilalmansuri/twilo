@@ -56,7 +56,9 @@ const ResetPassword = () => {
       <div className="max-w my-auto relative flex flex-col items-center justify-center sm:gap-4 gap-3 py-4 text-center">
         <h1 className="h1">Reset Password</h1>
         <form
-          onSubmit={handleSubmit(resetPassword)}
+          onSubmit={handleSubmit(({ password, confirmPassword }) =>
+            resetPassword(userId, secret, password, confirmPassword)
+          )}
           className="w-full max-w-sm relative flex flex-col lg:gap-4 gap-3"
         >
           <PasswordInput
