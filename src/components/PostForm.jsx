@@ -3,6 +3,7 @@ import { Input, Textarea, Button, RTE, Loader } from "./index";
 import { storageService } from "../appwrite";
 import { useForm } from "react-hook-form";
 import { usePostActions, useNotification } from "../hooks";
+import cn from "../utils/cn";
 
 const PostForm = ({ post }) => {
   const {
@@ -124,11 +125,12 @@ const PostForm = ({ post }) => {
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current.click()}
-            className={`size-full sm:text-lg text-base leading-none cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-3 ${
+            className={cn(
+              "size-full sm:text-lg text-base leading-none cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-2",
               thumbnail.new || thumbnail.old
                 ? "text-black fill-black"
                 : "text-black/60 fill-black/60"
-            }`}
+            )}
           >
             {!thumbnail.new && !thumbnail.old ? (
               <svg
