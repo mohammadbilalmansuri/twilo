@@ -32,7 +32,11 @@ const Feed = () => {
         </p>
       ) : posts ? (
         <div className="max-w relative flex flex-col items-center lg:py-4 py-3 lg:gap-4 gap-3">
-          <PostMasonry posts={posts} page="feed" lastPostRef={lastPostRef} />
+          <PostMasonry
+            posts={posts || []}
+            page="feed"
+            lastPostRef={lastPostRef}
+          />
 
           {loading && hasMore && <Loader size="md" />}
         </div>

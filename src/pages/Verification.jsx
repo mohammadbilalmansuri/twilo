@@ -12,7 +12,7 @@ const Verification = () => {
 
   useEffect(() => {
     verify(userId, secret);
-  }, [userId, secret]);
+  }, []);
 
   return (
     <>
