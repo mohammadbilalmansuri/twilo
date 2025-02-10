@@ -31,7 +31,7 @@ const profilesSlice = createSlice({
           : profile
       );
     },
-    updatePost: (state, { payload }) => {
+    modifyPost: (state, { payload }) => {
       if (!state.profiles.length) return;
       state.profiles = state.profiles.map((profile) =>
         profile.$id === payload.owner.$id
@@ -64,7 +64,7 @@ export const {
   updateProfile,
   cleanProfiles,
   addPost,
-  updatePost,
+  modifyPost,
   removePost,
 } = profilesSlice.actions;
 export default profilesSlice.reducer;
