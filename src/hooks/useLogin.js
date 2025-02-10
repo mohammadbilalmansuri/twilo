@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authService } from "../appwrite";
+import { loginUser } from "../appwrite/auth";
 import { setUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const useLogin = () => {
   const login = async ({ email, password }) => {
     setLoggingIn(true);
     try {
-      const user = await authService.loginUser({ email, password });
+      const user = await loginUser({ email, password });
       dispatch(setUser(user));
       notify({
         type: "success",
@@ -23,10 +23,10 @@ const useLogin = () => {
       user.emailVerification
         ? navigate("/feed", { replace: true })
         : navigate("/verify", { replace: true });
-    } catch (err) {
+    } catch (error) {
       notify({
         type: "error",
-        message: err.message,
+        message: error.message,
       });
     } finally {
       setLoggingIn(false);

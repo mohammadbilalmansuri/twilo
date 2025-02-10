@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { authService, databaseService } from "../appwrite";
+import { createAccount } from "../appwrite/auth";
+import { createProfile } from "../appwrite/database";
 import { setUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,16 +15,15 @@ const useSignup = () => {
   const signup = async ({ name, userId, email, password }) => {
     setSigningUp(true);
     try {
-      const user = await authService.createAccount({
+      const user = await createAccount({
         name,
         userId,
         email,
         password,
       });
-      await databaseService.createProfile({
+      await createProfile({
         userId,
         name,
-        email,
       });
       dispatch(setUser(user));
       notify({
@@ -31,14 +31,14 @@ const useSignup = () => {
         message: "Account created successfully!",
       });
       navigate("/verify", { replace: true });
-    } catch (err) {
+    } catch (error) {
       notify({
         type: "error",
         message:
-          err.message ===
+          error.message ===
           "A user with the same id, email, or phone already exists in this project."
             ? "An account with the same email or username already exists."
-            : err?.message,
+            : error.message,
       });
     } finally {
       setSigningUp(false);

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { databaseService, storageService } from "../appwrite";
+import { createPost, updatePost, deletePost } from "../appwrite/database";
+import { uploadFile, deleteFile } from "../appwrite/storage";
 import { useNotification, useAuthState } from ".";
 import { useNavigate } from "react-router-dom";
-import { addPost, updatePost, removePost } from "../store/profilesSlice";
+import { addPost, modifyPost, removePost } from "../store/profilesSlice";
 import { useDispatch } from "react-redux";
 
 const usePostActions = () => {
@@ -12,22 +13,19 @@ const usePostActions = () => {
   const { user } = useAuthState();
   const [loading, setLoading] = useState(false);
 
-  const createPost = async ({ title, excerpt, content, thumbnail }) => {
+  const create = async ({ summary, content, thumbnail }) => {
     setLoading(true);
     try {
-      const file = thumbnail.new
-        ? await storageService.uploadFile(thumbnail.new)
-        : null;
+      const file = thumbnail.new ? await uploadFile(thumbnail.new) : null;
 
       const postData = {
-        title,
-        excerpt,
+        summary,
         content,
         thumbnail: file ? file.$id : "",
-        owner: user.$id,
+        owner: user?.$id,
       };
 
-      const newPost = await databaseService.createPost(postData);
+      const newPost = await createPost(postData);
       notify({ type: "success", message: "Post created successfully!" });
       dispatch(addPost(newPost));
       navigate(`/post/${newPost.$id}`, { replace: true });
@@ -38,19 +36,13 @@ const usePostActions = () => {
     }
   };
 
-  const updatePostData = async (
-    post,
-    { title, excerpt, content, thumbnail }
-  ) => {
+  const update = async (post, { summary, content, thumbnail }) => {
     setLoading(true);
     try {
-      const file = thumbnail.new
-        ? await storageService.uploadFile(thumbnail.new)
-        : null;
+      const file = thumbnail.new ? await uploadFile(thumbnail.new) : null;
 
       const postData = {};
-      if (title !== post.title) postData.title = title;
-      if (excerpt !== post.excerpt) postData.excerpt = excerpt;
+      if (summary !== post.summary) postData.summary = summary;
       if (content !== post.content) postData.content = content;
 
       if (thumbnail.old === null && post.thumbnail) {
@@ -59,9 +51,15 @@ const usePostActions = () => {
       }
 
       if (file) postData.thumbnail = file.$id;
-      const updatedPost = await databaseService.updatePost(post.$id, postData);
+
+      if (Object.keys(postData).length === 0) {
+        notify({ type: "error", message: "No changes detected!" });
+        return;
+      }
+
+      const updatedPost = await updatePost(post.$id, postData);
       notify({ type: "success", message: "Post updated successfully!" });
-      dispatch(updatePost(updatedPost));
+      dispatch(modifyPost(updatedPost));
       navigate(`/post/${updatedPost.$id}`, { replace: true });
     } catch (error) {
       notify({ type: "error", message: error.message });
@@ -70,14 +68,14 @@ const usePostActions = () => {
     }
   };
 
-  const deletePost = async (post) => {
+  const remove = async (post) => {
     setLoading(true);
     try {
-      await databaseService.deletePost(post.$id);
-      if (post.thumbnail) await storageService.deleteFile(post.thumbnail);
+      await deletePost(post.$id);
+      if (post.thumbnail) await deleteFile(post.thumbnail);
       notify({ type: "success", message: "Post deleted successfully!" });
       dispatch(removePost(post));
-      navigate(`/profile/${user.$id}`, { replace: true });
+      navigate(`/profile/${user?.$id}`, { replace: true });
     } catch (error) {
       notify({ type: "error", message: error.message });
     } finally {
@@ -85,7 +83,7 @@ const usePostActions = () => {
     }
   };
 
-  return { createPost, updatePostData, deletePost, loading };
+  return { create, update, remove, loading };
 };
 
 export default usePostActions;

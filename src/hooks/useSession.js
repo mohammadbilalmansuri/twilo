@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../appwrite";
+import { getCurrentUser } from "../appwrite/auth";
 import { setUser, removeUser } from "../store/authSlice";
 import { useNotification, useAuthState } from ".";
 
@@ -19,10 +19,15 @@ const useSession = () => {
     }
 
     try {
-      const user = await authService.getCurrentUser();
+      const user = await getCurrentUser();
       dispatch(setUser(user));
-    } catch (err) {
-      if (err.message === "User (role: guests) missing scope (account)") {
+    } catch (error) {
+      console.log(error.code);
+
+      if (
+        error.code === 401 ||
+        error.message === "User (role: guests) missing scope (account)"
+      ) {
         dispatch(removeUser());
         notify({
           type: "error",
@@ -32,7 +37,7 @@ const useSession = () => {
       } else {
         notify({
           type: "error",
-          message: err.message,
+          message: error.message,
         });
       }
     } finally {

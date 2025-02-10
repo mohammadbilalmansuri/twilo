@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { databaseService } from "../appwrite";
+import { getProfile, getUserPosts } from "../appwrite/database";
 import { addProfile, updateProfile } from "../store/profilesSlice";
 import { selectProfiles } from "../store/selectors";
 import { useAuthState, useNotification } from ".";
@@ -19,8 +19,8 @@ const useProfile = (userId) => {
     setLoading(true);
     try {
       const [newProfile, posts] = await Promise.all([
-        databaseService.getProfile(userId),
-        databaseService.getUserPosts({
+        getProfile(userId),
+        getUserPosts({
           userId,
           limit: 20,
           cursor: null,
@@ -29,7 +29,7 @@ const useProfile = (userId) => {
 
       const profileWithPosts = {
         ...newProfile,
-        isCurrentUser: user.$id === newProfile.$id,
+        isCurrentUser: user?.$id === newProfile.$id,
         posts: posts.documents,
         total: posts.total,
         hasMore: posts.documents.length < posts.total,
@@ -39,8 +39,8 @@ const useProfile = (userId) => {
       };
 
       dispatch(addProfile(profileWithPosts));
-    } catch (err) {
-      notify({ type: "error", message: err.message });
+    } catch (error) {
+      notify({ type: "error", message: error.message });
     } finally {
       setLoading(false);
     }
@@ -48,10 +48,9 @@ const useProfile = (userId) => {
 
   const fetchMorePosts = async () => {
     if (!profile || !profile.hasMore || !profile.cursor || loadingMore) return;
-
     setLoadingMore(true);
     try {
-      const posts = await databaseService.getUserPosts({
+      const posts = await getUserPosts({
         userId,
         limit: 20,
         cursor: profile.cursor,
@@ -68,8 +67,8 @@ const useProfile = (userId) => {
       };
 
       dispatch(updateProfile(updatedProfile));
-    } catch (err) {
-      notify({ type: "error", message: err.message });
+    } catch (error) {
+      notify({ type: "error", message: error.message });
     } finally {
       setLoadingMore(false);
     }
