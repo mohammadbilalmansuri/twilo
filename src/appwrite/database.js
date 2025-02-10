@@ -54,7 +54,7 @@ export const createPost = async ({ summary, content, thumbnail, owner }) => {
   }
 };
 
-export const updatePost = async ({ postId, updatedPostData }) => {
+export const updatePost = async (postId, updatedPostData) => {
   if (!postId || !updatedPostData || Object.keys(updatedPostData).length === 0)
     throw new Error("Post ID and at least one update field are required.");
 
