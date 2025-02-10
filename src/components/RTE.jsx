@@ -72,7 +72,7 @@ export default function RTE({
                 toolbar:
                   "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | searchreplace | code | fullscreen | help",
                 content_style:
-                  "body { font-size:18px; } * { margin: 0; box-sizing: border-box;}",
+                  "body { font-size:18px; } * { margin: 0; box-sizing: border-box;} @media (max-width: 640px) { body { font-size: 16px; } }",
               }}
               onInit={() => setLoading(false)}
               onEditorChange={onChange}
