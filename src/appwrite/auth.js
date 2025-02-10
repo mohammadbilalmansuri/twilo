@@ -58,7 +58,7 @@ export const sendVerificationEmail = async () => {
   }
 };
 
-export const verifyEmail = async ({ userId, secret }) => {
+export const verifyEmail = async (userId, secret) => {
   if (!userId || !secret) throw new Error("User ID and secret are required.");
   try {
     await account.updateVerification(userId, secret);
@@ -69,7 +69,7 @@ export const verifyEmail = async ({ userId, secret }) => {
   }
 };
 
-export const sendPasswordResetLink = async ({ email }) => {
+export const sendPasswordResetLink = async (email) => {
   if (!email) throw new Error("Email is required.");
   try {
     await account.createRecovery(email, config.resetPasswordUrl);
@@ -80,7 +80,7 @@ export const sendPasswordResetLink = async ({ email }) => {
   }
 };
 
-export const resetPassword = async ({ userId, secret, password }) => {
+export const resetPassword = async (userId, secret, password) => {
   if (!userId || !secret || !password)
     throw new Error("User ID, secret, and password are required.");
   try {
