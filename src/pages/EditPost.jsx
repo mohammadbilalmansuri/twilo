@@ -17,8 +17,8 @@ const EditPost = () => {
   ) : post && post.isOwner ? (
     <>
       <Helmet>
-        <title>Edit Post - {post.title} - Twilo</title>
-        <meta name="description" content={post.excerpt} />
+        <title>{post.summary.split(".")[0]} - Twilo</title>
+        <meta name="description" content={post.summary} />
       </Helmet>
 
       <div className="max-w relative flex flex-col items-center lg:py-4 py-3">

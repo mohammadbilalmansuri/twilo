@@ -14,9 +14,7 @@ const PostForm = ({ post }) => {
     getValues,
   } = useForm({
     defaultValues: {
-      summary:
-        post?.summary ||
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat facilis deserunt error quas recusandae! Doloremque ad voluptatem odio praesentium soluta vel quisquam eum cum aperiam iusto optio possimus perspiciatis, quo necessitatibus, ducimus officia, est totam nisi quod a harum expedita labore. Assumenda molestiae odio aut qui hic cumque, illo, magnam quis praesentium unde, quibusdam nemo obcaecati! Ea esse quibusdam aut eligendi quae optio voluptates, ducimus natus maiores fugit. Id, quam.",
+      summary: post?.summary || "",
       content: post?.content || "",
     },
   });
@@ -56,18 +54,14 @@ const PostForm = ({ post }) => {
     fileInputRef.current.value = "";
   };
 
-  const onSubmit = ({ title, excerpt, content }) => {
+  const onSubmit = ({ summary, content }) => {
     post
-      ? update(post, { title, excerpt, content, thumbnail })
-      : create({ title, excerpt, content, thumbnail });
+      ? update(post, { summary, content, thumbnail })
+      : create({ summary, content, thumbnail });
   };
 
   const renderFormErrors = () => {
-    const errorMessages = [
-      errors?.title?.message,
-      errors?.excerpt?.message,
-      errors?.content?.message,
-    ]
+    const errorMessages = [errors?.summary?.message, errors?.content?.message]
       .filter(Boolean)
       .join(", ");
 
@@ -96,7 +90,7 @@ const PostForm = ({ post }) => {
       <RTE
         name="content"
         control={control}
-        placeholder="Write post content (optional)"
+        placeholder="Write full post content (optional)"
         defaultValue={getValues("content")}
       />
 
@@ -142,7 +136,7 @@ const PostForm = ({ post }) => {
 
             <span className="w-full overflow-hidden text-nowrap text-ellipsis">
               {!thumbnail.new && !thumbnail.old
-                ? "Select or drop post thumbnail"
+                ? "Upload or drag a thumbnail image"
                 : thumbnail.new
                 ? thumbnail.new.name
                 : thumbnail.old}

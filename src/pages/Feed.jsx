@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Loading, Loader, PostMasonry } from "../components";
 import { useIntersectionObserver, useFeed } from "../hooks";
-import { useEffect } from "react";
 
 const Feed = () => {
   const { posts, hasMore, total, fetchFeed, loading } = useFeed();

@@ -78,7 +78,7 @@ const Header = () => {
                   to={`/profile/${user?.$id}`}
                   className={({ isActive }) =>
                     cn(
-                      "icon-black font-zen-dots",
+                      "icon-black leading-[0.8] font-zen-dots",
                       isActive && "pointer-events-none text-blue"
                     )
                   }
