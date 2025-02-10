@@ -48,14 +48,14 @@ const Profile = () => {
                 <p className="sm:text-lg text-base leading-none text-blue">
                   @{profile.$id}
                 </p>
-                {profile?.isCurrentUser && (
+                {profile?.email && (
                   <p className="sm:text-lg text-base leading-none">
                     {profile.email}
                   </p>
                 )}
               </div>
 
-              <div className="min-w-fit flex lg:gap-4 gap-3 items-center sm:mt-0 mt-1">
+              <div className="min-w-fit flex lg:gap-4 gap-3 items-center">
                 {profile.total > 0 && (
                   <p className="sm:text-lg text-base leading-none lg:pr-4 pr-3 border-r-1.5 border-blue">
                     {profile.total} posts
@@ -70,7 +70,7 @@ const Profile = () => {
         </div>
 
         {profile.total === 0 ? (
-          profile.isCurrentUser ? (
+          profile.email ? (
             <div className="max-w relative flex flex-col items-center text-center py-4 gap-6">
               <h1 className="sm:text-2xl text-xl font-semibold leading-tight text-black/60">
                 You haven't created any post

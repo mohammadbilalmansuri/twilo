@@ -29,7 +29,6 @@ const useProfile = (userId) => {
 
       const profileWithPosts = {
         ...newProfile,
-        isCurrentUser: user?.$id === newProfile.$id,
         posts: posts.documents,
         total: posts.total,
         hasMore: posts.documents.length < posts.total,
@@ -37,6 +36,8 @@ const useProfile = (userId) => {
           ? posts.documents[posts.documents.length - 1].$id
           : null,
       };
+
+      if (user?.$id === newProfile.$id) profileWithPosts.email = user.email;
 
       dispatch(addProfile(profileWithPosts));
     } catch (error) {
