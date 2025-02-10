@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import storageService from "../appwrite/storage";
+import { getFilePreview } from "../appwrite/storage";
 import parse from "html-react-parser";
 import { Helmet } from "react-helmet-async";
 import formatTime from "../utils/formatTime";
@@ -70,9 +70,9 @@ const Post = () => {
 
         {post.thumbnail && (
           <img
-            src={storageService.getFilePreview(post.thumbnail)}
+            src={getFilePreview(post.thumbnail)}
             alt={post.title}
-            className="w-full aspect-video object-cover object-center rounded-lg bg-black/5 lg:mt-0 -mt-1"
+            className="w-full aspect-auto object-cover object-center rounded-lg bg-black/5 lg:mt-0 -mt-1"
           />
         )}
 
