@@ -50,7 +50,7 @@ const PostCard = forwardRef(
           <img
             src={storageService.getFilePreview(thumbnail)}
             alt={title}
-            className="w-full bg-black/5 aspect-video object-cover object-center rounded-lg"
+            className="w-full bg-black/5 object-cover object-center rounded-lg"
           />
         )}
       </div>
