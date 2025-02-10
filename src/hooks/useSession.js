@@ -22,8 +22,6 @@ const useSession = () => {
       const user = await getCurrentUser();
       dispatch(setUser(user));
     } catch (error) {
-      console.log(error.code);
-
       if (
         error.code === 401 ||
         error.message === "User (role: guests) missing scope (account)"
