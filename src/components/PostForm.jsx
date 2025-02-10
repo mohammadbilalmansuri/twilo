@@ -21,7 +21,7 @@ const PostForm = ({ post }) => {
     },
   });
   const { notify } = useNotification();
-  const { createPost, updatePostData, loading } = usePostActions();
+  const { create, update, loading } = usePostActions();
   const fileInputRef = useRef(null);
   const [thumbnail, setThumbnail] = useState({
     old: post?.thumbnail || null,
@@ -58,8 +58,8 @@ const PostForm = ({ post }) => {
 
   const onSubmit = ({ title, excerpt, content }) => {
     post
-      ? updatePostData(post, { title, excerpt, content, thumbnail })
-      : createPost({ title, excerpt, content, thumbnail });
+      ? update(post, { title, excerpt, content, thumbnail })
+      : create({ title, excerpt, content, thumbnail });
   };
 
   const renderFormErrors = () => {
