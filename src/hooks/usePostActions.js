@@ -46,7 +46,7 @@ const usePostActions = () => {
       if (content !== post.content) postData.content = content;
 
       if (thumbnail.old === null && post.thumbnail) {
-        await storageService.deleteFile(post.thumbnail);
+        await deleteFile(post.thumbnail);
         postData.thumbnail = "";
       }
 
