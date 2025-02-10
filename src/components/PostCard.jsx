@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
-import storageService from "../appwrite/storage";
+import { getFilePreview } from "../appwrite/storage";
 import formatTime from "../utils/formatTime";
 
 const PostCard = forwardRef(
@@ -48,7 +48,7 @@ const PostCard = forwardRef(
 
         {thumbnail && (
           <img
-            src={storageService.getFilePreview(thumbnail)}
+            src={getFilePreview(thumbnail)}
             alt={title}
             className="w-full bg-black/5 object-cover object-center rounded-lg"
           />

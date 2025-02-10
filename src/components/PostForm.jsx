@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { Input, Textarea, Button, RTE, Loader } from "./index";
-import { storageService } from "../appwrite";
+import { Textarea, Button, RTE, Loader } from "./index";
+import { getFilePreview } from "../appwrite/storage";
 import { useForm } from "react-hook-form";
 import { usePostActions, useNotification } from "../hooks";
 import cn from "../utils/cn";
@@ -14,8 +14,9 @@ const PostForm = ({ post }) => {
     getValues,
   } = useForm({
     defaultValues: {
-      title: post?.title || "",
-      excerpt: post?.excerpt || "",
+      summary:
+        post?.summary ||
+        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat facilis deserunt error quas recusandae! Doloremque ad voluptatem odio praesentium soluta vel quisquam eum cum aperiam iusto optio possimus perspiciatis, quo necessitatibus, ducimus officia, est totam nisi quod a harum expedita labore. Assumenda molestiae odio aut qui hic cumque, illo, magnam quis praesentium unde, quibusdam nemo obcaecati! Ea esse quibusdam aut eligendi quae optio voluptates, ducimus natus maiores fugit. Id, quam.",
       content: post?.content || "",
     },
   });
@@ -80,34 +81,22 @@ const PostForm = ({ post }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full relative flex flex-col lg:gap-4 gap-3"
     >
-      <Input
-        type="text"
-        placeholder="Enter post title"
-        {...register("title", {
-          required: true,
-          maxLength: {
-            value: 150,
-            message: "Post title must be less than 150 characters",
-          },
-        })}
-      />
-
       <Textarea
-        placeholder="Enter post excerpt"
-        {...register("excerpt", {
+        placeholder="Write post summary"
+        maxLength={500}
+        {...register("summary", {
           required: true,
           maxLength: {
-            value: 300,
-            message: "Post excerpt must be less than 300 characters",
+            value: 500,
+            message: "Post summary cannot exceed 500 characters",
           },
         })}
-        className="h-28 resize-none"
       />
 
       <RTE
         name="content"
         control={control}
-        placeholder="Enter post content"
+        placeholder="Write post content (optional)"
         defaultValue={getValues("content")}
       />
 
@@ -144,7 +133,7 @@ const PostForm = ({ post }) => {
                 src={
                   thumbnail.new
                     ? thumbnail.previewUrl
-                    : storageService.getFilePreview(thumbnail.old)
+                    : getFilePreview(thumbnail.old)
                 }
                 alt="Post Thumbnail"
                 className="h-full w-auto object-cover rounded-lg bg-black/5"
