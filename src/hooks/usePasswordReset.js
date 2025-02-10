@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../appwrite";
+import { sendPasswordResetLink, resetPassword } from "../appwrite/auth";
 import { useNotification } from ".";
 
 const usePasswordReset = () => {
@@ -12,36 +12,36 @@ const usePasswordReset = () => {
   const sendLink = async ({ email }) => {
     setSending(true);
     try {
-      await authService.sendPasswordResetLink(email);
+      await sendPasswordResetLink(email);
       notify({
         type: "success",
         message:
           "Password reset link sent successfully! Please check your email.",
       });
-    } catch (err) {
+    } catch (error) {
       notify({
         type: "error",
-        message: err.message,
+        message: error.message,
       });
     } finally {
       setSending(false);
     }
   };
 
-  const resetPassword = async (userId, secret, password, confirmPassword) => {
+  const reset = async ({ userId, secret, password, confirmPassword }) => {
     if (password !== confirmPassword) return;
     setResetting(true);
     try {
-      await authService.resetPassword({ userId, secret, password });
+      await resetPassword(userId, secret, password);
       notify({
         type: "success",
         message: "Password reset successfully!",
       });
       navigate("/login", { replace: true });
-    } catch (err) {
+    } catch (error) {
       notify({
         type: "error",
-        message: err.message,
+        message: error.message,
       });
     } finally {
       setResetting(false);
@@ -51,7 +51,7 @@ const usePasswordReset = () => {
   return {
     sendLink,
     sending,
-    resetPassword,
+    reset,
     resetting,
   };
 };

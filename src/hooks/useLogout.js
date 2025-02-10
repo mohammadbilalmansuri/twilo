@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../appwrite";
+import { logoutUser } from "../appwrite/auth";
 import { removeUser } from "../store/authSlice";
 import { cleanPosts } from "../store/feedSlice";
 import { cleanProfiles } from "../store/profilesSlice";
@@ -16,7 +16,7 @@ const useLogout = () => {
   const logout = async () => {
     setLoggingOut(true);
     try {
-      await authService.logoutUser();
+      await logoutUser();
       dispatch(removeUser());
       dispatch(cleanPosts());
       dispatch(cleanProfiles());
@@ -25,10 +25,10 @@ const useLogout = () => {
         message: "Logged out successfully!",
       });
       navigate("/login", { replace: true });
-    } catch (err) {
+    } catch (error) {
       notify({
         type: "error",
-        message: err.message,
+        message: error.message,
       });
     } finally {
       setLoggingOut(false);

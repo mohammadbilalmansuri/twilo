@@ -6,7 +6,7 @@ import {
   selectHasMore,
   selectTotalPosts,
 } from "../store/selectors";
-import { databaseService } from "../appwrite";
+import { getFeed } from "../appwrite/database";
 import { setPosts } from "../store/feedSlice";
 import { useAuthState, useNotification } from ".";
 
@@ -27,14 +27,14 @@ const useFeed = () => {
     setLoading(true);
 
     try {
-      const postsData = await databaseService.getFeed({
+      const postsData = await getFeed({
         userId: user?.$id,
         limit: 20,
         cursor,
       });
       dispatch(setPosts(postsData));
-    } catch (err) {
-      notify({ type: "error", message: err.message });
+    } catch (error) {
+      notify({ type: "error", message: error.message });
     } finally {
       setLoading(false);
       setIsFetching(false);

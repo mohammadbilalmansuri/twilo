@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { databaseService } from "../appwrite";
+import { getPost } from "../appwrite/database";
 import { useFeed, useAuthState, useNotification } from ".";
 import { selectProfiles } from "../store/selectors";
 
@@ -21,15 +21,14 @@ const usePost = () => {
       setLoading(false);
       return;
     }
-
     setLoading(true);
     try {
       let fetchedPost =
-        posts.find((p) => p.$id === id) ||
-        profilesPosts.find((p) => p.$id === id);
+        posts?.find((p) => p.$id === id) ||
+        profilesPosts?.find((p) => p.$id === id);
 
       if (!fetchedPost) {
-        fetchedPost = await databaseService.getPost(id);
+        fetchedPost = await getPost(id);
       }
 
       const postWithOwner = {
@@ -47,13 +46,13 @@ const usePost = () => {
         navigate(`/post/${id}`);
         return;
       }
-    } catch (err) {
+    } catch (error) {
       notify({
         type: "error",
         message:
-          err.message === "Document with the requested ID could not be found."
+          error.message === "Document with the requested ID could not be found."
             ? "Post not found!"
-            : err.message,
+            : error.message,
       });
       navigate("/feed", { replace: true });
     } finally {
