@@ -21,8 +21,8 @@ const Post = () => {
   ) : post ? (
     <>
       <Helmet>
-        <title>{post.title} - Twilo</title>
-        <meta name="description" content={post.excerpt} />
+        <title>{post.summary.split(".")[0]} - Twilo</title>
+        <meta name="description" content={post.summary} />
       </Helmet>
 
       <div className="max-w relative flex flex-col gap-4 lg:py-4 py-3">
@@ -71,16 +71,13 @@ const Post = () => {
         {post.thumbnail && (
           <img
             src={getFilePreview(post.thumbnail)}
-            alt={post.title}
+            alt="Post thumbnail"
             className="w-full aspect-auto object-cover object-center rounded-lg bg-black/5 lg:mt-0 -mt-1"
           />
         )}
 
-        <h1 className="md:text-3xl xs:text-2xl text-xl font-semibold leading-tight">
-          {post.title}
-        </h1>
         <p className="text text-black pl-3 border-l-2 border-blue">
-          {post.excerpt}
+          {post.summary}
         </p>
         <div className="text text-black/60">{parse(post.content)}</div>
       </div>

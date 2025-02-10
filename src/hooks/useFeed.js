@@ -22,7 +22,10 @@ const useFeed = () => {
   const [isFetching, setIsFetching] = useState(false);
 
   const fetchFeed = async () => {
-    if (!hasMore || isFetching) return;
+    if (!hasMore || isFetching) {
+      setLoading(false);
+      return;
+    }
     setIsFetching(true);
     setLoading(true);
 
