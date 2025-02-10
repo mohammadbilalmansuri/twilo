@@ -9,7 +9,7 @@ const usePasswordReset = () => {
   const [sending, setSending] = useState(false);
   const [resetting, setResetting] = useState(false);
 
-  const sendLink = async (email) => {
+  const sendLink = async ({ email }) => {
     setSending(true);
     try {
       await authService.sendPasswordResetLink(email);
