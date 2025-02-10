@@ -1,5 +1,6 @@
-import { Account } from "appwrite";
+import config from "../config";
 import client from "./client";
+import { Account } from "appwrite";
 
 const account = new Account(client);
 
