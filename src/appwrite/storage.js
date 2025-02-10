@@ -1,56 +1,31 @@
 import config from "../config";
-import { Client, ID, Storage } from "appwrite";
+import client from "./client";
+import { Storage, ID } from "appwrite";
 
-export class StorageService {
-  client = new Client();
-  storage;
+const storage = new Storage(client);
 
-  constructor() {
-    this.client
-      .setEndpoint(config.appwriteUrl)
-      .setProject(config.appwriteProjectId);
-
-    this.storage = new Storage(this.client);
+export const uploadFile = async (file) => {
+  if (!file) throw new Error("File is required");
+  try {
+    return await storage.createFile(config.appwriteBucketId, ID.unique(), file);
+  } catch (error) {
+    console.error("Appwrite Error [uploadFile]: ", error.message);
+    throw error;
   }
+};
 
-  async uploadFile(file) {
-    if (!file) {
-      throw new Error("File is required");
-    }
-    try {
-      return await this.storage.createFile(
-        config.appwriteBucketId,
-        ID.unique(),
-        file
-      );
-    } catch (error) {
-      console.log("Appwrite Service :: uploadFile :: ERROR:", error);
-      throw error;
-    }
+export const deleteFile = async (fileId) => {
+  if (!fileId) throw new Error("File ID is required");
+  try {
+    await storage.deleteFile(config.appwriteBucketId, fileId);
+    return true;
+  } catch (error) {
+    console.error("Appwrite Error [deleteFile]: ", error.message);
+    throw error;
   }
+};
 
-  async deleteFile(fileId) {
-    if (!fileId) {
-      throw new Error("File ID is required");
-    }
-
-    try {
-      await this.storage.deleteFile(config.appwriteBucketId, fileId);
-      return true;
-    } catch (error) {
-      console.log("Appwrite Service :: deleteFile :: ERROR:", error);
-      throw error;
-    }
-  }
-
-  getFilePreview(fileId) {
-    if (!fileId) {
-      throw new Error("File ID is required");
-    }
-
-    return this.storage.getFilePreview(config.appwriteBucketId, fileId);
-  }
-}
-
-const storageService = new StorageService();
-export default storageService;
+export const getFilePreview = (fileId) => {
+  if (!fileId) throw new Error("File ID is required");
+  return storage.getFilePreview(config.appwriteBucketId, fileId);
+};
