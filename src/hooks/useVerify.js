@@ -3,12 +3,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { sendVerificationEmail, verifyEmail } from "../appwrite/auth";
 import { verifyUser } from "../store/authSlice";
-import { useNotification } from ".";
+import { useNotification, useAuthState } from ".";
 
 const useVerify = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notify } = useNotification();
+  const { user } = useAuthState();
   const [resending, setResending] = useState(false);
 
   const resendVerificationEmail = async () => {
@@ -31,7 +32,10 @@ const useVerify = () => {
 
   const verify = async (userId, secret) => {
     try {
-      if (!userId || !secret) throw new Error("Invalid verification link");
+      if (!userId || !secret || user?.$id !== userId) {
+        throw new Error("Invalid or expired verification link!");
+      }
+
       await verifyEmail(userId, secret);
       dispatch(verifyUser());
       notify({
