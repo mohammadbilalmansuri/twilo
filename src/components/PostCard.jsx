@@ -61,7 +61,7 @@ const PostCard = forwardRef(
                   }}
                   className="text-blue hover:underline cursor-pointer"
                 >
-                  See less
+                  see less
                 </span>
               </>
             ) : (
@@ -74,7 +74,7 @@ const PostCard = forwardRef(
                   }}
                   className="text-blue hover:underline cursor-pointer"
                 >
-                  See more
+                  see more
                 </span>
               </>
             )
