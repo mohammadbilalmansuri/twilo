@@ -11,6 +11,7 @@ const useVerify = () => {
   const { notify } = useNotification();
   const { user } = useAuthState();
   const [resending, setResending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   const resendVerificationEmail = async () => {
     setResending(true);
@@ -31,6 +32,7 @@ const useVerify = () => {
   };
 
   const verify = async (userId, secret) => {
+    setVerifying(true);
     try {
       if (!userId || !secret || user?.$id !== userId) {
         throw new Error("Invalid or expired verification link!");
@@ -49,11 +51,14 @@ const useVerify = () => {
         message: error.message,
       });
       navigate("/verify", { replace: true });
+    } finally {
+      setVerifying(false);
     }
   };
 
   return {
     verify,
+    verifying,
     resendVerificationEmail,
     resending,
   };
