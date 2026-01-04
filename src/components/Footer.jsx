@@ -26,7 +26,7 @@ const Footer = () => {
             </svg>
           </a>
           <a
-            href="https://twitter.com/bilalmansuri04"
+            href="https://twitter.com/md_bilalmansuri"
             className="icon-black"
             target="_blank"
           >
