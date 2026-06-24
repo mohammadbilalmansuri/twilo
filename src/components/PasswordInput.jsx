@@ -20,7 +20,7 @@ const PasswordInput = forwardRef(
           className="size-4.5 absolute right-3 fill-black/60 cursor-pointer"
           onClick={() =>
             setPasswordInputType((prev) =>
-              prev === "password" ? "text" : "password"
+              prev === "password" ? "text" : "password",
             )
           }
         >
@@ -34,7 +34,7 @@ const PasswordInput = forwardRef(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 export default PasswordInput;

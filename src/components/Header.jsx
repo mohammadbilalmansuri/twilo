@@ -34,7 +34,7 @@ const Header = () => {
                     className={({ isActive }) =>
                       cn(
                         "icon-black",
-                        isActive && "pointer-events-none fill-blue"
+                        isActive && "pointer-events-none fill-blue",
                       )
                     }
                   >
@@ -48,7 +48,7 @@ const Header = () => {
                     className={({ isActive }) =>
                       cn(
                         "icon-black",
-                        isActive && "pointer-events-none fill-blue"
+                        isActive && "pointer-events-none fill-blue",
                       )
                     }
                   >
@@ -79,7 +79,7 @@ const Header = () => {
                   className={({ isActive }) =>
                     cn(
                       "icon-black leading-[0.8] font-zen-dots",
-                      isActive && "pointer-events-none text-blue"
+                      isActive && "pointer-events-none text-blue",
                     )
                   }
                 >

@@ -24,8 +24,8 @@ const router = createBrowserRouter(
           element={<Protect authentication={auth}>{element}</Protect>}
         />
       ))}
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 const helmetContext = {};
@@ -37,5 +37,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <RouterProvider router={router} />
       </HelmetProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -9,7 +9,7 @@ const usePost = () => {
   const { user } = useAuthState();
   const { posts } = useFeed();
   const profilesPosts = useSelector(selectProfiles)?.flatMap(
-    (profile) => profile.posts
+    (profile) => profile.posts,
   );
   const navigate = useNavigate();
   const { notify } = useNotification();

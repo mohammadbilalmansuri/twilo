@@ -15,12 +15,12 @@ const Button = ({
     style === "primary"
       ? "bg-blue text-white hover:bg-blue/85"
       : "bg-black/5 text-black font-medium hover:bg-black/10",
-    className
+    className,
   );
 
   if ((as === "link" || as === "navlink") && !to) {
     console.warn(
-      "Button component with 'link' or 'navlink' as 'as' requires a 'to' prop."
+      "Button component with 'link' or 'navlink' as 'as' requires a 'to' prop.",
     );
   }
 

@@ -112,7 +112,7 @@ const PostForm = ({ post }) => {
               "size-full sm:text-lg text-base leading-none cursor-pointer border-1.5 border-black/10 rounded-lg flex items-center justify-center gap-2 sm:gap-3",
               thumbnail.new || thumbnail.old
                 ? "text-black fill-black"
-                : "text-black/60 fill-black/60"
+                : "text-black/60 fill-black/60",
             )}
           >
             {!thumbnail.new && !thumbnail.old ? (
@@ -138,8 +138,8 @@ const PostForm = ({ post }) => {
               {!thumbnail.new && !thumbnail.old
                 ? "Upload or drag a thumbnail image"
                 : thumbnail.new
-                ? thumbnail.new.name
-                : thumbnail.old}
+                  ? thumbnail.new.name
+                  : thumbnail.old}
             </span>
 
             {(thumbnail.new || thumbnail.old) && (

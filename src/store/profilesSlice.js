@@ -10,7 +10,7 @@ const profilesSlice = createSlice({
   reducers: {
     addProfile: (state, { payload }) => {
       const exists = state.profiles.some(
-        (profile) => profile.$id === payload.$id
+        (profile) => profile.$id === payload.$id,
       );
       if (!exists) state.profiles.push(payload);
     },
@@ -28,7 +28,7 @@ const profilesSlice = createSlice({
               posts: [payload, ...(profile.posts || [])],
               total: (profile.total || 0) + 1,
             }
-          : profile
+          : profile,
       );
     },
     modifyPost: (state, { payload }) => {
@@ -38,10 +38,10 @@ const profilesSlice = createSlice({
           ? {
               ...profile,
               posts: profile.posts?.map((post) =>
-                post.$id === payload.$id ? payload : post
+                post.$id === payload.$id ? payload : post,
               ),
             }
-          : profile
+          : profile,
       );
     },
     removePost: (state, { payload }) => {
@@ -53,7 +53,7 @@ const profilesSlice = createSlice({
               posts: profile.posts?.filter((post) => post.$id !== payload.$id),
               total: Math.max((profile.total || 0) - 1, 0),
             }
-          : profile
+          : profile,
       );
     },
   },

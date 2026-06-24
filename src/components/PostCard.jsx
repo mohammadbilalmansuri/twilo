@@ -29,7 +29,7 @@ const PostCard = forwardRef(
             <span
               className={cn(
                 "size-6 flex flex-col items-center justify-center rounded-md xs:text-sm text-xs leading-[0.8] bg-blue text-white font-zen-dots",
-                page === "feed" && "group-hover:bg-blue/85"
+                page === "feed" && "group-hover:bg-blue/85",
               )}
             >
               {owner.name[0].toUpperCase()}
@@ -37,7 +37,7 @@ const PostCard = forwardRef(
             <span
               className={cn(
                 "mt-0.5",
-                page === "feed" && "group-hover:underline"
+                page === "feed" && "group-hover:underline",
               )}
             >
               {owner.name}
@@ -92,7 +92,7 @@ const PostCard = forwardRef(
         )}
       </div>
     );
-  }
+  },
 );
 
 export default PostCard;

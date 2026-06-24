@@ -19,7 +19,7 @@ const Loader = ({ size = "lg", color = "blue" }) => {
       className={cn(
         "animate-spin",
         sizes[size] || sizes.lg,
-        colors[color] || colors.blue
+        colors[color] || colors.blue,
       )}
     >
       <path

@@ -3,7 +3,7 @@ import { PostCard } from ".";
 
 const PostMasonry = ({ posts, page = "feed", lastPostRef }) => {
   const [isWideScreen, setIsWideScreen] = useState(
-    window.matchMedia("(min-width: 640px)").matches
+    window.matchMedia("(min-width: 640px)").matches,
   );
 
   useEffect(() => {

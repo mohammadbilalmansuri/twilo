@@ -12,7 +12,7 @@ const Input = forwardRef(
         {...props}
       />
     );
-  }
+  },
 );
 
 export default Input;

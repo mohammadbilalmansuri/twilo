@@ -14,7 +14,7 @@ const feedSlice = createSlice({
     setPosts: (state, { payload }) => {
       if (!payload) return;
       const posts = new Map(
-        [...state.posts, ...payload.documents].map((p) => [p.$id, p])
+        [...state.posts, ...payload.documents].map((p) => [p.$id, p]),
       );
       state.posts = Array.from(posts.values());
       state.cursor = state.posts.length

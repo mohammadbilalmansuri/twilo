@@ -12,7 +12,7 @@ export const createProfile = async ({ userId, name }) => {
       config.appwriteDatabaseId,
       config.appwriteProfilesCollectionId,
       userId,
-      { name }
+      { name },
     );
     return true;
   } catch (error) {
@@ -29,7 +29,7 @@ export const getProfile = async (userId) => {
     return await databases.getDocument(
       config.appwriteDatabaseId,
       config.appwriteProfilesCollectionId,
-      userId
+      userId,
     );
   } catch (error) {
     console.error("Appwrite Error [getProfile]: ", error.message);
@@ -45,7 +45,7 @@ export const createPost = async ({ summary, content, thumbnail, owner }) => {
       config.appwriteDatabaseId,
       config.appwritePostsCollectionId,
       ID.unique(),
-      { summary, content, thumbnail, owner }
+      { summary, content, thumbnail, owner },
     );
   } catch (error) {
     console.error("Appwrite Error [createPost]: ", error.message);
@@ -65,7 +65,7 @@ export const updatePost = async (postId, updatedPostData) => {
       config.appwriteDatabaseId,
       config.appwritePostsCollectionId,
       postId,
-      updatedPostData
+      updatedPostData,
     );
   } catch (error) {
     console.error("Appwrite Error [updatePost]: ", error.message);
@@ -80,7 +80,7 @@ export const deletePost = async (postId) => {
     return await databases.deleteDocument(
       config.appwriteDatabaseId,
       config.appwritePostsCollectionId,
-      postId
+      postId,
     );
   } catch (error) {
     console.error("Appwrite Error [deletePost]: ", error.message);
@@ -95,7 +95,7 @@ export const getPost = async (postId) => {
     return await databases.getDocument(
       config.appwriteDatabaseId,
       config.appwritePostsCollectionId,
-      postId
+      postId,
     );
   } catch (error) {
     console.error("Appwrite Error [getPost]: ", error.message);
@@ -117,7 +117,7 @@ export const getFeed = async ({ userId, limit, cursor }) => {
     return await databases.listDocuments(
       config.appwriteDatabaseId,
       config.appwritePostsCollectionId,
-      queries
+      queries,
     );
   } catch (error) {
     console.error("Appwrite Error [getFeed]: ", error.message);
@@ -139,7 +139,7 @@ export const getUserPosts = async ({ userId, limit, cursor }) => {
     return await databases.listDocuments(
       config.appwriteDatabaseId,
       config.appwritePostsCollectionId,
-      queries
+      queries,
     );
   } catch (error) {
     console.error("Appwrite Error [getUserPosts]: ", error.message);

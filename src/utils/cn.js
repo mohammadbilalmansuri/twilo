@@ -5,7 +5,7 @@ const cn = (...args) =>
     .flatMap((item) =>
       typeof item === "object"
         ? Object.keys(item).filter((key) => item[key])
-        : item
+        : item,
     )
     .join(" ");
 

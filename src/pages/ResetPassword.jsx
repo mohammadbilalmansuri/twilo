@@ -57,7 +57,7 @@ const ResetPassword = () => {
         <h1 className="h1">Reset Password</h1>
         <form
           onSubmit={handleSubmit(({ password, confirmPassword }) =>
-            reset({ userId, secret, password, confirmPassword })
+            reset({ userId, secret, password, confirmPassword }),
           )}
           className="w-full max-w-sm relative flex flex-col lg:gap-4 gap-3"
         >
